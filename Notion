@@ -1,0 +1,28 @@
+Étape 1 : Comprendre la structure d'une PWA
+
+Une PWA, contrairement à ton bocal à messages (un seul fichier HTML), 
+a besoin d'au moins 3 fichiers pour être "installable" sur ton téléphone. 
+Voici pourquoi chacun existe :
+
+1. index.html
+Le fichier principal, comme d'habitude — la structure de ta page (le HTML), avec des liens vers ton CSS et ton JS.
+
+2. manifest.json
+C'est LE fichier qui différencie une PWA d'un simple site web. 
+C'est un petit fichier de config qui dit au téléphone : "cette page peut être installée comme une appli". 
+Il contient des infos comme :
+
+Le nom de l'appli
+L'icône à afficher sur l'écran d'accueil
+La couleur de fond
+Si ça s'ouvre en plein écran ou pas
+
+3. service-worker.js
+C'est le fichier le plus "nouveau" pour toi. Un service worker, c'est un script qui tourne en arrière-plan, 
+même quand ta page n'est pas ouverte. C'est lui qui permet :
+
+Le fonctionnement hors-ligne (il garde une copie des fichiers en cache)
+Les notifications (il peut recevoir et afficher des notifs même appli fermée)
+
+C'est un concept un peu particulier,contrairement à ton JS habituel qui s'exécute seulement 
+quand la page est ouverte, le service worker a son propre cycle de vie, indépendant.

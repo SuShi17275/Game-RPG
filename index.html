@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Game to Life</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="manifest" href="manifest.json">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+    <body>
+        <h1>Mes tâches quotidiennes</h1>
+        </div>
+        <div id="liste-taches"></div>
+
+        <button id="btn-telephone">📱</button>
+        <div id="telephone" class="cache">
+        <div id="ecran-telephone">
+            <div id="ecran-banque" class="ecran">
+            <h2>Banque</h2>
+            <p>Solde : <span id="solde">0</span> 💰</p>
+            <ul id="liste-historique"></ul>
+            </div>
+
+            <div id="ecran-events" class="ecran cache">
+                <h2>Events</h2>
+                <div id="liste-events"></div>
+
+                <h2>Défi</h2>
+                <div id="zone-defi"></div>
+
+                <h2>Quêtes supplémentaires</h2>
+                <div id="liste-quetes-supp"></div>
+            </div>
+        </div>
+
+        <div id="ecran-skills" class="ecran cache">
+            <h2>Skills</h2>
+            <div id="liste-skills"></div>
+        </div>
+        <div id="ecran-skill-detail" class="ecran cache"></div>
+
+        <div id="ecran-pet" class="ecran cache">
+            <h2>Pet</h2>
+            <p>Faim : <span id="pet-faim"></span></p>
+            <p>Propreté : <span id="pet-proprete"></span></p>
+            <p>Amitié : <span id="pet-amitie"></span></p>
+            <p id="pet-bonus"></p>
+            <button id="btn-nourrir" data-label="Nourrir" onclick="nourrirPet()">Nourrir</button>
+            <button id="btn-laver" data-label="Laver" onclick="laverPet()">Laver</button>
+            <button id="btn-caresser" data-label="Caresser" onclick="caresserPet()">Caresser</button>
+        </div>
+
+        <nav id="barre-onglets">
+            <button onclick="afficherEcran('banque')">🏦 Banque</button>
+            <button onclick="afficherEcran('events')">🎯 Events</button>
+            <button onclick="afficherEcran('skills')">🌱 Skills</button>
+            <button onclick="afficherEcran('pet')">🐾 Pet</button>
+            <button onclick="fermerTelephone()">✖</button>
+        </nav>
+
+        
+        <script src="js/argent.js"></script>
+        <script src="js/taches.js"></script>
+        <script src="js/telephone.js"></script>
+        <script src="js/skills.js"></script>
+        <script src="js/pet.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/events.js"></script>
+        <script src="js/defis.js"></script>
+        <script src="js/quetes-supp.js"></script>
+    </body>
+</html>

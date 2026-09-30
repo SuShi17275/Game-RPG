@@ -1,0 +1,4 @@
+[
+  { "nom": "10 pompes", "recompense": 5, "dureeMinutes": 30 },
+  { "nom": "Ranger le bureau", "recompense": 10, "dureeMinutes": 60 }
+]

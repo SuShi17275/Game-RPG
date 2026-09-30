@@ -1,0 +1,19 @@
+[
+  {
+    "id": "dessin",
+    "nom": "Dessin",
+    "debloqueDes": "debut",
+    "quetes": [
+      { "nom": "Dessiner 10 formes de base", "difficulte": "facile", "duree": "15 min", "recompense": 15, "faite": false },
+      { "nom": "Dessiner un visage simple", "difficulte": "moyen", "duree": "30 min", "recompense": 25, "faite": false }
+    ]
+  },
+  {
+    "id": "animation",
+    "nom": "Animation",
+    "debloqueDes": "dessin",
+    "quetes": [
+      { "nom": "Animer un rebond de balle", "difficulte": "moyen", "duree": "45 min", "recompense": 30, "faite": false }
+    ]
+  }
+]
