@@ -1,5 +1,21 @@
 .cache { display: none !important; }
 
+body { margin: 0; }
+
+#chambre {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+#fond-chambre {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated; /* garde les pixels nets */
+}
+
 #btn-telephone {
   position: fixed;
   bottom: 20px;
