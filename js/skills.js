@@ -64,6 +64,7 @@ function validerQuete(indexSkill, indexQuete) {
   quete.faite = true;
   sauvegarderSkills();
   ajouterTransaction(quete.nom, quete.recompense);
+  validerTacheAuto("quete-skill");
   ouvrirSkill(indexSkill);
   afficherSkills();
 }

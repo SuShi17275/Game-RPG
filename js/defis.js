@@ -41,6 +41,7 @@ function refuserDefi() {
 function validerDefi() {
   if (!defiActif || defiActif.statut !== "accepte") return;
   ajouterTransaction(defiActif.nom, defiActif.recompense);
+  validerTacheAuto("quete-defi");
   defiActif = null;
   sauvegarderDefi();
   afficherDefi();

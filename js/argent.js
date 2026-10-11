@@ -1,5 +1,3 @@
-const GAIN_PAR_TACHE = 10; // provisoire, à ajuster quand tu auras décidé
-
 let argent = Number(localStorage.getItem("argent")) || 0;
 let historique = JSON.parse(localStorage.getItem("historique")) || [];
 

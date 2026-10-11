@@ -4,9 +4,8 @@ if ("serviceWorker" in navigator) {
     .catch(function(error) { console.log("Erreur :", error); });
 }
 
-afficherTaches();
+
 afficherArgent();
-verifierNouveauJour();
 appliquerTempsEcoule();
 afficherPet();
 verifierBonusAleatoire();
