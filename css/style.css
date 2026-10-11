@@ -1,7 +1,9 @@
 .cache { display: none !important; }
 
 body { margin: 0; touch-action: manipulation; }
+
 #liste-taches { display: none; }
+
 #chambre {
   position: relative;
   width: 100%;
