@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Game to Life</title>
-        <link rel="stylesheet" href="css/style.css?v=3">
+        <link rel="stylesheet" href="css/style.css?v=4">
         <link rel="manifest" href="manifest.json">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     </head>
@@ -17,33 +17,51 @@
         <div id="liste-taches"></div>
 
         <button id="btn-telephone">📱</button>
+
         <div id="telephone" class="cache">
         <div id="ecran-telephone">
-            <div id="ecran-banque" class="ecran">
+            <button id="btn-fermer" onclick="fermerTelephone()">✖</button>
+
+            <div id="ecran-accueil" class="ecran">
+            <div id="grille-apps">
+                <button class="icone-app" onclick="afficherEcran('banque')"><span class="icone">🏦</span>Banque</button>
+                <button class="icone-app" onclick="afficherEcran('events')"><span class="icone">✉️</span>Mail</button>
+                <button class="icone-app" onclick="afficherEcran('bonus')"><span class="icone">⭐</span>Bonus</button>
+                <!-- provisoires -->
+                <button class="icone-app" onclick="afficherEcran('skills')"><span class="icone">🌱</span>Skills</button>
+                <button class="icone-app" onclick="afficherEcran('pet')"><span class="icone">🐾</span>Pet</button>
+            </div>
+            </div>
+
+            <div id="ecran-banque" class="ecran cache">
             <h2>Banque</h2>
             <p>Solde : <span id="solde">0</span> 💰</p>
             <ul id="liste-historique"></ul>
             </div>
 
             <div id="ecran-events" class="ecran cache">
-                <h2>Events</h2>
-                <div id="liste-events"></div>
+            <h2>Events</h2>
+            <div id="liste-events"></div>
 
-                <h2>Défi</h2>
-                <div id="zone-defi"></div>
+            <h2>Défi</h2>
+            <div id="zone-defi"></div>
 
-                <h2>Quêtes supplémentaires</h2>
-                <div id="liste-quetes-supp"></div>
+            <h2>Quêtes supplémentaires</h2>
+            <div id="liste-quetes-supp"></div>
             </div>
-        </div>
 
-        <div id="ecran-skills" class="ecran cache">
+            <div id="ecran-bonus" class="ecran cache">
+            <h2>Bonus</h2>
+            <div id="liste-bonus"></div>
+            </div>
+
+            <div id="ecran-skills" class="ecran cache">
             <h2>Skills</h2>
             <div id="liste-skills"></div>
-        </div>
-        <div id="ecran-skill-detail" class="ecran cache"></div>
+            </div>
+            <div id="ecran-skill-detail" class="ecran cache"></div>
 
-        <div id="ecran-pet" class="ecran cache">
+            <div id="ecran-pet" class="ecran cache">
             <h2>Pet</h2>
             <p>Faim : <span id="pet-faim"></span></p>
             <p>Propreté : <span id="pet-proprete"></span></p>
@@ -52,20 +70,17 @@
             <button id="btn-nourrir" data-label="Nourrir" onclick="nourrirPet()">Nourrir</button>
             <button id="btn-laver" data-label="Laver" onclick="laverPet()">Laver</button>
             <button id="btn-caresser" data-label="Caresser" onclick="caresserPet()">Caresser</button>
+            </div>
         </div>
 
-        <nav id="barre-onglets">
-            <button onclick="afficherEcran('banque')">🏦 Banque</button>
-            <button onclick="afficherEcran('events')">🎯 Events</button>
-            <button onclick="afficherEcran('skills')">🌱 Skills</button>
-            <button onclick="afficherEcran('pet')">🐾 Pet</button>
-            <button onclick="fermerTelephone()">✖</button>
-        </nav>
+        <img id="cadre-telephone" src="images/cadre_tel.png" alt="">
+        <button id="btn-accueil" onclick="afficherEcran('accueil')" aria-label="Accueil"></button>
+        </div>
 
         <script src="js/argent.js?v=2"></script>
         <script src="js/taches.js?v=2"></script>
         <script src="js/chambre.js?v=2"></script>
-        <script src="js/telephone.js?v=2"></script>
+        <script src="js/telephone.js?v=3"></script>
         <script src="js/skills.js?v=2"></script>
         <script src="js/pet.js?v=2"></script>
         <script src="js/events.js?v=2"></script>
