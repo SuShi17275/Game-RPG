@@ -5,6 +5,7 @@ if ("serviceWorker" in navigator) {
 }
 
 
+verifierImpot();
 afficherArgent();
 appliquerTempsEcoule();
 afficherPet();

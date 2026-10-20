@@ -27,5 +27,6 @@
     { "image": "images/mirroir.png" },
     { "image": "images/journal.png", "tache": "journal"  },
     { "image": "images/water.png", "tache": "eau"  },
-    { "image": "images/machine_a_ecrire.png", "tache": "novel"  }
+    { "image": "images/machine_a_ecrire.png", "tache": "novel"  },
+    { "image": "images/ordinateur.png" , "ouvre": "ordinateur" }
 ]

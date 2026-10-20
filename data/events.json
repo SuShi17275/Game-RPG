@@ -1,3 +1,10 @@
 [
-  { "nom": "Inktober", "description": "Dessiner tous les jours d'octobre", "recompense": 100, "terminee": false }
+  {
+    "id": "inktober-2026",
+    "nom": "Inktober",
+    "description": "Un dessin par jour pendant tout le mois d'octobre.",
+    "recompense": 100,
+    "debut": "2026-10-01",
+    "fin": "2026-10-31"
+  }
 ]

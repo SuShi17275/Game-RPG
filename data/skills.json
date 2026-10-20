@@ -2,18 +2,2142 @@
   {
     "id": "dessin",
     "nom": "Dessin",
-    "debloqueDes": "debut",
-    "quetes": [
-      { "nom": "Dessiner 10 formes de base", "difficulte": "facile", "duree": "15 min", "recompense": 15, "faite": false },
-      { "nom": "Dessiner un visage simple", "difficulte": "moyen", "duree": "30 min", "recompense": 25, "faite": false }
+    "categorie": "art",
+    "niveau": 1,
+    "prerequis": [],
+    "x": 40,
+    "y": 90,
+    "niveaux": [
+      {"nom": "Niveau 1 — Apprenti dessinateur","eclats": 2,"quetes": [
+      {"nom": "Tracer 20 lignes droites sans règle.","recompense": 5},
+      {"nom": "Dessiner 20 cercles et 10 ellipses","recompense": 5},
+      {"nom": "Dessiner des carrés, des rectangles, des triangles et des cylindres.","recompense": 5},
+      {"nom": "Remplir une page de formes géométriques.","recompense": 5},
+      {"nom": "Dessiner 5 objets simples à partir de formes de base.","recompense": 5},
+      {"nom": "Faire un dessin d'observation de 10 minutes","recompense": 10},
+      {"nom": "Tenir un carnet de dessin et réaliser 5 dessins différents.","recompense": 10}]},
+
+      {"nom": "Niveau 2 — Maître du trait","eclats": 3,"quetes": [
+      {"nom": "Travailler la précision des traits avec des lignes longues et courtes.","recompense": 5},
+      {"nom": "Dessiner des courbes régulières et des spirales.","recompense": 5},
+      { "nom": "Tracer des formes sans gommer.","recompense": 5},
+      {"nom": "Dessiner un objet en utilisant uniquement des contours.","recompense": 5},
+      {"nom": "Réaliser 3 dessins avec des épaisseurs de traits différentes.","recompense": 10},
+      {"nom": "Apprendre à simplifier un objet en formes géométriques.","recompense": 10},
+      {"nom": "Reproduire 3 objets à partir d'une référence visuelle.","recompense": 10}]},
+
+      {"nom": "Niveau 3 — Architecte des volumes","eclats": 4,"quetes": [
+      {"nom": "Dessiner des cubes sous différents angles.", "recompense": 5},
+      {"nom": "Dessiner des sphères, des cylindres et des cônes.", "recompense": 5},
+      {"nom": "Comprendre la différence entre une forme en 2D et un volume en 3D.", "recompense": 10},
+      {"nom": "Construire un objet complexe à partir de formes simples.", "recompense": 10},
+      {"nom": "Dessiner une nature morte avec 3 objets.", "recompense": 10},
+      {"nom": "Comprendre les notions de perspective et de lignes de fuite.", "recompense": 5},
+      {"nom": "Dessiner une pièce simple avec un point de fuite.", "recompense": 10}]},
+
+      {"nom": "Niveau 4 — Alchimiste des ombres","eclats": 5,"quetes": [
+      {"nom": "Réaliser une échelle de valeurs allant du blanc au noir.", "recompense": 5},
+      {"nom": "Comprendre les zones de lumière, les ombres propres et les ombres portées.", "recompense": 10},
+      {"nom": "Ombrer une sphère avec une seule source de lumière.", "recompense": 10},
+      {"nom": "Dessiner un cube avec des valeurs différentes sur chaque face.", "recompense": 10},
+      {"nom": "Représenter un objet métallique ou brillant.", "recompense": 15},
+      {"nom": "Dessiner une nature morte en niveaux de gris.", "recompense": 15},
+      {"nom": "Réaliser un dessin sans contours marqués, uniquement avec les valeurs.", "recompense": 15}]},
+
+      {"nom": "Niveau 5 — Observateur du réel","eclats": 6,"quetes": [
+      {"nom": "Dessiner un objet sans regarder constamment sa feuille.", "recompense": 10},
+      {"nom": "Réaliser un dessin d'observation de 20 minutes.", "recompense": 15},
+      {"nom": "Reproduire les proportions d'un objet à partir d'une référence.", "recompense": 10},
+      {"nom": "Dessiner une main dans une pose simple.", "recompense": 10},
+      {"nom": "Dessiner un visage de face en observant les proportions.", "recompense": 10},
+      {"nom": "Dessiner un objet avec plusieurs matériaux différents.", "recompense": 10},
+      {"nom": "Comparer ton dessin à la référence et identifier 3 points à améliorer.", "recompense": 10}]},
+
+      {"nom": "Niveau 6 — Explorateur de la perspective ","eclats": 7,"quetes": [
+      {"nom": "Comprendre la perspective à un point de fuite.", "recompense": 10},
+      {"nom": "Dessiner une rue ou un couloir en perspective.", "recompense": 15},
+      {"nom": "Découvrir la perspective à deux points de fuite.", "recompense": 15},
+      {"nom": "Dessiner une boîte ou un bâtiment sous un angle choisi.", "recompense": 10},
+      {"nom": "Comprendre le chevauchement et la diminution apparente des objets.", "recompense": 15},
+      {"nom": "Créer une composition avec des objets à différentes distances.", "recompense": 15},
+      {"nom": "Réaliser un petit décor cohérent en respectant la perspective.", "recompense": 20}]},
+
+      {"nom": "Niveau 7 — Créateur de personnages","eclats": 8,"quetes": [
+      {"nom": "Apprendre à simplifier le corps humain en formes géométriques.", "recompense": 15},
+      {"nom": "Dessiner des poses simples à partir de lignes d'action.", "recompense": 15},
+      {"nom": "Réaliser 10 croquis rapides de personnages.", "recompense": 15},
+      {"nom": "Comprendre les proportions générales du corps humain.", "recompense": 20},
+      {"nom": "Dessiner un personnage de face, de profil et de trois quarts.", "recompense": 20},
+      {"nom": "Étudier les proportions du visage.", "recompense": 20},
+      {"nom": "Dessiner 5 expressions faciales différentes.", "recompense": 20},
+      {"nom": "Créer un personnage original à partir d'une description écrite.", "recompense": 15}]},
+
+      {"nom": "Niveau 8 — Maître de l'anatomie et du mouvement","eclats": 9,"quetes": [
+      {"nom": "Étudier les principaux groupes musculaires et les articulations.", "recompense": 20},
+      {"nom": "Dessiner des mains dans 5 poses différentes.", "recompense": 15},
+      {"nom": "Dessiner des pieds dans plusieurs perspectives.", "recompense": 15},
+      {"nom": "Réaliser 10 poses rapides en 1 à 2 minutes chacune.", "recompense": 20},
+      {"nom": "Dessiner un personnage en mouvement.", "recompense": 20},
+      {"nom": "Comprendre comment le poids du corps influence une pose.", "recompense": 20},
+      {"nom": "Réaliser une planche de poses cohérentes pour un même personnage.", "recompense": 20},
+      {"nom": "Corriger un dessin en comparant les proportions et les axes du corps à une référence.", "recompense": 20}]},
+
+      {"nom": "Niveau 9 — Artiste polyvalent ","eclats": 10,"quetes": [
+      {"nom": "Choisir un domaine à approfondir : portrait, paysage, illustration, personnages ou décors.", "recompense": 15},
+      {"nom": "Réaliser 3 études d'artistes ou d'illustrations qui t'inspirent.", "recompense": 20},
+      {"nom": "Reproduire une œuvre pour en comprendre la composition, sans la présenter comme une création originale.", "recompense": 20},
+      {"nom": "Créer une illustration avec un premier plan, un plan intermédiaire et un arrière-plan.", "recompense": 25},
+      {"nom": "Utiliser la lumière pour guider le regard.", "recompense": 25},
+      {"nom": "Créer une illustration originale en combinant plusieurs techniques apprises.", "recompense": 30},
+      {"nom": "Reprendre un ancien dessin et en faire une nouvelle version améliorée.", "recompense": 20},
+      {"nom": "Constituer une sélection de 5 dessins montrant tes progrès.", "recompense": 15}]},
+
+      {"nom": "Niveau 10 — Légende du dessin","eclats": 11,"quetes": [
+      {"nom": "Choisir un projet artistique personnel.", "recompense": 15},
+      {"nom": "Réaliser des recherches de références et des croquis préparatoires.", "recompense": 15},
+      {"nom": "Construire une composition complète.", "recompense": 20},
+      {"nom": "Maîtriser les proportions, les volumes et la lumière nécessaires au projet.", "recompense": 20},
+      {"nom": "Créer une illustration finalisée avec un niveau de détail adapté.", "recompense": 25},
+      {"nom": "Réaliser une version sans référence directe, en utilisant les connaissances acquises.", "recompense": 30},
+      {"nom": "Comparer le résultat à tes premiers dessins et identifier tes progrès.", "recompense": 15},
+      {"nom": "Terminer une illustration dont tu es satisfait.", "recompense": 20},
+      {"nom": "Créer une série de 3 œuvres cohérentes.", "recompense": 30},
+      {"nom": "Constituer un petit portfolio de tes meilleures créations.", "recompense": 20}]}
     ]
   },
   {
-    "id": "animation",
-    "nom": "Animation",
-    "debloqueDes": "dessin",
-    "quetes": [
-      { "nom": "Animer un rebond de balle", "difficulte": "moyen", "duree": "45 min", "recompense": 30, "faite": false }
+    "id": "pixel-art",
+    "nom": "Pixel Art",
+    "categorie": "art",
+    "niveau": 1,
+    "prerequis": [],
+    "x": 60,
+    "y": 90,
+    "niveaux": [
+      {"nom": "Niveau 1 — Apprenti pixeliste","eclats": 2,"quetes": [
+      {"nom": "Découvrir un logiciel de pixel art (Aseprite, LibreSprite, Piskel…).", "recompense": 5},
+      {"nom": "Créer une toile de 16 × 16 pixels.", "recompense": 5},
+      {"nom": "Dessiner une ligne horizontale, une ligne verticale et une diagonale.", "recompense": 5},
+      {"nom": "Créer 5 formes simples avec des pixels.", "recompense": 5},
+      {"nom": "Dessiner un cœur en utilisant moins de 30 pixels.", "recompense": 5},
+      {"nom": "Créer une palette de 4 couleurs.", "recompense": 5},
+      {"nom": "Reproduire une image simple en pixel art en observant sa structure.", "recompense": 10}]},
+
+      {"nom": "Niveau 2 — Maître des formes","eclats": 3,"quetes": [
+      {"nom": "Dessiner un cercle reconnaissable sans utiliser d'outil de lissage.", "recompense": 5},
+      {"nom": "Créer un carré, un rectangle et un triangle aux contours propres.", "recompense": 5},
+      {"nom": "Comprendre les escaliers de pixels (jaggies) et apprendre à les éviter.", "recompense": 10},
+      {"nom": "Dessiner une pomme, une clé et une potion.", "recompense": 5},
+      {"nom": "Créer 5 icônes en 16 × 16 pixels.", "recompense": 5},
+      {"nom": "Utiliser des contours cohérents sur tous tes dessins.", "recompense": 5},
+      {"nom": "Reproduire une forme complexe à partir de formes simples.", "recompense": 10}]},
+
+      {"nom": "Niveau 3 — Alchimiste des couleurs","eclats": 4,"quetes": [
+      {"nom": "Comprendre les couleurs primaires, secondaires et complémentaires.", "recompense": 10},
+      {"nom": "Créer une palette limitée à 8 couleurs.", "recompense": 10},
+      {"nom": "Créer des ombres et des lumières sur une sphère.", "recompense": 10},
+      {"nom": "Donner du volume à un objet grâce à trois niveaux de luminosité.", "recompense": 10},
+      {"nom": "Comprendre les notions de teinte, de saturation et de contraste.", "recompense": 10},
+      {"nom": "Recolorer un sprite avec une palette différente.", "recompense": 10},
+      {"nom": "Créer 3 objets cohérents visuellement avec la même palette.", "recompense": 10}]},
+
+      {"nom": "Niveau 4 — Artisan des textures","eclats": 5,"quetes": [
+      {"nom": "Comprendre le dithering (motifs de pixels pour simuler des transitions).", "recompense": 15},
+      {"nom": "Créer une texture de pierre.", "recompense": 15},
+      {"nom": "Créer une texture de bois.", "recompense": 15},
+      {"nom": "Dessiner de l'eau avec seulement quelques couleurs.", "recompense": 15},
+      {"nom": "Représenter une surface métallique.", "recompense": 15},
+      {"nom": "Créer une texture sans ajouter de bruit inutile.", "recompense": 15},
+      {"nom": "Utiliser plusieurs motifs pour distinguer des matériaux différents.", "recompense": 15}]},
+
+      {"nom": "Niveau 5 — Créateur de personnages","eclats": 6,"quetes": [
+      {"nom": "Dessiner un personnage en 16 × 16 pixels.", "recompense": 10},
+      {"nom": "Dessiner un personnage en 32 × 32 pixels.", "recompense": 10},
+      {"nom": "Créer une silhouette reconnaissable sans couleurs.", "recompense": 15},
+      {"nom": "Dessiner un visage avec des expressions différentes.", "recompense": 15},
+      {"nom": "Créer une tenue avec au moins trois couleurs.", "recompense": 15},
+      {"nom": "Dessiner le même personnage de face et de profil.", "recompense": 15},
+      {"nom": "Créer un personnage original à partir d'une description écrite.", "recompense": 15}]},
+
+      {"nom": "Niveau 6 — Animateur de pixels","eclats": 7,"quetes": [
+      {"nom": "Comprendre les images-clés (keyframes) d'une animation.", "recompense": 15},
+      {"nom": "Créer une animation de clignement des yeux.", "recompense": 15},
+      {"nom": "Animer un personnage qui marche.", "recompense": 15},
+      {"nom": "Créer une animation de saut.", "recompense": 20},
+      {"nom": "Faire briller une lumière ou une étoile.", "recompense": 20},
+      {"nom": "Créer une animation en boucle sans saut visible entre la première et la dernière image.", "recompense": 20},
+      {"nom": "Exporter une animation en GIF ou en spritesheet.", "recompense": 20}]},
+
+      {"nom": "Niveau 7 — Architecte des décors","eclats": 8,"quetes": [
+      {"nom": "Dessiner un sol composé de plusieurs tuiles.", "recompense": 15},
+      {"nom": "Créer un ensemble de 5 textures de terrain cohérentes.", "recompense": 20},
+      {"nom": "Dessiner un arbre, un rocher et un buisson.", "recompense": 15},
+      {"nom": "Créer un petit décor de forêt.", "recompense": 15},
+      {"nom": "Comprendre les tilesets et les tilesmaps.", "recompense": 15},
+      {"nom": "Construire une scène avec un premier plan, un plan intermédiaire et un arrière-plan.", "recompense": 15},
+      {"nom": "Créer un décor de jeu en utilisant une palette commune.", "recompense": 15}]},
+
+      {"nom": "Niveau 8 — Maître de la lumière","eclats": 9,"quetes": [
+      {"nom": "Choisir une source de lumière cohérente pour une illustration.", "recompense": 15},
+      {"nom": "Ajouter des ombres portées à plusieurs objets.", "recompense": 20},
+      {"nom": "Créer une scène de nuit.", "recompense": 20},
+      {"nom": "Créer une scène au coucher du soleil.", "recompense": 20},
+      {"nom": "Utiliser la lumière pour attirer le regard vers un élément précis.", "recompense": 20},
+      {"nom": "Représenter des matériaux différents grâce aux reflets.", "recompense": 20},
+      {"nom": "Refaire une ancienne illustration en améliorant son éclairage et son contraste.", "recompense": 25}]},
+
+      {"nom": "Niveau 9 — Directeur artistique","eclats": 10,"quetes": [
+      {"nom": "Définir une direction artistique pour un mini-projet.", "recompense": 15},
+      {"nom": "Créer une palette de couleurs commune à tous les sprites.", "recompense": 15},
+      {"nom": "Concevoir 3 personnages ayant des silhouettes distinctes.", "recompense": 15},
+      {"nom": "Créer un tileset d'au moins 10 tuiles.", "recompense": 15},
+      {"nom": "Réaliser un décor complet avec des éléments de premier plan et d'arrière-plan.", "recompense": 20},
+      {"nom": "Produire plusieurs sprites avec des proportions et un niveau de détail cohérents.", "recompense": 20},
+      {"nom": "Intégrer tes créations dans un petit projet Godot ou dans une scène de démonstration.", "recompense": 20}]},
+
+      {"nom": "Niveau 10 — Légende du pixel art","eclats": 11,"quetes": [
+      {"nom": "Concevoir un projet artistique original avec un thème défini.", "recompense": 20},
+      {"nom": "Créer une palette adaptée à l'ambiance recherchée.", "recompense": 20},
+      {"nom": "Réaliser un personnage principal avec plusieurs animations.", "recompense": 20},
+      {"nom": "Créer une collection de décors et d'objets cohérents.", "recompense": 20},
+      {"nom": "Produire une illustration complète avec une composition maîtrisée.", "recompense": 25},
+      {"nom": "Réaliser une spritesheet propre et exploitable dans un jeu.", "recompense": 20},
+      {"nom": "Reprendre une ancienne création et l'améliorer de façon significative.", "recompense": 25},
+      {"nom": "Terminer un projet composé d'au moins 10 ressources originales.", "recompense": 30},
+      {"nom": "Présenter ton projet dans une planche ou un portfolio.", "recompense": 30},
+      {"nom": "Être capable d'expliquer tes choix de couleurs, de formes, de lumière et de résolution.", "recompense": 30}
+    ]
+  }
+    ]
+  },
+  {
+    "id": "animation-2d",
+    "nom": "Animation 2D",
+    "categorie": "art",
+    "niveau": 2,
+    "prerequis": [
+      {
+        "id": "dessin",
+        "seuil": "Niveau 5 — Observateur du réel"
+      }
+    ],
+    "x": 40,
+    "y": 62,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Animation 2D",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "chibi",
+    "nom": "Style chibi",
+    "categorie": "art",
+    "niveau": 2,
+    "prerequis": [
+      {
+        "id": "dessin",
+        "seuil": "Niveau 5 — Observateur du réel"
+      }
+    ],
+    "x": 10,
+    "y": 62,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Style chibi",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "manga-webtoon",
+    "nom": "Manga / Webtoon",
+    "categorie": "art",
+    "niveau": 2,
+    "prerequis": [
+      {
+        "id": "dessin",
+        "seuil": "Niveau 5 — Observateur du réel"
+      }
+    ],
+    "x": 26,
+    "y": 62,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Manga / Webtoon",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "anatomie",
+    "nom": "Anatomie du corps humain",
+    "categorie": "art",
+    "niveau": 3,
+    "prerequis": [
+      {
+        "id": "dessin",
+        "seuil": "Niveau 5 — Observateur du réel"
+      }
+    ],
+    "x": 27,
+    "y": 43,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Anatomie du corps humain",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "montage-video",
+    "nom": "Montage vidéo",
+    "categorie": "art",
+    "niveau": 3,
+    "prerequis": [],
+    "x": 52,
+    "y": 43,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Montage vidéo",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "blender",
+    "nom": "Blender",
+    "categorie": "art",
+    "niveau": 4,
+    "prerequis": [],
+    "x": 90,
+    "y": 28,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Blender",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rigging",
+    "nom": "Rigging (Vtuber)",
+    "categorie": "art",
+    "niveau": 5,
+    "prerequis": [
+      "animation-2d"
+    ],
+    "x": 40,
+    "y": 10,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Rigging (Vtuber)",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "godot",
+    "nom": "Godot",
+    "categorie": "programmation",
+    "niveau": 1,
+    "prerequis": [],
+    "x": 39,
+    "y": 90,
+    "niveaux": [
+      {
+        "nom": "Niveau 1 — Recrue du moteur",
+        "eclats": 2,
+        "quetes": [
+          {"nom": "Installer Godot et créer un premier projet.", "recompense": 5},
+          {"nom": "Découvrir l'interface et les panneaux principaux.", "recompense": 5},
+          {"nom": "Comprendre la différence entre une scène et un nœud (Node).", "recompense": 5},
+          {"nom": "Créer une scène avec un nœud `Node2D`.", "recompense": 5},
+          {"nom": "Ajouter un `Sprite2D` ou un autre élément visuel.", "recompense": 10},
+          {"nom": "Enregistrer une scène et lancer le projet.", "recompense": 5},
+          {"nom": "Créer une scène avec un titre et un bouton.", "recompense": 10}
+        ]
+      },
+      {
+        "nom": "Niveau 2 — Architecte des scènes",
+        "eclats": 3,
+        "quetes": [
+          {"nom": "Comprendre l'arborescence des nœuds.", "recompense": 10},
+          {"nom": "Créer une scène avec plusieurs nœuds enfants.", "recompense": 10},
+          {"nom": "Découvrir les nœuds `Control`, `Label`, `Button` et `TextureRect`.", "recompense": 10},
+          {"nom": "Comprendre les positions, les ancres et les conteneurs d'interface.", "recompense": 10},
+          {"nom": "Créer un menu principal avec un titre et deux boutons.", "recompense": 15},
+          {"nom": "Faire passer le jeu du menu à une deuxième scène.", "recompense": 15},
+          {"nom": "Comprendre comment enregistrer et réutiliser une scène.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 3 — Apprenti du GDScript",
+        "eclats": 4,
+        "quetes": [
+          {"nom": "Comprendre les variables avec `var` et les constantes avec `const`.", "recompense": 10},
+          {"nom": "Utiliser les types courants : `int`, `float`, `String` et `bool`.", "recompense": 10},
+          {"nom": "Afficher des informations avec `print()`.", "recompense": 10},
+          {"nom": "Utiliser les conditions `if`, `elif` et `else`.", "recompense": 10},
+          {"nom": "Maîtriser les boucles `for` et `while`.", "recompense": 10},
+          {"nom": "Créer une fonction avec `func`.", "recompense": 10},
+          {"nom": "Écrire un script qui modifie le texte d'un `Label` lorsqu'on clique sur un bouton.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 4 — Maître des interactions",
+        "eclats": 5,
+        "quetes": [
+          {"nom": "Comprendre les signaux (signals) de Godot.", "recompense": 20},
+          {"nom": "Connecter un signal `pressed` à un bouton.", "recompense": 15},
+          {"nom": "Détecter les entrées clavier avec `Input`.", "recompense": 15},
+          {"nom": "Déplacer un personnage avec les touches directionnelles.", "recompense": 15},
+          {"nom": "Utiliser `_process()` et `_physics_process()`.", "recompense": 15},
+          {"nom": "Créer un personnage qui se déplace dans une petite zone.", "recompense": 15},
+          {"nom": "Ajouter une interaction simple entre le personnage et un objet.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 5 — Créateur de gameplay",
+        "eclats": 6,
+        "quetes": [
+          {"nom": "Comprendre les collisions et les nœuds `Area2D` et `CollisionShape2D`.", "recompense": 15},
+          {"nom": "Ajouter une collision à un personnage.", "recompense": 15},
+          {"nom": "Créer un objet à ramasser.", "recompense": 20},
+          {"nom": "Ajouter un compteur de points.", "recompense": 20},
+          {"nom": "Faire disparaître un objet lorsqu'il est ramassé.", "recompense": 20},
+          {"nom": "Créer une condition de victoire.", "recompense": 15},
+          {"nom": "Construire un mini-jeu dans lequel il faut ramasser 5 objets.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 6 — Forgeron des mécaniques",
+        "eclats": 7,
+        "quetes": [
+          {"nom": "Comprendre les scènes réutilisables et les instances.", "recompense": 15},
+          {"nom": "Créer un ennemi dans une scène séparée.", "recompense": 20},
+          {"nom": "Faire apparaître plusieurs instances d'un même objet.", "recompense": 15},
+          {"nom": "Utiliser un `Timer` pour déclencher une action.", "recompense": 15},
+          {"nom": "Ajouter des points de vie ou un système de dégâts.", "recompense": 15},
+          {"nom": "Créer un écran de défaite et un bouton pour recommencer.", "recompense": 15},
+          {"nom": "Construire un mini-jeu avec un objectif, un danger et une condition de fin.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 7 — Débogueur de donjons",
+        "eclats": 8,
+        "quetes": [
+          {"nom": "Comprendre les erreurs de syntaxe et les erreurs d'exécution.", "recompense": 20},
+          {"nom": "Lire les messages de la console de débogage.", "recompense": 15},
+          {"nom": "Utiliser `print()` pour suivre les valeurs d'un script.", "recompense": 20},
+          {"nom": "Comprendre les références aux nœuds et les chemins comme `$Player`.", "recompense": 20},
+          {"nom": "Apprendre à utiliser les groupes et les signaux personnalisés.", "recompense": 20},
+          {"nom": "Corriger un projet contenant au moins 5 bugs.", "recompense": 20},
+          {"nom": "Organiser les scripts pour éviter de répéter inutilement le même code.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 8 — Maître des systèmes",
+        "eclats": 9,
+        "quetes": [
+          {"nom": "Créer un système de sauvegarde avec les fichiers ou les ressources adaptés.", "recompense": 20},
+          {"nom": "Conserver le score ou la progression entre deux sessions.", "recompense": 20},
+          {"nom": "Créer un menu de pause.", "recompense": 15},
+          {"nom": "Ajouter des effets sonores et une musique.", "recompense": 20},
+          {"nom": "Créer une interface qui s'adapte correctement à la fenêtre du jeu.", "recompense": 20},
+          {"nom": "Utiliser des ressources personnalisées ou des scènes réutilisables pour organiser le projet.", "recompense": 20},
+          {"nom": "Construire un jeu comprenant un menu, plusieurs mécaniques et une sauvegarde fonctionnelle.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 9 — Développeur indépendant",
+        "eclats": 10,
+        "quetes": [
+          {"nom": "Définir le concept d'un jeu original.", "recompense": 5},
+          {"nom": "Écrire une courte liste des fonctionnalités nécessaires.", "recompense": 5},
+          {"nom": "Créer une boucle de gameplay complète.", "recompense": 15},
+          {"nom": "Ajouter des animations, des sons et des effets visuels.", "recompense": 15},
+          {"nom": "Ajouter une progression : niveaux, difficulté, score ou inventaire.", "recompense": 20},
+          {"nom": "Tester le jeu et corriger les bugs signalés.", "recompense": 20},
+          {"nom": "Demander à une autre personne de tester le jeu et recueillir ses retours.", "recompense": 15},
+          {"nom": "Exporter une version jouable sur une plateforme cible.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 10 — Légende de Godot",
+        "eclats": 11,
+        "quetes": [
+          {"nom": "Concevoir un jeu complet avec un début, un objectif et une fin.", "recompense": 20},
+          {"nom": "Organiser le projet avec des scènes et des scripts réutilisables.", "recompense": 15},
+          {"nom": "Créer plusieurs mécaniques qui interagissent correctement.", "recompense": 20},
+          {"nom": "Ajouter une interface, des sons et des effets adaptés.", "recompense": 20},
+          {"nom": "Sauvegarder et charger la progression si le jeu le nécessite.", "recompense": 15},
+          {"nom": "Tester les cas limites et corriger les problèmes importants.", "recompense": 15},
+          {"nom": "Exporter une version finale jouable.", "recompense": 20},
+          {"nom": "Rédiger une courte documentation expliquant les commandes et les mécaniques.", "recompense": 15},
+          {"nom": "Présenter ton jeu et expliquer comment tu l'as développé.", "recompense": 20},
+          {"nom": "Commencer un nouveau projet en réutilisant ce que tu as appris, sans recopier un tutoriel complet.", "recompense": 20}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "python",
+    "nom": "Python",
+    "categorie": "programmation",
+    "niveau": 1,
+    "prerequis": [],
+    "x": 19,
+    "y": 90,
+    "niveaux": [
+      {
+        "nom": "Niveau 1 — Novice du code",
+        "eclats": 2,
+        "quetes": [
+          {"nom": "Comprendre ce qu'est une variable.", "recompense": 5},
+          {"nom": "Utiliser les types `int`, `float`, `str` et `bool`.", "recompense": 5},
+          {"nom": "Afficher du texte avec `print()`.", "recompense": 5},
+          {"nom": "Récupérer une saisie avec `input()`.", "recompense": 5},
+          {"nom": "Effectuer des opérations mathématiques en Python.", "recompense": 5},
+          {"nom": "Écrire un programme qui demande deux nombres et affiche leur somme.", "recompense": 5}
+        ]
+      },
+      {
+        "nom": "Niveau 2 — Apprenti des conditions",
+        "eclats": 3,
+        "quetes": [
+          {"nom": "Utiliser `if`, `elif` et `else`.", "recompense": 5},
+          {"nom": "Comprendre les opérateurs `==`, `!=`, `<`, `>`, `<=` et `>=`.", "recompense": 5},
+          {"nom": "Utiliser les opérateurs logiques `and`, `or` et `not`.", "recompense": 5},
+          {"nom": "Écrire un programme qui détermine si un nombre est pair ou impair.", "recompense": 5},
+          {"nom": "Créer un mini-jeu où l'utilisateur doit deviner un nombre.", "recompense": 5},
+          {"nom": "Résoudre 5 exercices sur les conditions sans regarder la correction.", "recompense": 10}
+        ]
+      },
+      {
+        "nom": "Niveau 3 — Maître des boucles",
+        "eclats": 4,
+        "quetes": [
+          {"nom": "Maîtriser la boucle `for`.", "recompense": 5},
+          {"nom": "Maîtriser la boucle `while`.", "recompense": 5},
+          {"nom": "Comprendre le fonctionnement de `range()`.", "recompense": 5},
+          {"nom": "Utiliser `break` et `continue`.", "recompense": 10},
+          {"nom": "Écrire un programme qui affiche les nombres de 1 à 100.", "recompense": 5},
+          {"nom": "Calculer la somme des nombres de 1 à `n`.", "recompense": 5},
+          {"nom": "Résoudre un exercice avec une boucle sans utiliser de boucle inutile.", "recompense": 10}
+        ]
+      },
+      {
+        "nom": "Niveau 4 — Explorateur des listes",
+        "eclats": 5,
+        "quetes": [
+          {"nom": "Créer et modifier une liste.", "recompense": 5},
+          {"nom": "Utiliser les indices et les tranches (slicing).", "recompense": 10},
+          {"nom": "Maîtriser `append()`, `insert()`, `remove()` et `pop()`.", "recompense": 10},
+          {"nom": "Utiliser `len()`, `min()`, `max()` et `sum()`.", "recompense": 5},
+          {"nom": "Parcourir une liste avec `for`.", "recompense": 5},
+          {"nom": "Écrire un programme qui trouve le maximum d'une liste sans utiliser `max()`.", "recompense": 5},
+          {"nom": "Créer un programme qui compte les occurrences d'un élément.", "recompense": 5}
+        ]
+      },
+      {
+        "nom": "Niveau 5 — Architecte des fonctions",
+        "eclats": 6,
+        "quetes": [
+          {"nom": "Définir une fonction avec `def`.", "recompense": 5},
+          {"nom": "Utiliser des paramètres et des arguments.", "recompense": 5},
+          {"nom": "Comprendre la différence entre `return` et `print()`.", "recompense": 5},
+          {"nom": "Utiliser des valeurs de retour dans d'autres fonctions.", "recompense": 5},
+          {"nom": "Comprendre les variables locales et globales.", "recompense": 5},
+          {"nom": "Écrire une fonction qui vérifie si un nombre est premier.", "recompense": 10},
+          {"nom": "Créer un petit programme organisé en plusieurs fonctions.", "recompense": 10}
+        ]
+      },
+      {
+        "nom": "Niveau 6 — Gardien des structures de données",
+        "eclats": 7,
+        "quetes": [
+          {"nom": "Manipuler les tuples.", "recompense": 10},
+          {"nom": "Manipuler les dictionnaires.", "recompense": 10},
+          {"nom": "Comprendre les ensembles (`set`).", "recompense": 10},
+          {"nom": "Parcourir un dictionnaire avec `keys()`, `values()` et `items()`.", "recompense": 10},
+          {"nom": "Choisir la bonne structure de données selon le problème.", "recompense": 10},
+          {"nom": "Créer un répertoire de contacts avec un dictionnaire.", "recompense": 15},
+          {"nom": "Résoudre 5 exercices utilisant plusieurs structures de données.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 7 — Chasseur d'algorithmes",
+        "eclats": 8,
+        "quetes": [
+          {"nom": "Comprendre la recherche linéaire.", "recompense": 10},
+          {"nom": "Implémenter une recherche dichotomique dans une liste triée.", "recompense": 10},
+          {"nom": "Comprendre le tri par insertion.", "recompense": 15},
+          {"nom": "Comprendre le tri par sélection.", "recompense": 15},
+          {"nom": "Implémenter un algorithme de tri sans utiliser `sort()` ni `sorted()`.", "recompense": 15},
+          {"nom": "Comparer deux algorithmes qui résolvent le même problème.", "recompense": 20},
+          {"nom": "Expliquer la complexité temporelle en `O(n)` et `O(n²)` sur des exemples simples.", "recompense": 10}
+        ]
+      },
+      {
+        "nom": "Niveau 8 — Débogueur confirmé",
+        "eclats": 9,
+        "quetes": [
+          {"nom": "Comprendre les erreurs de syntaxe, d'exécution et de logique.", "recompense": 15},
+          {"nom": "Lire un message d'erreur et identifier la ligne concernée.", "recompense": 15},
+          {"nom": "Utiliser des tests pour vérifier une fonction.", "recompense": 15},
+          {"nom": "Découvrir les exceptions avec `try` et `except`.", "recompense": 15},
+          {"nom": "Corriger un programme contenant au moins 5 bugs.", "recompense": 20},
+          {"nom": "Tester les cas limites : liste vide, zéro, valeurs négatives et éléments absents.", "recompense": 20},
+          {"nom": "Réécrire un ancien programme pour le rendre plus lisible.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 9 — Ingénieur Python",
+        "eclats": 10,
+        "quetes": [
+          {"nom": "Lire et écrire dans un fichier avec `open()`.", "recompense": 20},
+          {"nom": "Comprendre les compréhensions de listes.", "recompense": 20},
+          {"nom": "Utiliser des modules avec `import`.", "recompense": 20},
+          {"nom": "Découper un programme en plusieurs fonctions réutilisables.", "recompense": 20},
+          {"nom": "Utiliser les bibliothèques standard adaptées à un problème.", "recompense": 25},
+          {"nom": "Créer un projet complet, par exemple un gestionnaire de tâches, un quiz ou un carnet de notes.", "recompense": 30},
+          {"nom": "Ajouter des tests et gérer les erreurs dans ce projet.", "recompense": 35},
+          {"nom": "Expliquer le fonctionnement de son programme sans lire le code ligne par ligne.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 10 — Légende de Python",
+        "eclats": 11,
+        "quetes": [
+          {"nom": "Résoudre un problème inédit sans suivre un tutoriel étape par étape.", "recompense": 40},
+          {"nom": "Concevoir un programme de plusieurs fonctions à partir d'un cahier des charges.", "recompense": 40},
+          {"nom": "Choisir des structures de données et des algorithmes adaptés.", "recompense": 40},
+          {"nom": "Déboguer un programme complexe de manière méthodique.", "recompense": 45},
+          {"nom": "Tester le programme avec des cas normaux et des cas limites.", "recompense": 40},
+          {"nom": "Améliorer un code existant en lisibilité et en efficacité.", "recompense": 40},
+          {"nom": "Réaliser un projet final personnel sans recopier une solution complète.", "recompense": 50},
+          {"nom": "Présenter les choix techniques et expliquer les principales parties du code.", "recompense": 50}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "git",
+    "nom": "Git",
+    "categorie": "programmation",
+    "niveau": 2,
+    "prerequis": [],
+    "x": 48,
+    "y": 62,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Git",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jeu-2d",
+    "nom": "Création d'un jeu en 2D",
+    "categorie": "programmation",
+    "niveau": 2,
+    "prerequis": [
+      "pixel-art",
+      "godot"
+    ],
+    "x": 10,
+    "y": 62,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Création d'un jeu en 2D",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ui",
+    "nom": "Interface utilisateur (UI)",
+    "categorie": "programmation",
+    "niveau": 2,
+    "prerequis": [
+      "godot"
+    ],
+    "x": 29,
+    "y": 62,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Interface utilisateur (UI)",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "css",
+    "nom": "CSS",
+    "categorie": "programmation",
+    "niveau": 3,
+    "prerequis": [],
+    "x": 68,
+    "y": 45,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de CSS",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "html",
+    "nom": "HTML",
+    "categorie": "programmation",
+    "niveau": 3,
+    "prerequis": [],
+    "x": 90,
+    "y": 45,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de HTML",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "javascript",
+    "nom": "JavaScript",
+    "categorie": "programmation",
+    "niveau": 4,
+    "prerequis": [
+      "html",
+      "css"
+    ],
+    "x": 81,
+    "y": 28,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de JavaScript",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jeu-3d",
+    "nom": "Création d'un jeu en 3D",
+    "categorie": "programmation",
+    "niveau": 5,
+    "prerequis": [
+      "blender",
+      "jeu-2d"
+    ],
+    "x": 29,
+    "y": 10,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Création d'un jeu en 3D",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "notion-musique",
+    "nom": "Notions simples en musique",
+    "categorie": "musique",
+    "niveau": 2,
+    "prerequis": [],
+    "x": 40,
+    "y": 90,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Notions simples en musique",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bgm",
+    "nom": "Création de BGM",
+    "categorie": "musique",
+    "niveau": 3,
+    "prerequis": [
+      "notion-musique"
+    ],
+    "x": 10,
+    "y": 10,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Création de BGM",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "piano",
+    "nom": "Piano",
+    "categorie": "musique",
+    "niveau": 3,
+    "prerequis": [
+      "notion-musique"
+    ],
+    "x": 90,
+    "y": 10,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Piano",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "chinois",
+    "nom": "Chinois",
+    "categorie": "communication",
+    "niveau": 1,
+    "prerequis": [],
+    "x": 31,
+    "y": 90,
+    "niveaux": [
+      {
+        "nom": "Niveau 1 — Éveil du mandarin",
+        "eclats": 2,
+        "quetes": [
+          {"nom": "Apprendre le pinyin et ses règles de prononciation.", "recompense": 10},
+          {"nom": "Maîtriser les 4 tons et le ton neutre.", "recompense": 5},
+          {"nom": "Apprendre à reconnaître et prononcer 50 caractères courants.", "recompense": 10},
+          {"nom": "Apprendre à se présenter en chinois.", "recompense": 5},
+          {"nom": "Savoir compter, donner l'heure et parler des dates.", "recompense": 5},
+          {"nom": "Apprendre 100 mots de vocabulaire de base.", "recompense": 15},
+          {"nom": "Comprendre et construire des phrases simples avec 是, 有 et 在.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 2 — Apprenti sinophone",
+        "eclats": 3,
+        "quetes": [
+          {"nom": "Atteindre environ 300 mots de vocabulaire cumulés.", "recompense": 15},
+          {"nom": "Apprendre les structures de négation avec 不 et 没.", "recompense": 10},
+          {"nom": "Utiliser les questions avec 吗, 什么, 谁, 哪儿 et 为什么.", "recompense": 10},
+          {"nom": "Maîtriser les classificateurs courants, comme 个, 本 et 杯.", "recompense": 10},
+          {"nom": "Lire de courts dialogues du quotidien.", "recompense": 15},
+          {"nom": "Écrire 10 phrases simples sans traducteur.", "recompense": 15},
+          {"nom": "Comprendre un dialogue lent de 1 à 2 minutes sur un sujet familier.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 3 — Explorateur du chinois",
+        "eclats": 4,
+        "quetes": [
+          {"nom": "Atteindre environ 600 mots de vocabulaire cumulés.", "recompense": 15},
+          {"nom": "Comprendre l'emploi de 了, 过 et 着 dans des phrases courantes.", "recompense": 15},
+          {"nom": "Comparer des objets ou des personnes avec 比.", "recompense": 15},
+          {"nom": "Exprimer une capacité, une permission et une obligation avec 会, 能 et 可以.", "recompense": 15},
+          {"nom": "Apprendre à parler de ses habitudes, de ses loisirs et de ses études.", "recompense": 10},
+          {"nom": "Lire un texte simple et en résumer l'idée principale.", "recompense": 15},
+          {"nom": "Tenir une conversation de 5 minutes sur un sujet familier.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 4 — Voyageur autonome",
+        "eclats": 5,
+        "quetes": [
+          {"nom": "Atteindre environ 1 000 mots de vocabulaire cumulés.", "recompense": 15},
+          {"nom": "Utiliser les compléments de résultat et de direction les plus courants.", "recompense": 15},
+          {"nom": "Raconter un événement passé dans un ordre logique.", "recompense": 15},
+          {"nom": "Exprimer des projets, des intentions et des hypothèses simples.", "recompense": 15},
+          {"nom": "Lire des textes courts sans dépendre systématiquement du pinyin.", "recompense": 20},
+          {"nom": "Écrire un texte de 150 caractères chinois sur une expérience personnelle.", "recompense": 20},
+          {"nom": "Comprendre l'essentiel d'une conversation sur les transports, les achats ou la vie quotidienne.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 5 — Interlocuteur indépendant",
+        "eclats": 6,
+        "quetes": [
+          {"nom": "Atteindre environ 1 500 mots de vocabulaire cumulés.", "recompense": 15},
+          {"nom": "Utiliser des connecteurs comme 因为, 所以, 虽然, 但是 et 如果.", "recompense": 15},
+          {"nom": "Expliquer son opinion et donner des raisons.", "recompense": 15},
+          {"nom": "Comprendre des vidéos courtes sur des sujets familiers.", "recompense": 15},
+          {"nom": "Lire des articles adaptés à ton niveau et en identifier les arguments.", "recompense": 20},
+          {"nom": "Écrire un texte de 250 à 300 caractères sur un sujet connu.", "recompense": 20},
+          {"nom": "Tenir une conversation de 10 minutes avec peu de pauses de recherche de vocabulaire.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 6 — Analyste du mandarin",
+        "eclats": 7,
+        "quetes": [
+          {"nom": "Atteindre environ 2 500 mots de vocabulaire cumulés.", "recompense": 15},
+          {"nom": "Maîtriser les structures de phrase complexes et les propositions relatives avec 的.", "recompense": 15},
+          {"nom": "Comprendre les différences entre des expressions proches et leurs registres.", "recompense": 20},
+          {"nom": "Suivre un podcast adapté sur un thème connu pendant 10 à 15 minutes.", "recompense": 20},
+          {"nom": "Lire un article de presse accessible et en résumer les idées principales.", "recompense": 20},
+          {"nom": "Écrire un texte argumentatif de 400 caractères chinois.", "recompense": 20},
+          {"nom": "Défendre oralement une opinion en présentant des arguments et des exemples.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 7 — Communicateur avancé",
+        "eclats": 8,
+        "quetes": [
+          {"nom": "Atteindre environ 3 500 mots de vocabulaire cumulés.", "recompense": 15},
+          {"nom": "Comprendre des contenus authentiques sur plusieurs sujets.", "recompense": 20},
+          {"nom": "Apprendre des expressions idiomatiques et des 成语 courants.", "recompense": 20},
+          {"nom": "Suivre une conversation entre locuteurs natifs sans demander constamment de répétition.", "recompense": 15},
+          {"nom": "Lire des articles de presse plus complexes.", "recompense": 20},
+          {"nom": "Résumer oralement un document de 5 minutes.", "recompense": 20},
+          {"nom": "Écrire un texte argumentatif structuré de 600 caractères chinois.", "recompense": 20},
+          {"nom": "Reformuler une phrase de plusieurs façons selon le contexte.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 8 — Expert de la nuance",
+        "eclats": 9,
+        "quetes": [
+          {"nom": "Atteindre environ 4 500 mots de vocabulaire cumulés.", "recompense": 15},
+          {"nom": "Comprendre l'humour, l'ironie et certaines références culturelles dans leur contexte.", "recompense": 15},
+          {"nom": "Distinguer le registre familier, neutre, soutenu et professionnel.", "recompense": 20},
+          {"nom": "Suivre des interviews ou des débats sans dépendre des sous-titres.", "recompense": 20},
+          {"nom": "Lire des éditoriaux et des essais accessibles sans traduire chaque phrase.", "recompense": 20},
+          {"nom": "Écrire une synthèse comparant deux points de vue.", "recompense": 20},
+          {"nom": "Présenter un exposé de 10 à 15 minutes et répondre aux questions.", "recompense": 25},
+          {"nom": "Repérer tes erreurs récurrentes de grammaire, de tons et de choix de mots.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 9 — Maître du mandarin",
+        "eclats": 10,
+        "quetes": [
+          {"nom": "Atteindre environ 5 500 mots de vocabulaire actifs et passifs cumulés.", "recompense": 15},
+          {"nom": "Comprendre des discours longs sur des sujets abstraits ou spécialisés que tu connais.", "recompense": 20},
+          {"nom": "Lire des articles complexes et identifier les implicites et les nuances de l'auteur.", "recompense": 20},
+          {"nom": "Participer à un débat en défendant et en nuançant ton opinion.", "recompense": 20},
+          {"nom": "Écrire une dissertation structurée de 800 à 1 000 caractères chinois.", "recompense": 20},
+          {"nom": "Résumer fidèlement un contenu long sans reprendre toutes ses formulations.", "recompense": 25},
+          {"nom": "Adapter ton discours à une conversation amicale, une présentation ou une situation professionnelle.", "recompense": 25},
+          {"nom": "Tenir une conversation de 30 minutes avec fluidité et peu d'interruptions.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 10 — Légende du chinois",
+        "eclats": 11,
+        "quetes": [
+          {"nom": "Comprendre l'essentiel de conférences, de débats et d'émissions complexes sur des sujets.", "recompense": 20},
+          {"nom": "Lire des textes longs et exigeants en identifiant les arguments, les sous-entendus et le ton.", "recompense": 25},
+          {"nom": "Exprimer spontanément des idées complexes avec précision.", "recompense": 25},
+          {"nom": "Argumenter, nuancer, concéder et réfuter sans perdre le fil de son discours.", "recompense": 25},
+          {"nom": "Écrire une dissertation ou un rapport de 1 000 à 1 500 caractères chinois, avec une structure cohérente et un registre adapté.", "recompense": 30},
+          {"nom": "Résumer et comparer plusieurs documents sur un même sujet.", "recompense": 25},
+          {"nom": "Comprendre les principales différences entre le chinois écrit formel et la langue parlée.", "recompense": 30},
+          {"nom": "Réussir des évaluations indépendantes de compréhension orale, compréhension écrite, expression orale et expression écrite.", "recompense": 35},
+          {"nom": "Faire une présentation de 15 à 20 minutes suivie d'une discussion.", "recompense": 20},
+          {"nom": "Réaliser un bilan de compétences et définir un plan pour maintenir ton niveau C1.", "recompense": 20}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "morse",
+    "nom": "Morse",
+    "categorie": "communication",
+    "niveau": 1,
+    "prerequis": [],
+    "x": 90,
+    "y": 90,
+    "niveaux": [
+      {
+        "nom": "Niveau 1 — Initiation au Morse",
+        "eclats": 2,
+        "quetes": [
+          {"nom": "Écrire l'alphabet une fois.", "recompense": 5},
+          {"nom": "Apprendre les lettres E (.), T (-), I (..) et M (--).", "recompense": 5},
+          {"nom": "Reconnaître E, T, I et M à l'écoute 10 fois d'affilée.", "recompense": 10},
+          {"nom": "Apprendre les lettres A (.-) et N (-.).", "recompense": 5},
+          {"nom": "Identifier les six lettres apprises à l'écoute et à l'écrit avec au moins 80 % de réussite.", "recompense": 10},
+          {"nom": "Reconnaître E, T, I, M, A et N à l'écoute et à l'écrit, avec au moins 90 % de réussite sur 20 essais.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 2 — Les premières lettres",
+        "eclats": 3,
+        "quetes": [
+          {"nom": "Apprendre les lettres S (...) et O (---).", "recompense": 5},
+          {"nom": "Apprendre les lettres R (.-.) et K (-.-).", "recompense": 5},
+          {"nom": "Apprendre les lettres D (-..) et U (..-).", "recompense": 5},
+          {"nom": "Apprendre les lettres W (.--) et G (--.).", "recompense": 5},
+          {"nom": "Reconnaître les 14 lettres apprises à l'écrit.", "recompense": 10},
+          {"nom": "Identifier ces 14 lettres à l'écoute avec au moins 80 % de réussite sur 30 essais.", "recompense": 20},
+          {"nom": "Transcrire une série de 20 lettres apprises avec au moins 80 % de réussite.", "recompense": 15},
+          {"nom": "Reconnaître les 14 lettres dans un ordre aléatoire, avec au moins 90 % de réussite sur 30 essais.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 3 — L'alphabet presque complet",
+        "eclats": 4,
+        "quetes": [
+          {"nom": "Apprendre les lettres restantes : B, C, F, H, J, L, P, Q, V, X, Y et Z.", "recompense": 5},
+          {"nom": "Réciter les codes Morse des 26 lettres sans consulter de tableau.", "recompense": 10},
+          {"nom": "Retrouver le code Morse de 20 lettres tirées au hasard.", "recompense": 10},
+          {"nom": "Identifier les 26 lettres à l'écrit avec au moins 90 % de réussite.", "recompense": 15},
+          {"nom": "Reconnaître les 26 lettres à l'écoute avec au moins 80 % de réussite sur 40 essais.", "recompense": 20},
+          {"nom": "Transcrire un message de 20 lettres sans modèle avec au moins 80 % de réussite.", "recompense": 20},
+          {"nom": "Reconnaître les 26 lettres à l'écoute avec au moins 90 % de réussite sur 50 essais.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 4 — Les chiffres",
+        "eclats": 5,
+        "quetes": [
+          {"nom": "Apprendre les chiffres de 0 à 4.", "recompense": 5},
+          {"nom": "Apprendre les chiffres de 5 à 9.", "recompense": 5},
+          {"nom": "Écrire les codes Morse des dix chiffres de mémoire.", "recompense": 10},
+          {"nom": "Reconnaître les dix chiffres à l'écrit dans un ordre aléatoire.", "recompense": 10},
+          {"nom": "Identifier les chiffres à l'écoute avec au moins 80 % de réussite sur 30 essais.", "recompense": 15},
+          {"nom": "Transcrire une série de 10 chiffres entendus.", "recompense": 15},
+          {"nom": "Reconnaître les lettres et les chiffres mélangés avec au moins 90 % de réussite sur 50 essais.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 5 — Les mots simples",
+        "eclats": 6,
+        "quetes": [
+          {"nom": "Décoder des mots de deux lettres, comme « ET », « SI » ou « UN ».", "recompense": 5},
+          {"nom": "Décoder 10 mots de trois lettres sans tableau.", "recompense": 10},
+          {"nom": "Décoder 10 mots de quatre lettres à l'écrit.", "recompense": 10},
+          {"nom": "Décoder 10 mots de quatre lettres à l'écoute.", "recompense": 10},
+          {"nom": "Transmettre 10 mots en Morse en respectant les espaces entre les lettres.", "recompense": 10},
+          {"nom": "Reconnaître correctement 20 mots mélangés avec au moins 80 % de réussite.", "recompense": 15},
+          {"nom": "Décoder 20 mots inconnus à l'écoute avec au moins 90 % de réussite.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 6 — Ponctuation et transmission",
+        "eclats": 7,
+        "quetes": [
+          {"nom": "Apprendre le point (.-.-.-) et la virgule (--..--).", "recompense": 5},
+          {"nom": "Apprendre le point d'interrogation (..--..).", "recompense": 5},
+          {"nom": "Apprendre la barre oblique (-..-.) et les autres signes utiles.", "recompense": 10},
+          {"nom": "Apprendre le signal de détresse SOS (... --- ...).", "recompense": 5},
+          {"nom": "Transmettre 10 phrases courtes en Morse écrit.", "recompense": 10},
+          {"nom": "Décoder 10 phrases comportant des signes de ponctuation.", "recompense": 10},
+          {"nom": "Transmettre un message de 30 caractères en respectant le rythme.", "recompense": 20},
+          {"nom": "Décoder puis transmettre un message de 50 caractères avec au moins 90 % de précision.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 7 — Reconnaissance auditive",
+        "eclats": 8,
+        "quetes": [
+          {"nom": "Écouter 5 minutes de lettres Morse à vitesse lente.", "recompense": 10},
+          {"nom": "Identifier 30 lettres entendues sans voir leur code écrit.", "recompense": 10},
+          {"nom": "Reconnaître les lettres sans compter consciemment les points et les traits.", "recompense": 15},
+          {"nom": "Décoder 20 mots à l'écoute avec au moins 85 % de réussite.", "recompense": 15},
+          {"nom": "Identifier 50 lettres aléatoires en moins de 5 secondes par lettre en moyenne.", "recompense": 20},
+          {"nom": "S'entraîner avec deux vitesses de transmission différentes.", "recompense": 20},
+          {"nom": "Reconnaître 50 caractères mélangés à l'écoute avec au moins 90 % de réussite.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 8 — Vitesse et fluidité",
+        "eclats": 9,
+        "quetes": [
+          {"nom": "Décoder un message de 30 caractères à vitesse lente.", "recompense": 10},
+          {"nom": "Décoder un message de 50 caractères sans pause entre les lettres.", "recompense": 15},
+          {"nom": "Décoder 10 mots consécutifs sans revenir en arrière.", "recompense": 15},
+          {"nom": "Reconnaître les lettres à une vitesse de 8 mots par minute.", "recompense": 15},
+          {"nom": "Décoder un message de 100 caractères à une vitesse adaptée.", "recompense": 20},
+          {"nom": "Augmenter progressivement la vitesse sans perdre plus de 10 % de précision.", "recompense": 20},
+          {"nom": "Décoder un message de 100 caractères avec au moins 95 % de précision à 10 mots par minute.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 9 — Communication",
+        "eclats": 10,
+        "quetes": [
+          {"nom": "Écrire un message personnel de 30 caractères en Morse.", "recompense": 10},
+          {"nom": "Transmettre ce message à l'aide de sons ou de signaux lumineux.", "recompense": 10},
+          {"nom": "Décoder un message de 50 caractères reçu sans connaître son contenu.", "recompense": 15},
+          {"nom": "Réaliser un échange de cinq messages courts en Morse avec une autre personne ou un outil d'entraînement.", "recompense": 15},
+          {"nom": "Décoder un message de 100 caractères sans consulter de tableau.", "recompense": 15},
+          {"nom": "Transmettre un message de 100 caractères avec au moins 95 % de précision.", "recompense": 20},
+          {"nom": "Effectuer un échange de dix messages avec au moins 90 % de précision en réception et en transmission.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 10 — Maître du Morse",
+        "eclats": 11,
+        "quetes": [
+          {"nom": "Reconnaître les 26 lettres et les dix chiffres à l'écoute avec au moins 95 % de réussite.", "recompense": 10},
+          {"nom": "Décoder un texte de 100 caractères sans tableau.", "recompense": 15},
+          {"nom": "Décoder un texte de 200 caractères avec au moins 95 % de précision.", "recompense": 20},
+          {"nom": "Transmettre un texte de 200 caractères avec un rythme régulier.", "recompense": 20},
+          {"nom": "Décoder des messages à 15 mots par minute avec au moins 90 % de précision.", "recompense": 25},
+          {"nom": "Comprendre directement les sons des lettres sans devoir les convertir consciemment en points et traits.", "recompense": 20},
+          {"nom": "Réussir trois tests complets sur des jours différents, sans tableau et avec au moins 95 % de précision.", "recompense": 30},
+          {"nom": "Décoder et transmettre un message inconnu de 250 caractères à 15 mots par minute, avec au moins 95 % de précision sur trois essais.", "recompense": 50}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "espagnol",
+    "nom": "Espagnol",
+    "categorie": "communication",
+    "niveau": 2,
+    "prerequis": [],
+    "x": 31,
+    "y": 63,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Espagnol",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "allemand",
+    "nom": "Allemand",
+    "categorie": "communication",
+    "niveau": 3,
+    "prerequis": [],
+    "x": 31,
+    "y": 43,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Allemand",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "braille",
+    "nom": "Braille",
+    "categorie": "communication",
+    "niveau": 3,
+    "prerequis": [],
+    "x": 90,
+    "y": 43,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Braille",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "japonais",
+    "nom": "Japonais",
+    "categorie": "communication",
+    "niveau": 3,
+    "prerequis": [],
+    "x": 10,
+    "y": 43,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Japonais",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "russe",
+    "nom": "Russe",
+    "categorie": "communication",
+    "niveau": 3,
+    "prerequis": [],
+    "x": 52,
+    "y": 43,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Russe",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "grec-latin",
+    "nom": "Grec et Latin",
+    "categorie": "communication",
+    "niveau": 5,
+    "prerequis": [],
+    "x": 31,
+    "y": 11,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Grec et Latin",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "langue-des-signes",
+    "nom": "Langue des signes",
+    "categorie": "communication",
+    "niveau": 5,
+    "prerequis": [
+      "braille"
+    ],
+    "x": 90,
+    "y": 10,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Langue des signes",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ecriture",
+    "nom": "Écriture",
+    "categorie": "ecriture",
+    "niveau": 1,
+    "prerequis": [],
+    "x": 10,
+    "y": 90,
+    "niveaux": [
+      {
+        "nom": "Niveau 1 — Apprenti conteur",
+        "eclats": 2,
+        "quetes": [
+          {"nom": "Écrire une histoire de 100 mots à partir d'une phrase imposée.", "recompense": 5},
+          {"nom": "Écrire 5 débuts d'histoires différents.", "recompense": 5},
+          {"nom": "Décrire un lieu en utilisant au moins 3 sens.", "recompense": 5},
+          {"nom": "Écrire un paragraphe décrivant une personne sans mentionner directement son apparence.", "recompense": 10},
+          {"nom": "Écrire une scène contenant un dialogue entre deux personnages.", "recompense": 5},
+          {"nom": "Inventer 10 idées d'histoires dans un carnet.", "recompense": 5},
+          {"nom": "Terminer une histoire courte avec un début, un milieu et une fin.", "recompense": 10}
+        ]
+      },
+      {
+        "nom": "Niveau 2 — Maître des descriptions",
+        "eclats": 3,
+        "quetes": [
+          {"nom": "Décrire un personnage en montrant sa personnalité à travers ses gestes.", "recompense": 10},
+          {"nom": "Décrire un lieu inquiétant sans utiliser les mots « peur », « sombre » ou « effrayant ».", "recompense": 10},
+          {"nom": "Écrire une scène qui transmet une émotion sans la nommer directement.", "recompense": 10},
+          {"nom": "Décrire le même lieu selon le point de vue de deux personnages différents.", "recompense": 10},
+          {"nom": "Utiliser des métaphores et des comparaisons dans un texte.", "recompense": 15},
+          {"nom": "Écrire une scène de 300 mots avec des détails sensoriels.", "recompense": 15},
+          {"nom": "Réécrire une description trop vague en la rendant plus précise.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 3 — Architecte des personnages",
+        "eclats": 4,
+        "quetes": [
+          {"nom": "Créer 3 personnages avec des personnalités distinctes.", "recompense": 10},
+          {"nom": "Définir pour chaque personnage un objectif, une peur et un défaut.", "recompense": 10},
+          {"nom": "Inventer un passé qui influence le comportement d'un personnage.", "recompense": 10},
+          {"nom": "Créer un personnage dont les paroles contredisent les actions.", "recompense": 10},
+          {"nom": "Écrire un dialogue où chaque personnage possède sa propre façon de parler.", "recompense": 15},
+          {"nom": "Donner à un personnage un dilemme moral.", "recompense": 10},
+          {"nom": "Faire évoluer un personnage à la suite d'un événement.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 4 — Forgeron des intrigues",
+        "eclats": 5,
+        "quetes": [
+          {"nom": "Inventer 10 conflits pouvant servir de base à une histoire.", "recompense": 10},
+          {"nom": "Construire une intrigue avec une situation initiale, un élément déclencheur, des péripéties et une résolution.", "recompense": 10},
+          {"nom": "Écrire une histoire dans laquelle le personnage poursuit un objectif précis.", "recompense": 10},
+          {"nom": "Ajouter un obstacle qui oblige le personnage à changer de stratégie.", "recompense": 15},
+          {"nom": "Inventer un retournement de situation cohérent avec les indices précédents.", "recompense": 15},
+          {"nom": "Écrire une histoire courte sans résoudre le conflit trop facilement.", "recompense": 10},
+          {"nom": "Résumer une histoire en une seule phrase, puis en un paragraphe.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 5 — Maître des dialogues",
+        "eclats": 6,
+        "quetes": [
+          {"nom": "Écrire un dialogue de 300 mots entre deux personnages.", "recompense": 15},
+          {"nom": "Faire comprendre un conflit sans que les personnages l'expliquent directement.", "recompense": 15},
+          {"nom": "Écrire une conversation dans laquelle un personnage ment.", "recompense": 15},
+          {"nom": "Utiliser les silences, les hésitations et les gestes pour enrichir un dialogue.", "recompense": 10},
+          {"nom": "Différencier la voix de trois personnages.", "recompense": 15},
+          {"nom": "Écrire une dispute sans utiliser constamment des points d'exclamation.", "recompense": 20},
+          {"nom": "Réécrire un dialogue trop explicatif en laissant davantage de place au sous-entendu.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 6 — Stratège de la narration",
+        "eclats": 7,
+        "quetes": [
+          {"nom": "Écrire une scène à la première personne.", "recompense": 10},
+          {"nom": "Réécrire la même scène à la troisième personne.", "recompense": 10},
+          {"nom": "Comprendre la différence entre narrateur et auteur.", "recompense": 10},
+          {"nom": "Écrire une scène en utilisant le point de vue interne d'un personnage.", "recompense": 15},
+          {"nom": "Faire découvrir une information au lecteur sans la révéler immédiatement au personnage.", "recompense": 20},
+          {"nom": "Écrire une scène où le lecteur comprend quelque chose que le personnage ignore.", "recompense": 15},
+          {"nom": "Expérimenter une narration non linéaire avec un souvenir ou un flashback.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 7 — Créateur de tension",
+        "eclats": 8,
+        "quetes": [
+          {"nom": "Écrire une scène dans laquelle un personnage est en danger.", "recompense": 15},
+          {"nom": "Construire une scène de suspense sans révéler immédiatement la menace.", "recompense": 10},
+          {"nom": "Faire monter la tension progressivement sur plusieurs paragraphes.", "recompense": 15},
+          {"nom": "Écrire une scène où un objet banal prend une signification inquiétante.", "recompense": 15},
+          {"nom": "Introduire des indices qui prennent un autre sens à la fin.", "recompense": 15},
+          {"nom": "Écrire une fin de chapitre qui donne envie de lire la suite.", "recompense": 15},
+          {"nom": "Créer un retournement de situation sans qu'il paraisse artificiel.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 8 — Artisan du style",
+        "eclats": 9,
+        "quetes": [
+          {"nom": "Écrire une histoire de 1 000 mots.", "recompense": 10},
+          {"nom": "Réécrire une scène en supprimant les répétitions inutiles.", "recompense": 10},
+          {"nom": "Varier la longueur des phrases pour modifier le rythme.", "recompense": 10},
+          {"nom": "Remplacer les explications émotionnelles par des actions ou des réactions lorsque c'est pertinent.", "recompense": 15},
+          {"nom": "Trouver et supprimer les passages qui n'apportent rien à l'histoire.", "recompense": 10},
+          {"nom": "Écrire une scène calme puis une scène rapide en adaptant le rythme.", "recompense": 15},
+          {"nom": "Réviser un ancien texte en conservant son idée et sa voix, mais en améliorant son exécution.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 9 — Romancier en devenir",
+        "eclats": 10,
+        "quetes": [
+          {"nom": "Concevoir une histoire avec un thème central.", "recompense": 10},
+          {"nom": "Créer une fiche pour les personnages principaux et leurs évolutions.", "recompense": 10},
+          {"nom": "Préparer un plan d'intrigue avec plusieurs étapes importantes.", "recompense": 10},
+          {"nom": "Écrire une histoire de 2 000 à 3 000 mots.", "recompense": 15},
+          {"nom": "Introduire un conflit secondaire qui enrichit l'intrigue principale.", "recompense": 15},
+          {"nom": "Faire en sorte que les décisions des personnages influencent réellement l'histoire.", "recompense": 15},
+          {"nom": "Relire et réviser le premier jet en plusieurs passes : intrigue, personnages, style et orthographe.", "recompense": 20},
+          {"nom": "Demander un retour à un lecteur et décider quelles critiques sont utiles.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 10 — Légende de l'écriture",
+        "eclats": 11,
+        "quetes": [
+          {"nom": "Concevoir une histoire originale à partir d'une idée personnelle.", "recompense": 10},
+          {"nom": "Définir son genre, son thème, son intrigue et ses enjeux.", "recompense": 10},
+          {"nom": "Créer des personnages complexes avec des motivations crédibles.", "recompense": 15},
+          {"nom": "Écrire une histoire complète de 5 000 mots ou plus, selon le projet choisi.", "recompense": 20},
+          {"nom": "Construire une conclusion qui répond aux enjeux principaux de l'histoire.", "recompense": 20},
+          {"nom": "Réviser le texte sans perdre son intention initiale.", "recompense": 15},
+          {"nom": "Faire une dernière relecture pour corriger les incohérences, les répétitions et les fautes.", "recompense": 10},
+          {"nom": "Terminer une version que tu serais prêt à partager avec d'autres lecteurs.", "recompense": 30},
+          {"nom": "Écrire une nouvelle histoire en appliquant les leçons tirées de la précédente.", "recompense": 30}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "orthographe",
+    "nom": "Orthographe",
+    "categorie": "ecriture",
+    "niveau": 1,
+    "prerequis": [],
+    "x": 90,
+    "y": 90,
+    "niveaux": [
+      {
+        "nom": "Niveau 1 — Apprenti des mots",
+        "eclats": 2,
+        "quetes": [
+          {"nom": "Apprendre 10 mots que tu écris souvent mal (nécessaire, décision, accueil).", "recompense": 5},
+          {"nom": "Faire une liste de tes erreurs d'orthographe les plus fréquentes.", "recompense": 5},
+          {"nom": "Réussir un exercice de 10 mots sans faute.", "recompense": 10},
+          {"nom": "Repérer les fautes dans un court paragraphe.", "recompense": 10},
+          {"nom": "Écrire 5 phrases sans utiliser de correcteur.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 2 — Chasseur de fautes",
+        "eclats": 3,
+        "quetes": [
+          {"nom": "Apprendre 20 nouveaux mots difficiles.", "recompense": 10},
+          {"nom": "Différencier les homophones : a/à, et/est, son/sont, on/ont.", "recompense": 10},
+          {"nom": "Corriger un texte contenant 10 fautes.", "recompense": 10},
+          {"nom": "Réussir un exercice d'homophones avec au moins 80 % de réussite.", "recompense": 15},
+          {"nom": "Relire un texte et trouver au moins 5 erreurs.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 3 — Maître des accords",
+        "eclats": 4,
+        "quetes": [
+          {"nom": "Réviser les accords entre le sujet et le verbe.", "recompense": 15},
+          {"nom": "Maîtriser les accords entre le nom et l'adjectif.", "recompense": 15},
+          {"nom": "Réviser le pluriel des noms et des adjectifs.", "recompense": 15},
+          {"nom": "Corriger un texte contenant des erreurs d'accord.", "recompense": 15},
+          {"nom": "Écrire un paragraphe de 100 mots avec moins de 3 fautes.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 4 — Gardien des conjugaisons",
+        "eclats": 5,
+        "quetes": [
+          {"nom": "Réviser les terminaisons du présent.", "recompense": 15},
+          {"nom": "Distinguer l'imparfait et le passé composé.", "recompense": 20},
+          {"nom": "Distinguer le futur et le conditionnel.", "recompense": 20},
+          {"nom": "Maîtriser les différences entre -er, -é, -ée et -és.", "recompense": 25},
+          {"nom": "Réussir un exercice de conjugaison avec au moins 85 % de réussite.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 5 — Expert des homophones",
+        "eclats": 6,
+        "quetes": [
+          {"nom": "Maîtriser ces/ses/c'est/s'est.", "recompense": 15},
+          {"nom": "Maîtriser ou/où, la/là/l'a, leur/leurs.", "recompense": 15},
+          {"nom": "Maîtriser quel/quelle/quels/quelles.", "recompense": 15},
+          {"nom": "Créer une phrase pour chaque homophone étudié.", "recompense": 20},
+          {"nom": "Réussir un test de 20 questions avec au moins 90 % de réussite.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 6 — Stratège de la grammaire",
+        "eclats": 7,
+        "quetes": [
+          {"nom": "Identifier le sujet, le verbe et les compléments dans 10 phrases.", "recompense": 15},
+          {"nom": "Comprendre les accords du participe passé avec être.", "recompense": 15},
+          {"nom": "Réviser les accords du participe passé avec avoir.", "recompense": 15},
+          {"nom": "Repérer les erreurs de genre et de nombre.", "recompense": 20},
+          {"nom": "Corriger un texte de 150 mots sans aide extérieure.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 7 — Détective orthographique",
+        "eclats": 8,
+        "quetes": [
+          {"nom": "Corriger un texte contenant 15 à 20 fautes.", "recompense": 15},
+          {"nom": "Identifier la règle correspondant à chaque faute corrigée.", "recompense": 20},
+          {"nom": "Tenir un carnet de tes erreurs et noter leur correction.", "recompense": 15},
+          {"nom": "Réécrire un ancien texte en corrigeant toutes ses fautes.", "recompense": 15},
+          {"nom": "Réussir trois dictées courtes consécutives avec au maximum 2 fautes chacune.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 8 — Plume disciplinée",
+        "eclats": 9,
+        "quetes": [
+          {"nom": "Écrire un texte de 200 mots sans correcteur automatique.", "recompense": 15},
+          {"nom": "Réduire de moitié le nombre de fautes par rapport à un texte précédent.", "recompense": 15},
+          {"nom": "Faire une dictée de difficulté intermédiaire avec au moins 90 % de réussite.", "recompense": 20},
+          {"nom": "Passer une semaine en notant chaque erreur récurrente pour ne plus la répéter.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 9 — Gardien de l'orthographe",
+        "eclats": 10,
+        "quetes": [
+          {"nom": "Écrire un texte de 300 mots avec très peu de fautes.", "recompense": 20},
+          {"nom": "Réussir une dictée difficile avec au moins 90 % de réussite.", "recompense": 20},
+          {"nom": "Corriger un texte sans utiliser de correcteur orthographique.", "recompense": 15},
+          {"nom": "Expliquer les règles derrière 10 erreurs fréquentes.", "recompense": 15},
+          {"nom": "Passer trois tests d'orthographe différents avec au moins 90 % de réussite.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 10 — Légende de l'orthographe",
+        "eclats": 11,
+        "quetes": [
+          {"nom": "Réussir une dictée longue avec au moins 95 % de réussite.", "recompense": 15},
+          {"nom": "Écrire un texte de 500 mots sans faute majeure.", "recompense": 20},
+          {"nom": "Maîtriser les principaux pièges d'orthographe, d'accord et de conjugaison.", "recompense": 15},
+          {"nom": "Repérer et expliquer 20 erreurs dans un texte difficile.", "recompense": 15},
+          {"nom": "Écrire pendant une semaine sans refaire les erreurs récurrentes de ton carnet.", "recompense": 25},
+          {"nom": "Réaliser un test final sans dictionnaire ni correcteur et obtenir au moins 95 % de réussite.", "recompense": 35}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "calligraphie",
+    "nom": "Calligraphie",
+    "categorie": "ecriture",
+    "niveau": 3,
+    "prerequis": [],
+    "x": 47,
+    "y": 10,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Calligraphie",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ambidextre",
+    "nom": "Ambidextre",
+    "categorie": "agilite",
+    "niveau": 1,
+    "prerequis": [],
+    "x": 20,
+    "y": 80,
+    "niveaux": [
+      {
+        "nom": "Niveau 1 — Contrôle moteur",
+        "eclats": 2,
+        "quetes": [
+          {"nom": "Tracer 15 lignes, 15 cercle, 15 boucles.", "recompense": 5},
+          {"nom": "Relier 20 points sans s'arrêter à chaque mouvement.", "recompense": 5},
+          {"nom": "Reproduire 5 formes simples.", "recompense": 5},
+          {"nom": "Tracer 25 lignes, 25 cercle, 25 boucles.", "recompense": 10},
+          {"nom": "Relier 30 points sans s'arrêter à chaque mouvement.", "recompense": 10},
+          {"nom": "Reproduire 15 formes simples.", "recompense": 10},
+          {"nom": "Tracer 10 lignes entre deux limites, sans dépasser les bords plus de deux fois.", "recompense": 15},
+          {"nom": "Tracer une ligne, un cercle, une boucle et un zigzag à la suite, sans reposer le stylo entre chaque forme.", "recompense": 15},
+          {"nom": "12 formes sur 15 reconnaissables et des tracés maîtrisés.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 2 — Alphabet",
+        "eclats": 3,
+        "quetes": [
+          {"nom": "Écrire les 26 lettres minuscules.", "recompense": 10},
+          {"nom": "Écrire les 26 lettres majuscules.", "recompense": 10},
+          {"nom": "Identifier les cinq lettres que tu maîtrises le moins, puis écrire chacune d'elles 10 fois.", "recompense": 15},
+          {"nom": "Écrire les 26 lettres en échangeant entre majuscules et minuscules après chaque lettre.", "recompense": 15},
+          {"nom": "Écrire les 26 lettres majuscules et minuscules.", "recompense": 15},
+          {"nom": "Écrire les 26 lettres majuscules et minuscules parfaitement lisible.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 3 — Premiers mots",
+        "eclats": 4,
+        "quetes": [
+          {"nom": "Copier 20 mots fréquents.", "recompense": 10},
+          {"nom": "Écrire 10 mots sans modèle.", "recompense": 10},
+          {"nom": "Écrire 15 mots proposé par une IA.", "recompense": 10},
+          {"nom": "Écrire 15 mots contenant des combinaisons de lettres difficiles pour toi.", "recompense": 15},
+          {"nom": "Écrire 10 mots de trois syllabes ou plus en gardant une écriture lisible, avec des espaces réguliers.", "recompense": 15},
+          {"nom": "Écrire 25 mots proposé par une IA jusqu'à que ce soit lisible.", "recompense": 15},
+          {"nom": "Écrire 20 mots que quelqu'un te dicte, ou que tu écoutes à partir d'un audio, sans regarder leur orthographe.", "recompense": 15},
+          {"nom": "Écrire 15 mots lisible proposé par une IA en une fois.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 4 — Construction des phrases",
+        "eclats": 5,
+        "quetes": [
+          {"nom": "Copier 5 phrases proposé par une IA.", "recompense": 10},
+          {"nom": "Écrire un texte de 30 mots proposé par une IA.", "recompense": 15},
+          {"nom": "Écrire un texte de 50 mots proposé par une IA.", "recompense": 20},
+          {"nom": "Écrire un texte de 60 mots proposé par une IA dont au moins 90 % sont facilement lisibles.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 5 — Endurance",
+        "eclats": 6,
+        "quetes": [
+          {"nom": "Copier 50 mots sans se précipiter.", "recompense": 10},
+          {"nom": "Copier 65 mots sans se précipiter.", "recompense": 15},
+          {"nom": "Copier 80 mots en faisant une courte pause à mi-parcours. Le texte doit rester lisible, sans douleur.", "recompense": 20},
+          {"nom": "Copier 50 mots sans se précipiter lisible du début à la fin, sans douleur.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 6 — Régularité",
+        "eclats": 7,
+        "quetes": [
+          {"nom": "Écrire trois paragraphes de 30 mots.", "recompense": 10},
+          {"nom": "Écrire trois paragraphes de 40 mots.", "recompense": 15},
+          {"nom": "Repérer et corriger tes trois défauts les plus fréquents.", "recompense": 10},
+          {"nom": "Obtenir au moins 90 % de mots lisibles dans 2 paragraphes de 30 mots.", "recompense": 15},
+          {"nom": "Copier deux fois le même texte de 30 mots, lors de deux séances différentes, avec au moins 90 % de mots lisibles à chaque fois.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 7 — Écriture spontanée",
+        "eclats": 8,
+        "quetes": [
+          {"nom": "Écrire 50 mots sans recopier.", "recompense": 10},
+          {"nom": "Raconter une activité de ta journée.", "recompense": 10},
+          {"nom": "Garder une écriture compréhensible sans modèle.", "recompense": 15},
+          {"nom": "Écrire un paragraphe cohérent et lisible de 50 mots.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 8 — Vitesse",
+        "eclats": 9,
+        "quetes": [
+          {"nom": "Chronométrer une copie de 50 mots.", "recompense": 10},
+          {"nom": "Chronométrer une copie de 60 mots.", "recompense": 10},
+          {"nom": "Écrire 50 mots en moins de temps que la 1er fois.", "recompense": 15},
+          {"nom": "Écrire 60 mots en moins de temps que la 1er fois.", "recompense": 15},
+          {"nom": "Améliorer ton nombre de mots lisibles par minute d'au moins 15 % par rapport à ton premier test de vitesse.", "recompense": 20},
+          {"nom": "Effectuer trois copies du même texte de 50 mots sur des jours différents. Améliorer ton meilleur temps tout en gardant au moins 90 % de mots lisibles.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 9 — Duel des mains",
+        "eclats": 10,
+        "quetes": [
+          {"nom": "Copier le même texte de 100 mots avec chaque main.", "recompense": 15},
+          {"nom": "Entraîner les défauts les plus marqués de la main gauche.", "recompense": 10},
+          {"nom": "Copier le même texte de 130 mots avec chaque main.", "recompense": 15},
+          {"nom": "Atteindre au moins 80 % de la vitesse de la main droite, avec une lisibilité comparable.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 10 — Maître de la double plume",
+        "eclats": 11,
+        "quetes": [
+          {"nom": "Écrire un texte de 100 mots avec chaque main.", "recompense": 15},
+          {"nom": "Écrire un texte de 120 mots avec chaque main.", "recompense": 15},
+          {"nom": "Écrire un texte de 150 mots avec chaque main.", "recompense": 20},
+          {"nom": "Atteindre au moins 90 % de la vitesse de la main droite, avec une lisibilité proche et des résultats stables.", "recompense": 30},
+          {"nom": "Atteindre au moins 90 % de la vitesse de la main droite, avec une lisibilité parfaite et des résultats stables.", "recompense": 50}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "penspinning",
+    "nom": "Penspinning",
+    "categorie": "agilite",
+    "niveau": 2,
+    "prerequis": [],
+    "x": 80,
+    "y": 70,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Penspinning",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "vitesse-frappe",
+    "nom": "Vitesse de frappe au clavier",
+    "categorie": "agilite",
+    "niveau": 2,
+    "prerequis": [],
+    "x": 50,
+    "y": 40,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Vitesse de frappe au clavier",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sport",
+    "nom": "Sport",
+    "categorie": "physique",
+    "niveau": 1,
+    "prerequis": [],
+    "x": 32,
+    "y": 90,
+    "niveaux": [
+      {
+        "nom": "Niveau 1 — Réveil du guerrier",
+        "eclats": 2,
+        "quetes": [
+          {"nom": "Faire 10 minutes d'activité physique.", "recompense": 5},
+          {"nom": "Marcher 15 minutes sans interruption.", "recompense": 5},
+          {"nom": "Réaliser 10 squats avec une bonne technique.", "recompense": 5},
+          {"nom": "Réaliser 5 pompes contre un mur.", "recompense": 5},
+          {"nom": "Tenir 15 secondes en planche, ou faire une variante plus facile.", "recompense": 5},
+          {"nom": "Faire 5 minutes d'étirements doux.", "recompense": 5},
+          {"nom": "Réaliser 3 séances sportives dans la semaine.", "recompense": 10}
+        ]
+      },
+      {
+        "nom": "Niveau 2 — Apprenti athlète",
+        "eclats": 3,
+        "quetes": [
+          {"nom": "Marcher 20 à 25 minutes.", "recompense": 5},
+          {"nom": "Réaliser 2 séries de 10 squats.", "recompense": 5},
+          {"nom": "Faire 2 séries de 8 pompes contre un mur ou sur un support stable.", "recompense": 5},
+          {"nom": "Tenir 20 secondes en planche adaptée.", "recompense": 5},
+          {"nom": "Réaliser 10 fentes au total, avec appui si nécessaire.", "recompense": 5},
+          {"nom": "Faire 10 minutes de mobilité.", "recompense": 5},
+          {"nom": "Réaliser 3 à 4 séances dans la semaine.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 3 — Endurance naissante",
+        "eclats": 4,
+        "quetes": [
+          {"nom": "Faire 30 minutes de marche active ou d'une autre activité modérée.", "recompense": 10},
+          {"nom": "Réaliser 3 séries de 10 squats.", "recompense": 5},
+          {"nom": "Faire 2 séries de 10 pompes adaptées.", "recompense": 5},
+          {"nom": "Tenir 25 à 30 secondes en planche adaptée.", "recompense": 5},
+          {"nom": "Faire 15 minutes d'activité cardio de ton choix.", "recompense": 10},
+          {"nom": "Tester une nouvelle activité sportive.", "recompense": 15},
+          {"nom": "Réaliser 4 séances dans la semaine, dont au moins une légère.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 4 — Force en construction",
+        "eclats": 5,
+        "quetes": [
+          {"nom": "Réaliser 3 séries de 12 squats.", "recompense": 10},
+          {"nom": "Faire 3 séries de 8 pompes adaptées à ton niveau.", "recompense": 10},
+          {"nom": "Réaliser 2 séries de 10 ponts fessiers.", "recompense": 10},
+          {"nom": "Tenir 30 secondes en planche adaptée.", "recompense": 10},
+          {"nom": "Faire 15 à 20 minutes de renforcement musculaire.", "recompense": 15},
+          {"nom": "Apprendre à bien réaliser 3 exercices de renforcement.", "recompense": 15},
+          {"nom": "Réaliser 3 séances de renforcement dans la semaine.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 5 — Athlète polyvalent",
+        "eclats": 6,
+        "quetes": [
+          {"nom": "Réaliser 30 minutes d'activité cardio.", "recompense": 15},
+          {"nom": "Faire une séance de renforcement du corps entier.", "recompense": 15},
+          {"nom": "Travailler les jambes, le haut du corps et le tronc dans la semaine.", "recompense": 10},
+          {"nom": "Faire 15 minutes de mobilité.", "recompense": 10},
+          {"nom": "Essayer une activité sportive différente.", "recompense": 15},
+          {"nom": "Réaliser une séance où tu alternes effort modéré et récupération.", "recompense": 15},
+          {"nom": "Suivre tes progrès pendant deux semaines.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 6 — Maître de la régularité",
+        "eclats": 7,
+        "quetes": [
+          {"nom": "Atteindre progressivement 150 minutes d'activité modérée sur la semaine.", "recompense": 15},
+          {"nom": "Faire 2 séances de renforcement musculaire dans la semaine.", "recompense": 15},
+          {"nom": "Réaliser une séance cardio sans chercher à battre un record.", "recompense": 15},
+          {"nom": "Faire 10 minutes d'échauffement avant une séance plus intense.", "recompense": 15},
+          {"nom": "Prévoir une journée de récupération ou une activité douce.", "recompense": 15},
+          {"nom": "Tenir un journal de sport pendant 2 semaines.", "recompense": 20},
+          {"nom": "Réaliser 4 à 5 séances dans la semaine, en variant leur intensité.", "recompense": 20}
+        ]
+      },
+      {
+        "nom": "Niveau 7 — Dépassement de soi",
+        "eclats": 8,
+        "quetes": [
+          {"nom": "Choisir un objectif mesurable : durée, distance, répétitions ou régularité.", "recompense": 15},
+          {"nom": "Améliorer légèrement un résultat personnel, sans sacrifier la technique.", "recompense": 15},
+          {"nom": "Réaliser 2 séances de renforcement bien structurées.", "recompense": 15},
+          {"nom": "Faire une séance cardio de 35 à 40 minutes à intensité adaptée.", "recompense": 20},
+          {"nom": "Apprendre une nouvelle variante d'un exercice.", "recompense": 20},
+          {"nom": "Effectuer une séance complète avec échauffement et retour au calme.", "recompense": 20},
+          {"nom": "Tenir 3 semaines de pratique régulière.", "recompense": 25}
+        ]
+      },
+      {
+        "nom": "Niveau 8 — Discipline sportive",
+        "eclats": 9,
+        "quetes": [
+          {"nom": "Suivre un programme sportif pendant 3 semaines.", "recompense": 20},
+          {"nom": "Réaliser 2 à 3 séances de renforcement par semaine, selon la récupération.", "recompense": 15},
+          {"nom": "Développer progressivement l'endurance avec une activité de ton choix.", "recompense": 15},
+          {"nom": "Faire une séance axée sur la mobilité et la souplesse.", "recompense": 15},
+          {"nom": "Mesurer tes progrès sur 2 exercices ou performances.", "recompense": 10},
+          {"nom": "Apprendre à reconnaître les signes de fatigue et à adapter la séance.", "recompense": 10},
+          {"nom": "Respecter des temps de récupération suffisants.", "recompense": 10}
+        ]
+      },
+      {
+        "nom": "Niveau 9 — Athlète confirmé",
+        "eclats": 10,
+        "quetes": [
+          {"nom": "Définir un objectif sportif sur un mois.", "recompense": 20},
+          {"nom": "Construire une semaine équilibrée entre cardio, renforcement et récupération.", "recompense": 20},
+          {"nom": "Améliorer une performance de départ mesurée sans douleur.", "recompense": 20},
+          {"nom": "Réaliser une séance technique où la qualité prime sur la quantité.", "recompense": 15},
+          {"nom": "Tester une activité sportive qui te met au défi.", "recompense": 20},
+          {"nom": "Suivre tes progrès sur 4 semaines.", "recompense": 20},
+          {"nom": "Ajuster ton programme en fonction de tes résultats et de ta récupération.", "recompense": 15}
+        ]
+      },
+      {
+        "nom": "Niveau 10 — Légende sportive",
+        "eclats": 11,
+        "quetes": [
+          {"nom": "Suivre un programme adapté pendant 6 semaines.", "recompense": 30},
+          {"nom": "Atteindre un objectif personnel réaliste défini au départ.", "recompense": 30},
+          {"nom": "Être régulier sans négliger le repos.", "recompense": 15},
+          {"nom": "Maîtriser l'exécution de tes exercices principaux.", "recompense": 15},
+          {"nom": "Réaliser une activité sportive que tu pensais difficile au début.", "recompense": 20},
+          {"nom": "Comparer tes résultats", "recompense": 15}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "flexibilite",
+    "nom": "Devenir plus flexible",
+    "categorie": "physique",
+    "niveau": 2,
+    "prerequis": [],
+    "x": 90,
+    "y": 55,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Devenir plus flexible",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "calisthenics",
+    "nom": "Calisthenics",
+    "categorie": "physique",
+    "niveau": 3,
+    "prerequis": [
+      "flexibilite",
+      "sport"
+    ],
+    "x": 68,
+    "y": 31,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Calisthenics",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hip-hop",
+    "nom": "Hip-hop",
+    "categorie": "physique",
+    "niveau": 3,
+    "prerequis": [
+      "sport"
+    ],
+    "x": 10,
+    "y": 31,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Hip-hop",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "boxe",
+    "nom": "Boxe",
+    "categorie": "physique",
+    "niveau": 4,
+    "prerequis": [
+      "sport"
+    ],
+    "x": 32,
+    "y": 10,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Boxe",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "culture-g",
+    "nom": "Culture G",
+    "categorie": "savoirs",
+    "niveau": 2,
+    "prerequis": [],
+    "x": 10,
+    "y": 90,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Culture G",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "economie",
+    "nom": "Économie",
+    "categorie": "savoirs",
+    "niveau": 3,
+    "prerequis": [],
+    "x": 46,
+    "y": 38,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Économie",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "physique-chimie",
+    "nom": "Physique-Chimie",
+    "categorie": "savoirs",
+    "niveau": 3,
+    "prerequis": [],
+    "x": 28,
+    "y": 38,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Physique-Chimie",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "marketing-business",
+    "nom": "Marketing / Business",
+    "categorie": "savoirs",
+    "niveau": 4,
+    "prerequis": [],
+    "x": 61,
+    "y": 10,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Marketing / Business",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "philosophie",
+    "nom": "Philosophie",
+    "categorie": "savoirs",
+    "niveau": 4,
+    "prerequis": [],
+    "x": 76,
+    "y": 10,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Philosophie",
+            "recompense": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sociologie",
+    "nom": "Sociologie",
+    "categorie": "savoirs",
+    "niveau": 4,
+    "prerequis": [],
+    "x": 90,
+    "y": 10,
+    "niveaux": [
+      {
+        "nom": "Niveau 1",
+        "eclats": 2,
+        "quetes": [
+          {
+            "nom": "[À remplacer] Quête de Sociologie",
+            "recompense": 10
+          }
+        ]
+      }
     ]
   }
 ]

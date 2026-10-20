@@ -1,0 +1,88 @@
+/* ===== Statistiques ===== */
+#ordi-stats h3 { margin: 16px 0 6px; font-size: 1rem; }
+
+.stats-tuiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.stats-tuile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #1f3a5f;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px 4px;
+}
+.stats-tuile strong { font-size: 1.6rem; line-height: 1.1; }
+.stats-tuile span { font-size: 0.75rem; opacity: 0.85; }
+
+/* graphique en barres */
+.stats-barres {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 150px;
+  background: #f6f8fc;
+  border-radius: 10px;
+  padding: 8px 6px 6px;
+}
+.stats-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+}
+.stats-nb { font-size: 0.7rem; font-weight: bold; min-height: 0.9rem; }
+.stats-barre {
+  width: 100%;
+  max-width: 22px;
+  background: #1a73e8;
+  border-radius: 3px 3px 0 0;
+}
+.stats-barre.vide { background: #c9d2e3; }
+.stats-col.aujourdhui .stats-barre { background: #188038; }
+.stats-jour {
+  font-size: 0.6rem;
+  line-height: 1.15;
+  text-align: center;
+  color: #555;
+}
+.stats-col.aujourdhui .stats-jour { color: #188038; font-weight: bold; }
+
+/* choix de la période */
+.stats-periodes { display: flex; gap: 6px; margin-bottom: 8px; }
+.stats-periodes button {
+  flex: 1;
+  background: #f6f8fc;
+  border: 1px solid #ccc;
+  border-radius: 14px;
+  padding: 4px 0;
+  font-size: 0.8rem;
+}
+.stats-periodes button.actif { background: #1f3a5f; border-color: #1f3a5f; color: #fff; }
+
+.stats-vide { color: #666; text-align: center; padding: 10px 0; }
+
+.stats-skill {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  background: #f6f8fc;
+  border-left: 5px solid #888;
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+}
+.stats-skill-nom { flex: 1; min-width: 0; font-weight: bold; }
+.stats-skill-nb { font-size: 0.75rem; color: #555; }
+.stats-skill .skill-barre { flex-basis: 100%; }
+
+.stats-records { list-style: none; padding: 0; margin: 0; font-size: 0.85rem; }
+.stats-records li { background: #f6f8fc; border-radius: 6px; padding: 6px 8px; margin-bottom: 4px; }

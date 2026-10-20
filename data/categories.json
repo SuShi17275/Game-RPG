@@ -1,0 +1,50 @@
+[
+  {
+    "id": "art",
+    "nom": "Art",
+    "icone": "🎨",
+    "couleur": "#e07a5f"
+  },
+  {
+    "id": "programmation",
+    "nom": "Programmation",
+    "icone": "💻",
+    "couleur": "#3d85c6"
+  },
+  {
+    "id": "musique",
+    "nom": "Musique",
+    "icone": "🎵",
+    "couleur": "#8e7cc3"
+  },
+  {
+    "id": "communication",
+    "nom": "Communication",
+    "icone": "🗣️",
+    "couleur": "#f1a208"
+  },
+  {
+    "id": "ecriture",
+    "nom": "Écriture",
+    "icone": "✒️",
+    "couleur": "#6aa84f"
+  },
+  {
+    "id": "agilite",
+    "nom": "Agilité",
+    "icone": "🤹",
+    "couleur": "#d4537e"
+  },
+  {
+    "id": "physique",
+    "nom": "Physique",
+    "icone": "💪",
+    "couleur": "#e24b4a"
+  },
+  {
+    "id": "savoirs",
+    "nom": "Savoirs",
+    "icone": "📚",
+    "couleur": "#1d9e75"
+  }
+]

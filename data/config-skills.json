@@ -1,0 +1,11 @@
+{
+  "prixBoutique": { "2": 5, "3": 10, "4": 20, "5": 35 },
+  "rangs": [
+    { "lettre": "E", "xp": 0 },
+    { "lettre": "D", "xp": 50 },
+    { "lettre": "C", "xp": 150 },
+    { "lettre": "B", "xp": 350 },
+    { "lettre": "A", "xp": 700 },
+    { "lettre": "S", "xp": 1200 }
+  ]
+}

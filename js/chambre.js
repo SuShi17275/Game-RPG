@@ -11,8 +11,9 @@ fetch("data/chambre.json")
     calques.forEach(function(c) {
       const img = document.createElement("img");
       img.src = c.image;
-      img.className = c.tache ? "objet" : "objet decor";
+      img.className = (c.tache || c.ouvre) ? "objet" : "objet decor";
       if (c.tache) img.dataset.id = c.tache;
+      if (c.ouvre) img.dataset.ouvre = c.ouvre;
       img.onerror = function() { img.remove(); }; // image pas encore dessinée : on ignore
       zoneObjets.appendChild(img);
     });
@@ -42,7 +43,8 @@ document.getElementById("chambre").addEventListener("click", function(e) {
   const couches = Array.from(zoneObjets.querySelectorAll("img")).reverse();
   for (const img of couches) {
     if (pixelOpaque(img, e.clientX, e.clientY)) {
-      if (img.dataset.id) cocherTache(img.dataset.id); // du décor : rien ne se passe
+      if (img.dataset.id) cocherTache(img.dataset.id);
+      else if (img.dataset.ouvre === "ordinateur") ouvrirOrdinateur(); // du décor : rien ne se passe
       return;
     }
   }

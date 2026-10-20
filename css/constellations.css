@@ -1,0 +1,140 @@
+/* ===== Ciel des skills (appli Skills) ===== */
+#ordi-contenu { min-height: 0; }
+#ordi-arbre {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+}
+.constel-ciel {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: 130%;
+  flex: none;
+  background: radial-gradient(circle at 50% 0%, #1a2140 0%, #0d111f 45%, #0a0d18 100%);
+  border: 1px solid #2c3350;
+  border-radius: 14px;
+}
+
+.constel-aide-defilement {
+  margin: 0 0 4px;
+  color: #555;
+  font-size: 0.75rem;
+  text-align: center;
+}
+.constel-defilement {
+  width: 100%;
+  flex: 1 1 0;
+  min-height: 120px;
+  overflow: auto;
+  border-radius: 14px;
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.constel-defilement:focus-visible { outline: 2px solid #3d85c6; outline-offset: 2px; }
+
+.constel-ligne { fill: none; stroke-width: 0.45; stroke-linecap: round; opacity: 0.8; }
+.constel-ligne.attente { stroke-dasharray: 1.2 1; opacity: 0.65; }
+
+.constel-noeud { cursor: pointer; }
+.constel-rond { stroke-width: 0.6; }
+.constel-rond.gris { fill: #3d3d3d; stroke: #8a8a8a; stroke-dasharray: 1.2 0.9; fill-opacity: 0.85; }
+.constel-anneau { fill: none; stroke-width: 0.4; }
+.constel-pct { font-size: 3.1px; font-weight: bold; text-anchor: middle; pointer-events: none; }
+
+.constel-nom {
+  font-size: 2.5px;
+  text-anchor: middle;
+  fill: #eef1ff;
+  pointer-events: none;
+  /* contour sombre : le texte reste lisible quand une ligne passe derrière */
+  paint-order: stroke;
+  stroke: #0d111f;
+  stroke-width: 1.6px;
+  stroke-linejoin: round;
+}
+.constel-noeud.verrouille .constel-nom,
+.constel-noeud.boutique .constel-nom { fill: #b9bdcc; }
+.constel-sous { font-size: 2px; fill: #9aa0b8; }
+
+/* skill sélectionné : il brille */
+.constel-noeud.selectionne .constel-rond { stroke-width: 1; }
+.constel-noeud.selectionne .constel-nom { fill: #fff; font-weight: bold; }
+.constel-pulse { fill: none; stroke-width: 0.7; animation: constel-pulse 1.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes constel-pulse {
+  0%   { opacity: 1;   transform: scale(0.95); }
+  100% { opacity: 0.1; transform: scale(1.35); }
+}
+
+/* ===== Fenêtre pop-up d'un skill ===== */
+.popup-fond {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: rgba(5, 8, 18, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+}
+.popup-skill {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 400px;
+  max-height: 82%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  background: #fff;
+  border-top: 5px solid #888;
+  border-radius: 12px;
+  padding: 10px 14px 14px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+.popup-entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.popup-entete:active { cursor: grabbing; }
+.popup-entete button { cursor: pointer; }
+.popup-entete h3 { margin: 0; font-size: 1.1rem; }
+.popup-fermer { flex: none; background: #eef1f7; border: none; border-radius: 50%; width: 30px; height: 30px; }
+.popup-skill p { margin: 4px 0; font-size: 0.9rem; }
+.popup-skill h3 { margin: 8px 0 2px; }
+.popup-entete h3 { margin: 0; }
+.popup-skill .quete {
+  background: #f6f8fc;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+.popup-skill .quete p { margin: 0 0 6px; }
+.popup-quetes-terminees {
+  margin-top: 10px;
+  border-top: 1px solid #dde3ee;
+  padding-top: 8px;
+}
+.popup-quetes-terminees summary {
+  color: #1f3a5f;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.popup-quetes-niveau { margin-top: 8px; }
+.popup-quetes-niveau > strong { font-size: 0.8rem; }
+.popup-quete-terminee { opacity: 0.78; }
+.popup-quete-terminee p:last-child { color: #555; font-size: 0.8rem; }
+.popup-prerequis { list-style: none; padding: 0; margin: 4px 0; font-size: 0.9rem; }
+.popup-aide { color: #666; font-size: 0.8rem !important; }

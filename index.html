@@ -4,7 +4,10 @@
     <head>
         <meta charset="UTF-8">
         <title>Game to Life</title>
-        <link rel="stylesheet" href="css/style.css?v=4">
+        <link rel="stylesheet" href="css/style.css?v=6">
+        <link rel="stylesheet" href="css/profil.css?v=2">
+        <link rel="stylesheet" href="css/stats.css?v=1">
+        <link rel="stylesheet" href="css/constellations.css?v=10">
         <link rel="manifest" href="manifest.json">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     </head>
@@ -19,73 +22,111 @@
         <button id="btn-telephone">📱</button>
 
         <div id="telephone" class="cache">
-        <div id="ecran-telephone">
-            <button id="btn-fermer" onclick="fermerTelephone()">✖</button>
+            <div id="ecran-telephone">
+                <button id="btn-fermer" onclick="fermerTelephone()">✖</button>
 
-            <div id="ecran-accueil" class="ecran">
-            <div id="grille-apps">
-                <button class="icone-app" onclick="afficherEcran('banque')"><span class="icone">🏦</span>Banque</button>
-                <button class="icone-app" onclick="afficherEcran('events')"><span class="icone">✉️</span>Mail</button>
-                <button class="icone-app" onclick="afficherEcran('bonus')"><span class="icone">⭐</span>Bonus</button>
-                <!-- provisoires -->
-                <button class="icone-app" onclick="afficherEcran('skills')"><span class="icone">🌱</span>Skills</button>
-                <button class="icone-app" onclick="afficherEcran('pet')"><span class="icone">🐾</span>Pet</button>
+                <div id="ecran-accueil" class="ecran">
+                    <div id="grille-apps">
+                        <button class="icone-app" onclick="afficherEcran('banque')"><span class="icone">🏦</span>Banque</button>
+                        <button class="icone-app" onclick="afficherEcran('events')"><span class="icone">✉️</span>Mail<span id="badge-mail" class="badge cache">0</span></button>
+                        <button class="icone-app" onclick="afficherEcran('bonus')"><span class="icone">⭐</span>Bonus</button>
+                        <!-- provisoire -->
+                        <button class="icone-app" onclick="afficherEcran('pet')"><span class="icone">🐾</span>Pet</button>
+                    </div>
+                </div>
+
+                <div id="ecran-banque" class="ecran cache">
+                    <div class="banque-carte">
+                        <small>Solde</small>
+                        <div class="banque-solde"><span id="solde">0</span> 💰</div>
+                    </div>
+
+                    <div class="banque-objectif">
+                        <div class="banque-objectif-texte">
+                            <span>Ce mois-ci</span>
+                            <span><span id="revenus-mois">0</span> / <span id="impot-montant">0</span></span>
+                        </div>
+                        <div class="barre"><div id="barre-revenus"></div></div>
+                        <small id="prochain-impot"></small>
+                    </div>
+
+                    <h3>Opérations</h3>
+                    <ul id="liste-historique"></ul>
+                </div>
+
+                <div id="ecran-events" class="ecran cache">
+                    <div id="mail-vue-liste">
+                        <div id="mail-barre"><strong>✉️ Mail</strong></div>
+                        <div id="mail-onglets">
+                            <button data-onglet="nouveau" onclick="changerOnglet('nouveau')">Nouveau <span id="compteur-nouveau"></span></button>
+                            <button data-onglet="afaire" onclick="changerOnglet('afaire')">À faire</button>
+                            <button data-onglet="historique" onclick="changerOnglet('historique')">Historique</button>
+                        </div>
+                        <div id="mail-liste"></div>
+                    </div>
+                    <div id="mail-detail" class="cache"></div>
+                </div>
+
+                <div id="ecran-bonus" class="ecran cache">
+                    <h2>Bonus</h2>
+                    <div id="liste-bonus"></div>
+                </div>
+
+                <div id="ecran-pet" class="ecran cache">
+                    <h2>Pet</h2>
+                    <p>Faim : <span id="pet-faim"></span></p>
+                    <p>Propreté : <span id="pet-proprete"></span></p>
+                    <p>Amitié : <span id="pet-amitie"></span></p>
+                    <p id="pet-bonus"></p>
+                    <button id="btn-nourrir" data-label="Nourrir" onclick="nourrirPet()">Nourrir</button>
+                    <button id="btn-laver" data-label="Laver" onclick="laverPet()">Laver</button>
+                    <button id="btn-caresser" data-label="Caresser" onclick="caresserPet()">Caresser</button>
+                </div>
             </div>
+
+            <img id="cadre-telephone" src="images/cadre_tel.png" alt="">
+            <button id="btn-accueil" onclick="afficherEcran('accueil')" aria-label="Accueil"></button>
+        </div>
+
+        <div id="ordinateur" class="cache">
+            <div id="ordi-barre-titre">
+                <span>🖥️ Ordinateur</span>
+                <button onclick="fermerOrdinateur()">✖</button>
             </div>
 
-            <div id="ecran-banque" class="ecran cache">
-            <h2>Banque</h2>
-            <p>Solde : <span id="solde">0</span> 💰</p>
-            <ul id="liste-historique"></ul>
+            <div id="ordi-contenu">
+                <div id="ordi-accueil" class="ecran-ordi">
+                    <div id="grille-apps-ordi">
+                        <button class="icone-app" onclick="afficherEcranOrdi('arbre')"><span class="icone">🌱</span>Skills</button>
+                        <button class="icone-app" onclick="afficherEcranOrdi('boutique')"><span class="icone">🛒</span>Boutique</button>
+                        <button class="icone-app" onclick="afficherEcranOrdi('stats')"><span class="icone">📈</span>Stats</button>
+                        <button class="icone-app" onclick="afficherEcranOrdi('profil')"><span class="icone">🕸️</span>Profil</button>
+                    </div>
+                </div>
+
+                <div id="ordi-arbre" class="ecran-ordi cache"></div>
+                <div id="ordi-skill-detail" class="ecran-ordi cache"></div>
+                <div id="ordi-boutique" class="ecran-ordi cache"></div>
+                <div id="ordi-stats" class="ecran-ordi cache"><h2>Statistiques</h2><p>Bientôt...</p></div>
+                <div id="ordi-profil" class="ecran-ordi cache"><h2>Profil</h2><p>Bientôt...</p></div>
             </div>
 
-            <div id="ecran-events" class="ecran cache">
-            <h2>Events</h2>
-            <div id="liste-events"></div>
-
-            <h2>Défi</h2>
-            <div id="zone-defi"></div>
-
-            <h2>Quêtes supplémentaires</h2>
-            <div id="liste-quetes-supp"></div>
-            </div>
-
-            <div id="ecran-bonus" class="ecran cache">
-            <h2>Bonus</h2>
-            <div id="liste-bonus"></div>
-            </div>
-
-            <div id="ecran-skills" class="ecran cache">
-            <h2>Skills</h2>
-            <div id="liste-skills"></div>
-            </div>
-            <div id="ecran-skill-detail" class="ecran cache"></div>
-
-            <div id="ecran-pet" class="ecran cache">
-            <h2>Pet</h2>
-            <p>Faim : <span id="pet-faim"></span></p>
-            <p>Propreté : <span id="pet-proprete"></span></p>
-            <p>Amitié : <span id="pet-amitie"></span></p>
-            <p id="pet-bonus"></p>
-            <button id="btn-nourrir" data-label="Nourrir" onclick="nourrirPet()">Nourrir</button>
-            <button id="btn-laver" data-label="Laver" onclick="laverPet()">Laver</button>
-            <button id="btn-caresser" data-label="Caresser" onclick="caresserPet()">Caresser</button>
+            <div id="ordi-barre-taches">
+                <button onclick="afficherEcranOrdi('accueil')">🏠</button>
             </div>
         </div>
 
-        <img id="cadre-telephone" src="images/cadre_tel.png" alt="">
-        <button id="btn-accueil" onclick="afficherEcran('accueil')" aria-label="Accueil"></button>
-        </div>
-
-        <script src="js/argent.js?v=2"></script>
-        <script src="js/taches.js?v=2"></script>
-        <script src="js/chambre.js?v=2"></script>
-        <script src="js/telephone.js?v=3"></script>
-        <script src="js/skills.js?v=2"></script>
+        <script src="js/argent.js?v=3"></script>
+        <script src="js/taches.js?v=3"></script>
+        <script src="js/chambre.js?v=3"></script>
+        <script src="js/telephone.js?v=4"></script>
+        <script src="js/skills.js?v=3"></script>
+        <script src="js/constellations.js?v=9"></script>
+        <script src="js/profil.js?v=2"></script>
+        <script src="js/stats.js?v=1"></script>
         <script src="js/pet.js?v=2"></script>
-        <script src="js/events.js?v=2"></script>
-        <script src="js/defis.js?v=2"></script>
-        <script src="js/quetes-supp.js?v=2"></script>
-        <script src="js/main.js?v=2"></script>
+        <script src="js/mail.js"></script>
+        <script src="js/ordinateur.js?v=3"></script>
+        <script src="js/main.js?v=3"></script>
     </body>
 </html>

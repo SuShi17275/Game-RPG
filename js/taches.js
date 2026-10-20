@@ -46,7 +46,7 @@ function cocherTache(id) {
 function validerTache(t) {
   tachesFaites.push(t.id);
   sauvegarderTachesFaites();
-  ajouterTransaction(t.nom, t.gain);
+  ajouterTransaction(t.nom, t.gain, { type: "tache" });
   afficherTaches();
 }
 
