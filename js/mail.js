@@ -2,14 +2,15 @@ const CHANCE_DEFI = 0.3;           // chance d'un défi à chaque ouverture
 const JOURS_INACTIVITE = 3;        // jours sans connexion avant une quête supplémentaire
 const EXPEDITEURS = { event: "Events", defi: "Défi express", supp: "On t'attend !" };
 
-let mails = JSON.parse(localStorage.getItem("mails")) || [];
+let mails = lireStockage("mails", []);
 let defisPossibles = [];
 let quetesSuppPossibles = [];
 let eventsFichier = [];
 let ongletMail = "nouveau";
+let validationQueteDepuisMail = false;
 
 function sauvegarderMails() {
-  localStorage.setItem("mails", JSON.stringify(mails));
+  return ecrireStockage("mails", JSON.stringify(mails));
 }
 
 function trouverMail(id) {
@@ -18,6 +19,22 @@ function trouverMail(id) {
 
 function estActif(m) {
   return m.statut === "attente" || m.statut === "accepte";
+}
+
+function estNotificationQueteTerminee(m) {
+  return m.type === "supp" && Boolean(m.skillId) && m.statut === "termine";
+}
+
+function estNouveau(m) {
+  return !m.lu && (estActif(m) || estNotificationQueteTerminee(m));
+}
+
+function nettoyerMails() {
+  const limite = Date.now() - 90 * 86400000;
+  mails = mails.filter(function(m) {
+    return estActif(m) || estNouveau(m) || m.type === "event" || Date.parse(m.date) > limite;
+  });
+  sauvegarderMails();
 }
 
 function echapper(texte) {
@@ -34,9 +51,14 @@ function libelleStatut(m) {
   return { accepte: "en cours", termine: "✓ terminé", refuse: "refusé", expire: "expiré" }[m.statut] || "";
 }
 
+function nomExpediteur(m) {
+  if (m.type === "supp" && m.skillId) return "Quête conseillée";
+  return EXPEDITEURS[m.type] || "Inconnu";
+}
+
 function ajouterMail(donnees) {
   const m = Object.assign({
-    id: "m" + Date.now() + Math.floor(Math.random() * 1000),
+    id: genererIdMail(),
     date: new Date().toISOString(),
     lu: false,
     statut: "attente"
@@ -44,6 +66,17 @@ function ajouterMail(donnees) {
   mails.push(m);
   sauvegarderMails();
   return m;
+}
+
+function genererIdMail() {
+  if (window.crypto && typeof window.crypto.randomUUID === "function") {
+    return "m" + window.crypto.randomUUID();
+  }
+  let id;
+  do {
+    id = "m" + Date.now() + Math.random().toString(36).slice(2);
+  } while (mails.some(function(m) { return m.id === id; }));
+  return id;
 }
 
 // ---------- Chargement des données et vérifications à l'ouverture ----------
@@ -62,16 +95,19 @@ Promise.all([
   defisPossibles = res[0];
   quetesSuppPossibles = res[1];
   eventsFichier = res[2];
+  nettoyerMails();
   livrerEvents();
   verifierExpirations();
   verifierNouveauDefi();
   verifierInactivite();
+  verifierQueteConseillee();
   afficherMail();
 });
 
 document.addEventListener("visibilitychange", function() {
   if (!document.hidden) {
     verifierExpirations();
+    nettoyerMails();
     afficherMail();
   }
 });
@@ -80,7 +116,7 @@ function verifierExpirations() {
   const maintenant = new Date();
   mails.forEach(function(m) {
     if (m.statut === "accepte" && m.finAvant && new Date(m.finAvant) < maintenant) {
-      ajouterTransaction(m.objet, -m.recompense); // pénalité du défi raté
+      ajouterTransaction(m.objet, -m.recompense, { type: m.type }); // pénalité du défi raté
       m.statut = "expire";
       m.lu = true;
     } else if (m.statut === "attente" && m.type === "event" && m.fin && new Date(m.fin + "T23:59:59") < maintenant) {
@@ -123,6 +159,12 @@ function livrerEvents() {
 function verifierNouveauDefi() {
   const enCours = mails.some(function(m) { return m.type === "defi" && estActif(m); });
   if (enCours || defisPossibles.length === 0) return;
+  const date = new Date();
+  const aujourdHui = date.getFullYear() + "-" +
+    String(date.getMonth() + 1).padStart(2, "0") + "-" +
+    String(date.getDate()).padStart(2, "0");
+  if (localStorage.getItem("dernierTirageDefi") === aujourdHui) return;
+  ecrireStockage("dernierTirageDefi", aujourdHui);
   if (Math.random() < CHANCE_DEFI) {
     const d = defisPossibles[Math.floor(Math.random() * defisPossibles.length)];
     ajouterMail({
@@ -141,7 +183,9 @@ function verifierInactivite() {
   const maintenant = new Date();
   if (derniere && quetesSuppPossibles.length > 0) {
     const jours = (maintenant - new Date(derniere)) / (1000 * 60 * 60 * 24);
-    const enAttente = mails.some(function(m) { return m.type === "supp" && estActif(m); });
+    const enAttente = mails.some(function(m) {
+      return m.type === "supp" && !m.skillId && estActif(m);
+    });
     if (jours >= JOURS_INACTIVITE && !enAttente) {
       const q = quetesSuppPossibles[Math.floor(Math.random() * quetesSuppPossibles.length)];
       ajouterMail({
@@ -153,8 +197,60 @@ function verifierInactivite() {
       });
     }
   }
-  localStorage.setItem("derniereOuverture", maintenant.toISOString());
+  ecrireStockage("derniereOuverture", maintenant.toISOString());
 }
+
+function verifierQueteConseillee() {
+  synchroniserQuetesConseillees();
+  const enAttente = mails.some(function(m) {
+    return m.type === "supp" && m.skillId && estActif(m);
+  });
+  if (enAttente || typeof selectionnerQueteConseillee !== "function") return;
+
+  const suggestion = selectionnerQueteConseillee();
+  if (!suggestion) return;
+  ajouterMail({
+    type: "supp",
+    expediteur: EXPEDITEURS.supp,
+    objet: "Quête conseillée : " + suggestion.quete.nom,
+    corps: "On te propose de reprendre le skill « " + suggestion.skill.nom +
+      " » avec cette quête : " + suggestion.quete.nom +
+      ". Pas de limite de temps ni de pénalité.",
+    recompense: suggestion.quete.recompense,
+    skillId: suggestion.skill.id,
+    queteId: suggestion.quete.id
+  });
+}
+
+function synchroniserQuetesConseillees() {
+  if (typeof getSkill !== "function" ||
+      typeof toutesLesQuetes !== "function" ||
+      typeof queteFaite !== "function") return;
+
+  let modifie = false;
+  mails.forEach(function(m) {
+    if (m.type !== "supp" || !m.skillId || !m.queteId || !estActif(m)) return;
+    const skill = getSkill(m.skillId);
+    if (!skill) return;
+    const quete = toutesLesQuetes(skill).find(function(q) { return q.id === m.queteId; });
+    if (!quete || !queteFaite(skill, quete)) return;
+    m.statut = "termine";
+    m.corps = (m.corps || "") + " Cette quête a été validée depuis l'application Skills.";
+    m.lu = false;
+    modifie = true;
+  });
+  if (modifie) sauvegarderMails();
+}
+
+window.addEventListener("skills:pretes", function() {
+  verifierQueteConseillee();
+  afficherMail();
+});
+
+window.addEventListener("skills:progression-change", function() {
+  if (!validationQueteDepuisMail) synchroniserQuetesConseillees();
+  afficherMail();
+});
 
 // ---------- Affichage ----------
 
@@ -164,7 +260,7 @@ function montrerVue(nom) {
 }
 
 function afficherMail() {
-  const nonLus = mails.filter(function(m) { return !m.lu && estActif(m); }).length;
+  const nonLus = mails.filter(estNouveau).length;
   document.getElementById("compteur-nouveau").textContent = nonLus ? "(" + nonLus + ")" : "";
   const badge = document.getElementById("badge-mail");
   badge.textContent = nonLus;
@@ -175,9 +271,9 @@ function afficherMail() {
   });
 
   const affiches = mails.filter(function(m) {
-    if (ongletMail === "nouveau") return !m.lu && estActif(m);
+    if (ongletMail === "nouveau") return estNouveau(m);
     if (ongletMail === "afaire") return m.lu && estActif(m);
-    return !estActif(m);
+    return !estActif(m) && !(estNotificationQueteTerminee(m) && !m.lu);
   }).sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
 
   const liste = document.getElementById("mail-liste");
@@ -187,11 +283,12 @@ function afficherMail() {
   }
   liste.innerHTML = affiches.map(function(m) {
     const statut = libelleStatut(m);
+    const expediteur = nomExpediteur(m);
     return `
       <div class="mail-ligne ${m.lu ? "" : "non-lu"}" onclick="ouvrirMail('${m.id}')">
-        <div class="avatar avatar-${m.type}">${EXPEDITEURS[m.type][0]}</div>
+        <div class="avatar avatar-${m.type}">${expediteur[0]}</div>
         <div class="mail-texte">
-          <div class="mail-expediteur">${EXPEDITEURS[m.type]}</div>
+          <div class="mail-expediteur">${expediteur}</div>
           <div class="mail-objet">${echapper(m.objet)}</div>
           <div class="mail-apercu">💰 ${m.recompense}${statut ? " · " + statut : ""}</div>
         </div>
@@ -218,12 +315,13 @@ function actionsMail(m) {
 }
 
 function afficherDetail(m) {
+  const expediteur = nomExpediteur(m);
   document.getElementById("mail-detail").innerHTML = `
     <button onclick="retourListe()">← Retour</button>
     <h3>${echapper(m.objet)}</h3>
     <div class="mail-entete">
-      <div class="avatar avatar-${m.type}">${EXPEDITEURS[m.type][0]}</div>
-      <div><strong>${EXPEDITEURS[m.type]}</strong><br><small>${formaterDate(m.date)}</small></div>
+      <div class="avatar avatar-${m.type}">${expediteur[0]}</div>
+      <div><strong>${expediteur}</strong><br><small>${formaterDate(m.date)}</small></div>
     </div>
     <p>${echapper(m.corps)}</p>
     <p>💰 ${m.recompense}${m.fin ? " · jusqu'au " + new Date(m.fin).toLocaleDateString("fr-FR") : ""}</p>
@@ -279,9 +377,27 @@ function validerMail(id) {
   if (!m || !estActif(m)) { retourListe(); return; }
   if (m.type === "defi" && m.statut !== "accepte") return;
   if (!confirm("Valider « " + m.objet + " » ?")) return;
+  let queteValidee = true;
+  if (m.skillId) {
+    validationQueteDepuisMail = true;
+    try {
+      queteValidee = validerQueteConseillee(m);
+    } finally {
+      validationQueteDepuisMail = false;
+    }
+  }
+  if (!queteValidee) {
+    alert("Cette quête n'est plus disponible. Elle a été retirée de ta liste.");
+    m.statut = "expire";
+    m.lu = true;
+    sauvegarderMails();
+    retourListe();
+    return;
+  }
   m.statut = "termine";
+  m.lu = true;
   sauvegarderMails();
-  ajouterTransaction(m.objet, m.recompense);
+  if (!m.skillId) ajouterTransaction(m.objet, m.recompense, { type: m.type });
   if (m.type === "defi") validerTacheAuto("quete-defi");
   retourListe();
 }

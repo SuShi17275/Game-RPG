@@ -6,6 +6,7 @@ body { margin: 0; touch-action: manipulation; }
 
 #chambre {
   position: relative;
+  isolation: isolate;
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
@@ -107,6 +108,50 @@ body { margin: 0; touch-action: manipulation; }
   pointer-events: none;
 }
 
+#pet-chambre {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.pet-info-bulle {
+  position: absolute;
+  z-index: 2001;
+  width: max-content;
+  max-width: min(230px, 85vw);
+  box-sizing: border-box;
+  padding: 8px 10px;
+  transform: translate(-50%, -100%);
+  border: 2px solid #6b4f3a;
+  border-radius: 10px;
+  background: #fffdf5;
+  box-shadow: 0 2px 8px #0005;
+  color: #2b2118;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  pointer-events: none;
+}
+
+.pet-info-bulle::after {
+  position: absolute;
+  bottom: -7px;
+  left: calc(50% - 6px);
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  border-right: 2px solid #6b4f3a;
+  border-bottom: 2px solid #6b4f3a;
+  background: #fffdf5;
+  content: "";
+}
+
+.pet-info-bulle strong { display: block; margin-bottom: 4px; }
+.pet-info-bulle p { margin: 2px 0; }
+
 .objet {
   position: absolute;
   top: 0;
@@ -115,6 +160,8 @@ body { margin: 0; touch-action: manipulation; }
   height: auto;
   image-rendering: pixelated;
 }
+
+.objet[data-interaction] { pointer-events: auto; touch-action: none; }
 
 .objet.fait { filter: grayscale(0.8) brightness(0.8); }
 
@@ -272,6 +319,37 @@ body { margin: 0; touch-action: manipulation; }
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
+
+.parametres-carte {
+  margin: 12px 0;
+  padding: 12px;
+  background: #f6f8fc;
+  border-radius: 10px;
+}
+.parametres-carte h3 { margin: 0 0 6px; }
+.parametres-carte p { margin: 6px 0 12px; }
+.parametres-carte button,
+.parametres-import {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 8px 0;
+  padding: 10px;
+  border: 0;
+  border-radius: 7px;
+  background: #1f3a5f;
+  color: #fff;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+.parametres-import input { display: none; }
+.parametres-carte small { display: block; color: #555; }
+.parametres-reset button { background: #b3261e; }
+#parametres-message { min-height: 1.4em; }
+#parametres-message.erreur { color: #b3261e; }
+.stats-economie { color: #555; font-size: 0.85rem; }
+.stats-barre-taches { background: #8e7cc3; }
 /* ===== Ordinateur : Skills et Boutique ===== */
 .eclats { font-weight: bold; margin: 0 0 8px; }
 

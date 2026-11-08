@@ -6,9 +6,10 @@
 // (l'ancien format avec "quetes" directement sur le skill marche encore : il devient un seul niveau)
 //
 // Sauvegardes (localStorage) :
-//   progressionSkills : { idSkill: { "nom de la quête": "date ISO" } }
+//   progressionSkills : { idSkill: { idQuete: "date ISO" } }
 //   skillsAchetes     : [ idSkill, ... ]
-//   niveauxEclats     : { idSkill: { "0": 2, "1": 3 } }  (éclats déjà reçus par niveau terminé)
+//   skillsDebloques   : [ idSkill, ... ] (prérequis remplis au moins une fois)
+//   niveauxEclats     : { idSkill: { idNiveau: nombre } } (éclats déjà reçus par niveau terminé)
 //   paliersCredites   : ancien système (25/50/100 %), gardé pour ne pas perdre les éclats déjà gagnés
 //   eclatsDepenses    : nombre
 
@@ -22,22 +23,12 @@ let configSkills = {
 
 let progression = lireStockage("progressionSkills", {});
 let skillsAchetes = lireStockage("skillsAchetes", []);
+let skillsDebloques = lireStockage("skillsDebloques", []);
 let niveauxEclats = lireStockage("niveauxEclats", {});
 let paliersCredites = lireStockage("paliersCredites", {}); // ancien système, lecture seule
 let eclatsDepenses = lireStockage("eclatsDepenses", 0);
-let skillOuvert = null; // index du skill affiché dans l'écran de détail
-
-function lireStockage(cle, defaut) {
-  try {
-    const brut = localStorage.getItem(cle);
-    return brut === null ? defaut : JSON.parse(brut);
-  } catch (e) {
-    return defaut;
-  }
-}
-
 function sauverStockage(cle, valeur) {
-  localStorage.setItem(cle, JSON.stringify(valeur));
+  ecrireStockage(cle, JSON.stringify(valeur));
 }
 
 function sauvegarderProgression() {
@@ -49,14 +40,39 @@ function chargerJson(chemin) {
   return fetch(chemin, { cache: "no-cache" }).then(function(r) { return r.json(); });
 }
 
-// Un skill sans "niveaux" (ancien format) devient un seul niveau
+// Les ids persistants doivent être écrits dans le JSON ; ce slug n'est qu'un secours.
+function slugIdentifiant(texte) {
+  return String(texte).normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "element";
+}
+
+// Un skill sans "niveaux" (ancien format) devient un seul niveau.
 function normaliserSkill(skill) {
   if (!skill.niveaux) {
     skill.niveaux = [{ nom: "Niveau 1", eclats: 2, quetes: skill.quetes || [] }];
   }
+  const identifiantsNiveaux = new Set();
   skill.niveaux.forEach(function(n, i) {
     if (!n.nom) n.nom = "Niveau " + (i + 1);
     if (typeof n.eclats !== "number") n.eclats = 2 + i;
+    if (!n.id) {
+      n.id = skill.id + "-niveau-" + slugIdentifiant(n.nom);
+      let suffixe = 2;
+      while (identifiantsNiveaux.has(n.id)) n.id = skill.id + "-niveau-" + slugIdentifiant(n.nom) + "-" + suffixe++;
+      console.warn("Niveau sans id dans « " + skill.id + " » : identifiant généré depuis son nom.");
+    }
+    identifiantsNiveaux.add(n.id);
+    const identifiantsQuetes = new Set();
+    n.quetes.forEach(function(quete) {
+      if (!quete.id) {
+        const base = n.id + "-quete-" + slugIdentifiant(quete.nom);
+        quete.id = base;
+        let suffixe = 2;
+        while (identifiantsQuetes.has(quete.id)) quete.id = base + "-" + suffixe++;
+        console.warn("Quête sans id dans « " + skill.id + " » : identifiant généré depuis son nom.");
+      }
+      identifiantsQuetes.add(quete.id);
+    });
   });
   return skill;
 }
@@ -69,11 +85,34 @@ Promise.all([
   skills = resultats[0].map(normaliserSkill);
   categories = resultats[1];
   configSkills = Object.assign(configSkills, resultats[2]);
+  migrerNiveauxEclats();
   verifierPrerequis();
+  verifierQuetes();
+  if (typeof construireIndexDebloques === "function") construireIndexDebloques();
+  memoriserSkillsDebloques();
   if (typeof rafraichirOrdinateur === "function") rafraichirOrdinateur();
+  window.dispatchEvent(new Event("skills:pretes"));
 }).catch(function(erreur) {
   console.error("Erreur de chargement des skills :", erreur);
 });
+
+function migrerNiveauxEclats() {
+  let modifie = false;
+  skills.forEach(function(skill) {
+    const recompenses = niveauxEclats[skill.id];
+    if (!recompenses) return;
+    skill.niveaux.forEach(function(niveau, index) {
+      const ancienId = String(index);
+      if (!Object.prototype.hasOwnProperty.call(recompenses, ancienId)) return;
+      if (!Object.prototype.hasOwnProperty.call(recompenses, niveau.id)) {
+        recompenses[niveau.id] = recompenses[ancienId];
+      }
+      delete recompenses[ancienId];
+      modifie = true;
+    });
+  });
+  if (modifie) sauverStockage("niveauxEclats", niveauxEclats);
+}
 
 function getSkill(id) {
   return skills.find(function(s) { return s.id === id; });
@@ -85,7 +124,7 @@ function getCategorie(id) {
 
 // ---------- quêtes, niveaux et pourcentage (ces fonctions prennent un objet skill) ----------
 function queteFaite(skill, quete) {
-  return Boolean(progression[skill.id] && progression[skill.id][quete.nom]);
+  return Boolean(progression[skill.id] && progression[skill.id][quete.id]);
 }
 
 function toutesLesQuetes(skill) {
@@ -116,6 +155,7 @@ function niveauTermine(skill, indexNiveau) {
   return quetes.length > 0 && quetes.every(function(q) { return queteFaite(skill, q); });
 }
 
+// L'ordre des niveaux détermine leur progression : ajoute les nouveaux niveaux à la fin.
 // Index du premier niveau pas fini, ou -1 si tout est fini
 function niveauEnCours(skill) {
   for (let i = 0; i < skill.niveaux.length; i++) {
@@ -199,9 +239,61 @@ function verifierPrerequis() {
   });
 }
 
+function verifierQuetes() {
+  let progressionModifiee = false;
+  skills.forEach(function(skill) {
+    const progressionSkill = progression[skill.id] || (progression[skill.id] = {});
+    const identifiants = new Set();
+    const quetesParNom = new Map();
+
+    skill.niveaux.forEach(function(niveau) {
+      niveau.quetes.forEach(function(quete) {
+        if (identifiants.has(quete.id)) {
+          console.warn("Identifiant de quête dupliqué dans le skill « " + skill.id + " » : " + quete.id);
+          const base = niveau.id + "-quete-" + slugIdentifiant(quete.nom);
+          quete.id = base;
+          let suffixe = 2;
+          while (identifiants.has(quete.id)) quete.id = base + "-" + suffixe++;
+        }
+        identifiants.add(quete.id);
+        if (!quetesParNom.has(quete.nom)) quetesParNom.set(quete.nom, []);
+        quetesParNom.get(quete.nom).push(quete);
+      });
+    });
+
+    quetesParNom.forEach(function(quetes, nom) {
+      if (quetes.length > 1) {
+        console.warn("Quête « " + nom + " » dupliquée dans « " + skill.id +
+          " » : chaque occurrence a une progression distincte.");
+      }
+      if (Object.prototype.hasOwnProperty.call(progressionSkill, nom)) {
+        const premiereQuete = quetes[0];
+        if (!Object.prototype.hasOwnProperty.call(progressionSkill, premiereQuete.id)) {
+          progressionSkill[premiereQuete.id] = progressionSkill[nom];
+        }
+        delete progressionSkill[nom];
+        progressionModifiee = true;
+      }
+    });
+  });
+
+  if (progressionModifiee) sauvegarderProgression();
+}
+
+function memoriserSkillsDebloques() {
+  let modifie = false;
+  skills.forEach(function(skill) {
+    if (skill.prerequis.length > 0 && prerequisRemplis(skill) && !skillsDebloques.includes(skill.id)) {
+      skillsDebloques.push(skill.id);
+      modifie = true;
+    }
+  });
+  if (modifie) sauverStockage("skillsDebloques", skillsDebloques);
+}
+
 // Débloqué si : skill de départ (niveau 1, sans prérequis), ou prérequis remplis, ou acheté
 function estDebloque(skill) {
-  if (skillsAchetes.includes(skill.id)) return true;
+  if (skillsAchetes.includes(skill.id) || skillsDebloques.includes(skill.id)) return true;
   if (skill.prerequis.length > 0) return prerequisRemplis(skill);
   return skill.niveau === 1;
 }
@@ -231,8 +323,8 @@ function verifierNiveaux(skill) {
   let eclats = 0;
   const termines = [];
   skill.niveaux.forEach(function(n, i) {
-    if (niveauTermine(skill, i) && niveauxEclats[skill.id][String(i)] === undefined) {
-      niveauxEclats[skill.id][String(i)] = n.eclats; // on enregistre le montant reçu
+    if (niveauTermine(skill, i) && niveauxEclats[skill.id][n.id] === undefined) {
+      niveauxEclats[skill.id][n.id] = n.eclats; // on enregistre le montant reçu
       eclats += n.eclats;
       termines.push(n.nom);
     }
@@ -276,57 +368,13 @@ function acheterSkillUI(idSkill) {
   alert(acheterSkill(idSkill).message);
 }
 
-// ---------- affichage : ancienne liste des skills (remplacée par les constellations, js/constellations.js) ----------
-function afficherListeSkills() {
-  const conteneur = document.getElementById("ordi-arbre");
-  let html = "<h2>🌱 Skills</h2><p class=\"eclats\">✨ Éclats : " + soldeEclats() + "</p>";
-
-  categories.forEach(function(cat) {
-    // les skills à acheter n'apparaissent que dans la boutique
-    const liste = [];
-    skills.forEach(function(skill, index) {
-      if (skill.categorie === cat.id && !estEnBoutique(skill)) liste.push({ skill: skill, index: index });
-    });
-    if (liste.length === 0) return;
-
-    html += `<h3 class="categorie-titre" style="border-left-color:${cat.couleur}">${cat.icone} ${echapper(cat.nom)}</h3>`;
-    liste.forEach(function(e) {
-      const skill = e.skill;
-      if (estDebloque(skill)) {
-        const actuel = niveauEnCours(skill);
-        const etiquette = actuel === -1
-          ? "✅ Maîtrisé"
-          : "Niv. " + (actuel + 1) + "/" + skill.niveaux.length;
-        html += `
-          <button class="skill-carte" style="border-left-color:${cat.couleur}" onclick="ouvrirSkill(${e.index})">
-            <span class="skill-nom">${echapper(skill.nom)}</span>
-            <span class="skill-compte">${etiquette} · ${nbQuetesFaites(skill)}/${nbQuetes(skill)}</span>
-            <span class="skill-barre"><span style="width:${pourcentageSkill(skill)}%;background:${cat.couleur}"></span></span>
-          </button>`;
-      } else {
-        const manque = skill.prerequis.map(libellePrerequis).join(", ");
-        html += `
-          <div class="skill-carte verrouille" style="border-left-color:${cat.couleur}">
-            <span class="skill-nom">🔒 ${echapper(skill.nom)}</span>
-            <small>Prérequis : ${echapper(manque)}</small>
-          </div>`;
-      }
-    });
-  });
-
-  conteneur.innerHTML = html;
-}
-
 // ---------- affichage : quêtes d'un skill (un seul niveau à la fois) ----------
-// Retourne le HTML des quêtes. Il est affiché dans la fenêtre pop-up (constellations.js).
+// Retourne le HTML des quêtes affichées dans le panneau de détail (constellations.js).
 function htmlQuetesSkill(indexSkill) {
   const skill = skills[indexSkill];
-  const cat = getCategorie(skill.categorie);
   const actuel = niveauEnCours(skill);
 
-  let html = `
-    <div class="skill-barre"><span style="width:${pourcentageSkill(skill)}%;background:${cat.couleur}"></span></div>
-    <p>${pourcentageSkill(skill)} % (${nbQuetesFaites(skill)}/${nbQuetes(skill)})</p>`;
+  let html = "";
 
   if (actuel === -1) {
     html += `<p class="skill-maitrise">🎉 Skill maîtrisé, tous les niveaux sont terminés !</p>`;
@@ -382,10 +430,77 @@ function htmlQuetesSkill(indexSkill) {
   return html;
 }
 
-// Ouvre la fenêtre pop-up d'un skill (définie dans constellations.js)
+// Ouvre le panneau de détail d'un skill (défini dans constellations.js).
 function ouvrirSkill(indexSkill) {
-  skillOuvert = indexSkill;
-  if (typeof ouvrirEtoile === "function") ouvrirEtoile(skills[indexSkill].id);
+  if (!skills[indexSkill] || typeof ouvrirDetailSkill !== "function") return;
+  ouvrirDetailSkill(skills[indexSkill].id);
+}
+
+function selectionnerQueteConseillee() {
+  if (skills.length === 0) return null;
+  const candidats = skills.map(function(skill, index) {
+    const derniereQuete = toutesLesQuetes(skill).reduce(function(derniere, quete) {
+      const date = progression[skill.id] && progression[skill.id][quete.id];
+      const horodatage = date ? Date.parse(date) : NaN;
+      return Number.isFinite(horodatage) ? Math.max(derniere, horodatage) : derniere;
+    }, 0);
+    return { skill: skill, index: index, derniereQuete: derniereQuete };
+  }).filter(function(candidat) {
+    const niveau = niveauEnCours(candidat.skill);
+    return candidat.derniereQuete > 0 && estDebloque(candidat.skill) && niveau !== -1 &&
+      indexProchaineQuete(candidat.skill, niveau) !== -1;
+  }).sort(function(a, b) {
+    return a.derniereQuete - b.derniereQuete ||
+      a.skill.nom.localeCompare(b.skill.nom, "fr");
+  });
+
+  if (candidats.length === 0) return null;
+  const candidat = candidats[0];
+  const indexNiveau = niveauEnCours(candidat.skill);
+  const indexQuete = indexProchaineQuete(candidat.skill, indexNiveau);
+  return {
+    skill: candidat.skill,
+    quete: candidat.skill.niveaux[indexNiveau].quetes[indexQuete]
+  };
+}
+
+function enregistrerQueteSkill(skill, quete) {
+  progression[skill.id] = progression[skill.id] || {};
+  progression[skill.id][quete.id] = new Date().toISOString();
+  sauvegarderProgression();
+  ajouterTransaction(quete.nom, quete.recompense, { type: "skill" });
+  validerTacheAuto("quete-skill");
+
+  const resultat = verifierNiveaux(skill);
+  const debloquesAvant = new Set(skillsDebloques);
+  memoriserSkillsDebloques();
+  const nouvellementDebloques = skills.filter(function(skillDebloque) {
+    return !debloquesAvant.has(skillDebloque.id) && skillsDebloques.includes(skillDebloque.id);
+  });
+  if (resultat.eclats > 0) {
+    alert("🎉 " + resultat.niveaux.join(", ") + " terminé !\n✨ +" + resultat.eclats + " éclats");
+  }
+  if (nouvellementDebloques.length > 0) {
+    alert("🔓 Skill débloqué ! " + nouvellementDebloques.map(function(skillDebloque) {
+      return skillDebloque.nom;
+    }).join(", "));
+  }
+  if (typeof rafraichirOrdinateur === "function") rafraichirOrdinateur();
+  window.dispatchEvent(new Event("skills:progression-change"));
+}
+
+function validerQueteConseillee(mail) {
+  const skill = getSkill(mail.skillId);
+  if (!skill || !estDebloque(skill)) return false;
+
+  const indexNiveau = niveauEnCours(skill);
+  if (indexNiveau === -1) return false;
+  const indexQuete = indexProchaineQuete(skill, indexNiveau);
+  const quete = skill.niveaux[indexNiveau].quetes[indexQuete];
+  if (!quete || quete.id !== mail.queteId) return false;
+
+  enregistrerQueteSkill(skill, quete);
+  return true;
 }
 
 function validerQuete(indexSkill, indexNiveau, indexQuete) {
@@ -396,20 +511,7 @@ function validerQuete(indexSkill, indexNiveau, indexQuete) {
   const quete = skill.niveaux[indexNiveau].quetes[indexQuete];
   if (!quete || queteFaite(skill, quete)) return;
   if (!confirm("Valider « " + quete.nom + " » ?")) return;
-
-  progression[skill.id] = progression[skill.id] || {};
-  progression[skill.id][quete.nom] = new Date().toISOString();
-  sauvegarderProgression();
-
-  ajouterTransaction(quete.nom, quete.recompense, { type: "skill" });
-  validerTacheAuto("quete-skill");
-
-  const resultat = verifierNiveaux(skill);
-  if (resultat.eclats > 0) {
-    alert("🎉 " + resultat.niveaux.join(", ") + " terminé !\n✨ +" + resultat.eclats + " éclats");
-  }
-
-  rafraichirOrdinateur();
+  enregistrerQueteSkill(skill, quete);
 }
 
 // ---------- affichage : boutique ----------

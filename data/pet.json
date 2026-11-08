@@ -1,0 +1,56 @@
+{
+  "image": "images/pet.png",
+  "taille": 32,
+  "animations": {
+    "repos": {
+      "ligne": 0,
+      "frames": 4,
+      "fps": 3,
+      "boucle": true
+    },
+    "marche-bas-droite": {
+      "ligne": 1,
+      "frames": 4,
+      "fps": 7,
+      "boucle": true
+    },
+    "marche-haut-droite": {
+      "ligne": 2,
+      "frames": 4,
+      "fps": 7,
+      "boucle": true
+    },
+    "manger": {
+      "ligne": 3,
+      "frames": 4,
+      "fps": 6,
+      "repetitions": 3
+    },
+    "dormir": {
+      "ligne": 4,
+      "frames": 4,
+      "fps": 6,
+      "repetitions": 4
+    },
+    "jouer": {
+      "ligne": 5,
+      "frames": 4,
+      "fps": 6,
+      "repetitions": 3
+    },
+    "triste": {
+      "ligne": 6,
+      "frames": 2,
+      "fps": 2,
+      "boucle": true
+    },
+    "marche-bas-gauche": {
+      "copie": "marche-bas-droite",
+      "miroir": true
+    },
+    "marche-haut-gauche": {
+      "copie": "marche-haut-droite",
+      "miroir": true
+    }
+  }
+}

@@ -1,189 +1,295 @@
-// ===== constellations.js : appli Skills de l'ordinateur =====
-// Un ciel horizontal où les skills sont dispersés. Une ligne relie un skill à son prérequis.
-// Un tap sur un skill ouvre une fenêtre pop-up avec ses quêtes (ou son prix / ses prérequis).
-//
-// Utilise skills.js : skills, categories, getSkill, getCategorie, estDebloque, estMaitrise, estEnBoutique,
-// prixSkill, prerequisAtteint, niveauSeuil, seuilPrerequis, idPrerequis, libellePrerequis,
-// pourcentageSkill, soldeEclats, htmlQuetesSkill, acheterSkillUI, echapper.
+// ===== constellations.js : cartes de skills par catégorie =====
+// La logique de progression et d'achat reste dans skills.js.
 
-let etoileSelectionnee = null;   // id du skill dont la pop-up est ouverte (il brille)
-let positionPopup = null;
-let deplacementPopup = null;
+let categorieSkillOuverte = null;
+let skillDetailOuvert = null;
+let positionPopupSkill = null;
+let deplacementPopupSkill = null;
+let clicFondApresDeplacement = false;
+let indexSkillsDebloquants = Object.create(null);
+let indexSkillsDebloquantsConstruit = false;
+let rangsSkills = null;
 
-// ----- réglages de l'affichage (tu peux les modifier) -----
-const RAYON = 2.7;               // taille des cercles dans le repère du ciel
-const LARGEUR_NOM = 10;          // caractères max par ligne pour un nom
+const RANGS_SKILL_DEFAUT = [
+  { lettre: "E", pourcentage: 0 },
+  { lettre: "D", pourcentage: 10 },
+  { lettre: "C", pourcentage: 25 },
+  { lettre: "B", pourcentage: 45 },
+  { lettre: "A", pourcentage: 70 },
+  { lettre: "S", pourcentage: 100 }
+];
 
-// ---------- états ----------
+function construireIndexDebloques() {
+  if (indexSkillsDebloquantsConstruit) return;
+  skills.forEach(function(skill) {
+    skill.prerequis.forEach(function(prerequis) {
+      const idParent = idPrerequis(prerequis);
+      if (!indexSkillsDebloquants[idParent]) indexSkillsDebloquants[idParent] = [];
+      if (!indexSkillsDebloquants[idParent].includes(skill.id)) {
+        indexSkillsDebloquants[idParent].push(skill.id);
+      }
+    });
+  });
+  indexSkillsDebloquantsConstruit = true;
+}
+
 function etatSkill(skill) {
-  if (estDebloque(skill)) return estMaitrise(skill) ? "maitrise" : "encours";
+  const debloque = skillsAchetes.includes(skill.id) || skillsDebloques.includes(skill.id) ||
+    (skill.prerequis.length === 0 && skill.niveau === 1);
+  if (debloque) return nbQuetesFaites(skill) > 0 ? "actif" : "dispo";
   if (estEnBoutique(skill)) return "boutique";
   return "verrouille";
 }
 
-// ---------- outils ----------
-// Coupe un texte en lignes de `largeur` caractères, `max` lignes au maximum
-function decouperTexte(texte, largeur, max) {
-  const lignes = [];
-  let courante = "";
-  texte.split(" ").forEach(function(mot) {
-    if (courante === "") courante = mot;
-    else if ((courante + " " + mot).length <= largeur) courante += " " + mot;
-    else { lignes.push(courante); courante = mot; }
-  });
-  if (courante !== "") lignes.push(courante);
-  if (lignes.length > max) {
-    lignes.length = max;
-    lignes[max - 1] = lignes[max - 1].slice(0, largeur - 1) + "…";
+function textePrerequisManquant(prerequis) {
+  const idParent = idPrerequis(prerequis);
+  const parent = getSkill(idParent);
+  if (!parent) return idParent + " (skill introuvable)";
+
+  const indexSeuil = niveauSeuil(prerequis);
+  if (indexSeuil !== -1) {
+    const niveauActuel = niveauEnCours(parent);
+    const numeroActuel = niveauActuel === -1 ? parent.niveaux.length : niveauActuel + 1;
+    return parent.id + " niveau " + (indexSeuil + 1) + " (tu es au niveau " + numeroActuel + ")";
   }
-  return lignes;
+
+  const seuil = seuilPrerequis(prerequis);
+  return parent.id + " " + seuil + " % (tu es à " + pourcentageSkill(parent) + " %)";
 }
 
-function hashSkill(id) {
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) % 997;
-  return hash;
+function prerequisManquants(skill) {
+  return skill.prerequis.filter(function(prerequis) {
+    return !prerequisAtteint(prerequis);
+  }).map(textePrerequisManquant);
 }
 
-// Petites étoiles de fond, toujours les mêmes
-function fondEtoile(largeur, hauteur) {
-  let graine = 4242;
-  const suivant = function() {
-    graine = (graine * 49297 + 233280) % 233280;
-    return graine / 233280;
+function rangSkill(pourcentage) {
+  if (!rangsSkills) {
+    rangsSkills = typeof listeRangs === "function" ? listeRangs() : RANGS_SKILL_DEFAUT;
+  }
+  let rang = rangsSkills[0];
+  rangsSkills.forEach(function(candidat) {
+    if (pourcentage >= candidat.pourcentage) rang = candidat;
+  });
+  return rang.lettre;
+}
+
+function niveauActuelSkill(skill) {
+  const index = niveauEnCours(skill);
+  return index === -1 ? "Tous les niveaux terminés" : skill.niveaux[index].nom;
+}
+
+function libellePrerequisChaine(parent, prerequis) {
+  const indexSeuil = niveauSeuil(prerequis);
+  if (indexSeuil !== -1) return parent.id + " " + (indexSeuil + 1);
+  return parent.id + " " + seuilPrerequis(prerequis) + " %";
+}
+
+function chainesPrerequisSkill(skill, visites) {
+  if (visites.has(skill.id) || skill.prerequis.length === 0) return [[skill.id]];
+  const prochainesVisites = new Set(visites);
+  prochainesVisites.add(skill.id);
+  const chaines = [];
+
+  skill.prerequis.forEach(function(prerequis) {
+    const parent = getSkill(idPrerequis(prerequis));
+    if (!parent) return;
+    chainesPrerequisSkill(parent, prochainesVisites).forEach(function(chaine) {
+      chaine[chaine.length - 1] = libellePrerequisChaine(parent, prerequis);
+      chaine.push(skill.id);
+      chaines.push(chaine);
+    });
+  });
+
+  return chaines.length > 0 ? chaines : [[skill.id]];
+}
+
+function htmlChainesPrerequis(skill) {
+  if (skill.prerequis.length === 0) return "";
+  const chaines = chainesPrerequisSkill(skill, new Set()).map(function(chaine) {
+    return chaine.join(" → ");
+  });
+  const uniques = Array.from(new Set(chaines));
+  return `<p class="skills-chaine"><strong>Prérequis :</strong> ${uniques.map(echapper).join("<br>")}</p>`;
+}
+
+function htmlListePrerequis(skill) {
+  const manquants = prerequisManquants(skill);
+  let indexManquant = 0;
+  let html = "<ul class=\"skills-prerequis\">";
+  skill.prerequis.forEach(function(prerequis) {
+    const manque = prerequisAtteint(prerequis) ? null : manquants[indexManquant++];
+    html += `<li>${manque ? "🔒 " + echapper(manque) : "✅ " + echapper(libellePrerequis(prerequis))}</li>`;
+  });
+  return html + "</ul>";
+}
+
+function htmlDetailSkill(skill) {
+  const etat = etatSkill(skill);
+  const pourcentage = pourcentageSkill(skill);
+  const indexSkill = skills.indexOf(skill);
+  const cat = getCategorie(skill.categorie);
+  let contenu = "";
+
+  if (etat === "actif" || etat === "dispo") {
+    contenu = htmlQuetesSkill(indexSkill);
+  } else if (etat === "boutique") {
+    const prix = prixSkill(skill);
+    contenu = `
+      <p>Prix : <strong>✨ ${prix} éclats</strong> · Solde : <strong>✨ ${soldeEclats()}</strong></p>
+      <button class="skills-acheter" type="button" data-acheter-skill="${echapper(skill.id)}"
+        ${soldeEclats() < prix ? "disabled" : ""}>Acheter — ✨ ${prix}</button>`;
+  } else {
+    contenu = `<p>Ce skill est verrouillé. Il manque :</p>${htmlListePrerequis(skill)}`;
+  }
+
+  return `
+    <section class="skills-detail etat-${etat}" style="--couleur-skill:${cat.couleur}"
+      aria-label="Détail de ${echapper(skill.nom)}">
+      <div class="skills-detail-entete">
+        <div>
+          <p class="skills-detail-categorie">${cat.icone} ${echapper(cat.nom)}</p>
+          <h3>${echapper(skill.nom)}</h3>
+        </div>
+        <button type="button" class="skills-fermer-detail" data-fermer-detail aria-label="Fermer le détail">✕</button>
+      </div>
+      ${htmlChainesPrerequis(skill)}
+      ${contenu}
+      <div class="skill-barre" role="progressbar" aria-label="Progression de ${echapper(skill.nom)}"
+        aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pourcentage}">
+        <span style="width:${pourcentage}%;background:${cat.couleur}"></span>
+      </div>
+      <p class="skills-detail-progression">
+        <strong>Rang ${rangSkill(pourcentage)}</strong>
+        <span>${pourcentage} % · ${nbQuetesFaites(skill)}/${nbQuetes(skill)} quêtes</span>
+      </p>
+    </section>`;
+}
+
+function elementPopupSkill() {
+  let popup = document.getElementById("ordi-popup-skill");
+  if (!popup) {
+    popup = document.createElement("div");
+    popup.id = "ordi-popup-skill";
+    document.getElementById("ordinateur").appendChild(popup);
+  }
+  return popup;
+}
+
+function majPopupSkill() {
+  const popup = elementPopupSkill();
+  const skill = skills.find(function(element) { return element.id === skillDetailOuvert; });
+  popup.innerHTML = skill ? `
+    <div class="skills-popup-fond" data-fermer-popup>
+      <div class="skills-popup-contenu" role="dialog" aria-modal="true"
+        aria-label="Détail de ${echapper(skill.nom)}">
+        ${htmlDetailSkill(skill)}
+      </div>
+    </div>` : "";
+  const fenetre = popup.querySelector(".skills-popup-contenu");
+  if (!fenetre) return;
+  const entete = fenetre.querySelector(".skills-detail-entete");
+  entete.addEventListener("pointerdown", commencerDeplacementPopupSkill);
+  if (positionPopupSkill) appliquerPositionPopupSkill(fenetre);
+}
+
+function commencerDeplacementPopupSkill(event) {
+  if (event.button !== 0 || event.target.closest("button")) return;
+  const fenetre = event.currentTarget.closest(".skills-popup-contenu");
+  const fond = fenetre.closest(".skills-popup-fond");
+  const boiteFenetre = fenetre.getBoundingClientRect();
+  const boiteFond = fond.getBoundingClientRect();
+  if (!positionPopupSkill) {
+    positionPopupSkill = {
+      left: boiteFenetre.left - boiteFond.left,
+      top: boiteFenetre.top - boiteFond.top
+    };
+  }
+  deplacementPopupSkill = {
+    pointerId: event.pointerId,
+    debutX: event.clientX,
+    debutY: event.clientY,
+    left: positionPopupSkill.left,
+    top: positionPopupSkill.top,
+    largeurFond: boiteFond.width,
+    hauteurFond: boiteFond.height,
+    largeurFenetre: boiteFenetre.width,
+    hauteurFenetre: boiteFenetre.height
   };
-  let svg = "";
-  const nb = Math.round(largeur * hauteur / 300);
-  for (let i = 0; i < nb; i++) {
-    svg += `<circle cx="${(suivant() * largeur).toFixed(1)}" cy="${(suivant() * hauteur).toFixed(1)}" r="${(0.12 + suivant() * 0.3).toFixed(2)}" fill="#fff" opacity="${(0.15 + suivant() * 0.45).toFixed(2)}"/>`;
-  }
-  return svg;
+  fenetre.setPointerCapture(event.pointerId);
+  event.preventDefault();
 }
 
-// Regroupe les skills reliés puis intercale les constellations et les étoiles isolées.
-function calculerCiel() {
-  const pos = {};
-  const voisins = new Map();
-  skills.forEach(function(skill) { voisins.set(skill.id, new Set()); });
-  skills.forEach(function(skill) {
-    skill.prerequis.forEach(function(p) {
-      const parent = getSkill(idPrerequis(p));
-      if (!parent || parent.categorie !== skill.categorie) return;
-      voisins.get(skill.id).add(parent.id);
-      voisins.get(parent.id).add(skill.id);
-    });
-  });
+function appliquerPositionPopupSkill(fenetre) {
+  fenetre.style.position = "absolute";
+  fenetre.style.transform = "none";
+  fenetre.style.left = positionPopupSkill.left + "px";
+  fenetre.style.top = positionPopupSkill.top + "px";
+}
 
-  const visites = new Set();
-  const elementsParCategorie = new Map();
-  skills.forEach(function(skill) {
-    if (visites.has(skill.id)) return;
-    const ids = [];
-    const pile = [skill.id];
-    visites.add(skill.id);
-    while (pile.length > 0) {
-      const id = pile.pop();
-      ids.push(id);
-      voisins.get(id).forEach(function(voisin) {
-        if (visites.has(voisin)) return;
-        visites.add(voisin);
-        pile.push(voisin);
-      });
-    }
-    const groupeSkills = ids.map(getSkill);
-    const cle = skill.categorie;
-    if (!elementsParCategorie.has(cle)) elementsParCategorie.set(cle, []);
-    elementsParCategorie.get(cle).push({
-      id: ids.slice().sort().join("-"),
-      categorie: cle,
-      skills: groupeSkills,
-      constellation: groupeSkills.length > 1
-    });
-  });
-
-  elementsParCategorie.forEach(function(elements) {
-    elements.sort(function(a, b) {
-      return hashSkill(a.id) - hashSkill(b.id) || a.id.localeCompare(b.id);
-    });
-  });
-
-  const categoriesOrdonnees = Array.from(elementsParCategorie.keys()).sort(function(a, b) {
-    return hashSkill(a) - hashSkill(b) || a.localeCompare(b);
-  });
-  const elements = [];
-  const dernieresCategories = [];
-  const elementsPlacesParCategorie = new Map();
-  while (true) {
-    const candidates = categoriesOrdonnees.filter(function(categorie) {
-      return elementsParCategorie.get(categorie).length > 0 &&
-        !dernieresCategories.slice(-2).includes(categorie);
-    });
-    const choix = candidates.length > 0 ? candidates : categoriesOrdonnees.filter(function(categorie) {
-      return elementsParCategorie.get(categorie).length > 0;
-    });
-    choix.sort(function(a, b) {
-      const proportionA = (elementsPlacesParCategorie.get(a) || 0) / (elementsParCategorie.get(a).length + (elementsPlacesParCategorie.get(a) || 0));
-      const proportionB = (elementsPlacesParCategorie.get(b) || 0) / (elementsParCategorie.get(b).length + (elementsPlacesParCategorie.get(b) || 0));
-      return proportionA - proportionB;
-    });
-    const categorieChoisie = choix[0];
-    if (!categorieChoisie) break;
-    const element = elementsParCategorie.get(categorieChoisie).shift();
-    elements.push(element);
-    dernieresCategories.push(categorieChoisie);
-    elementsPlacesParCategorie.set(
-      categorieChoisie,
-      (elementsPlacesParCategorie.get(categorieChoisie) || 0) + 1
-    );
+function suivreDeplacementPopupSkill(event) {
+  if (!deplacementPopupSkill || event.pointerId !== deplacementPopupSkill.pointerId) return;
+  if (Math.abs(event.clientX - deplacementPopupSkill.debutX) > 3 ||
+      Math.abs(event.clientY - deplacementPopupSkill.debutY) > 3) {
+    clicFondApresDeplacement = true;
   }
-
-  const ESPACEMENT = 110;
-  elements.forEach(function(element, index) {
-    const ancreX = 45 + index * ESPACEMENT;
-    if (!element.constellation) {
-      const skill = element.skills[0];
-      pos[skill.id] = {
-        x: ancreX + hashSkill(skill.id + "-x") % 35 - 17,
-        y: 15 + hashSkill(skill.id + "-y") % 70
-      };
-      return;
-    }
-
-    const echelleX = element.categorie === "art" ? 2.8 : 1.6;
-    const echelleY = element.categorie === "art" ? 1.4 : 1.1;
-    const points = element.skills.map(function(skill) {
-      return {
-        skill: skill,
-        x: 10 + (typeof skill.x === "number" ? skill.x : 20 + hashSkill(skill.id) % 60) * 0.8,
-        y: 10 + (typeof skill.y === "number" ? skill.y : 20 + hashSkill(skill.id + "-y") % 60) * 0.8
-      };
-    });
-    const centreX = points.reduce(function(total, point) { return total + point.x; }, 0) / points.length;
-    const centreY = points.reduce(function(total, point) { return total + point.y; }, 0) / points.length;
-    const variationY = (hashSkill(element.id + "-ancre") % 17) - 8;
-    points.forEach(function(point) {
-      pos[point.skill.id] = {
-        x: ancreX + (point.x - centreX) * echelleX,
-        y: 50 + variationY + (point.y - centreY) * echelleY
-      };
-    });
-  });
-
-  const positions = Object.keys(pos).map(function(id) { return pos[id]; });
-  const yMin = Math.min.apply(null, positions.map(function(point) { return point.y; }));
-  const yMax = Math.max.apply(null, positions.map(function(point) { return point.y; }));
-  const margeHaut = 10;
-  const margeBas = 24;
-  positions.forEach(function(point) { point.y = point.y - yMin + margeHaut; });
-
-  return {
-    largeur: Math.max(100, 90 + elements.length * ESPACEMENT),
-    hauteur: yMax - yMin + margeHaut + margeBas,
-    pos: pos
+  const marge = 8;
+  const maxLeft = Math.max(marge, deplacementPopupSkill.largeurFond -
+    deplacementPopupSkill.largeurFenetre - marge);
+  const maxTop = Math.max(marge, deplacementPopupSkill.hauteurFond -
+    deplacementPopupSkill.hauteurFenetre - marge);
+  positionPopupSkill = {
+    left: Math.max(marge, Math.min(maxLeft,
+      deplacementPopupSkill.left + event.clientX - deplacementPopupSkill.debutX)),
+    top: Math.max(marge, Math.min(maxTop,
+      deplacementPopupSkill.top + event.clientY - deplacementPopupSkill.debutY))
   };
+  const fenetre = document.querySelector("#ordi-popup-skill .skills-popup-contenu");
+  if (fenetre) appliquerPositionPopupSkill(fenetre);
 }
 
-// ---------- affichage du ciel ----------
+function terminerDeplacementPopupSkill(event) {
+  if (deplacementPopupSkill && event.pointerId === deplacementPopupSkill.pointerId) {
+    deplacementPopupSkill = null;
+  }
+}
+
+function htmlCarteSkill(skill, cat) {
+  const etat = etatSkill(skill);
+  const pourcentage = pourcentageSkill(skill);
+  const enfants = indexSkillsDebloquants[skill.id] || [];
+  const statut = {
+    actif: "Actif",
+    dispo: "Disponible",
+    boutique: "Boutique",
+    verrouille: "Verrouillé"
+  }[etat];
+
+  return `
+    <article class="skill-carte etat-${etat}${skillDetailOuvert === skill.id ? " selectionnee" : ""}"
+      data-skill-id="${echapper(skill.id)}"
+      style="--couleur-skill:${cat.couleur}">
+      <button type="button" class="skill-carte-ouvrir" aria-expanded="${skillDetailOuvert === skill.id}">
+        <span class="skill-carte-entete">
+          <span class="skill-nom">${echapper(skill.nom)}</span>
+          <span class="skill-etat">${statut}</span>
+        </span>
+        <span class="skill-carte-niveau">${echapper(niveauActuelSkill(skill))}</span>
+        <span class="skill-carte-meta">Rang ${rangSkill(pourcentage)} · ${pourcentage} % · ${nbQuetesFaites(skill)}/${nbQuetes(skill)} quêtes</span>
+        <span class="skill-barre" role="progressbar" aria-label="Progression de ${echapper(skill.nom)}"
+          aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pourcentage}">
+          <span style="width:${pourcentage}%;background:${cat.couleur}"></span>
+        </span>
+      </button>
+      ${etat === "boutique" ? `
+        <p class="skill-carte-prix">✨ ${prixSkill(skill)} éclats</p>
+        <button type="button" class="skills-acheter" data-acheter-skill="${echapper(skill.id)}"
+          ${soldeEclats() < prixSkill(skill) ? "disabled" : ""}>Acheter</button>` : ""}
+      ${etat === "verrouille" ? `<p class="skill-carte-manque">🔒 ${prerequisManquants(skill).map(echapper).join("<br>")}</p>` : ""}
+      ${enfants.length > 0 ? `<p class="skill-carte-debloque"><strong>Débloque :</strong> ${enfants.map(echapper).join(", ")}</p>` : ""}
+    </article>`;
+}
+
 function afficherArbre() {
   const conteneur = document.getElementById("ordi-arbre");
   if (!conteneur) return;
@@ -191,204 +297,126 @@ function afficherArbre() {
     conteneur.innerHTML = "<h2>🌱 Skills</h2><p>Chargement…</p>";
     return;
   }
-  const zoneDefilement = conteneur.querySelector(".constel-defilement");
-  const defilement = zoneDefilement
-    ? { gauche: zoneDefilement.scrollLeft, haut: zoneDefilement.scrollTop }
-    : { gauche: 0, haut: 0 };
-  const ciel = calculerCiel();
 
-  let svg = `<svg class="constel-ciel" viewBox="0 0 ${ciel.largeur} ${ciel.hauteur}" role="img" aria-label="Ciel des skills">`;
-  svg += `<defs><filter id="lueur" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="1.8"/></filter></defs>`;
-  svg += fondEtoile(ciel.largeur, ciel.hauteur);
-
-  // Liens courbes pour que les chemins des skills restent visuellement distincts.
-  skills.forEach(function(skill) {
-    skill.prerequis.forEach(function(p) {
-      const parent = getSkill(idPrerequis(p));
-      if (!parent || parent.categorie !== skill.categorie) return;
-      const a = ciel.pos[parent.id];
-      const b = ciel.pos[skill.id];
-      if (!a || !b) return;
-      const dx = b.x - a.x;
-      const dy = b.y - a.y;
-      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-      const marge = RAYON + 1.8;
-      const x1 = a.x + dx / dist * marge, y1 = a.y + dy / dist * marge;
-      const x2 = b.x - dx / dist * marge, y2 = b.y - dy / dist * marge;
-      const sens = hashSkill(parent.id + skill.id) % 2 === 0 ? 1 : -1;
-      const courbure = sens * (3 + hashSkill(skill.id + parent.id) % 4);
-      const cx = (x1 + x2) / 2 - dy / dist * courbure;
-      const cy = (y1 + y2) / 2 + dx / dist * courbure;
-      const cat = getCategorie(skill.categorie);
-      svg += `<path d="M ${x1.toFixed(2)} ${y1.toFixed(2)} Q ${cx.toFixed(2)} ${cy.toFixed(2)} ${x2.toFixed(2)} ${y2.toFixed(2)}" class="constel-ligne${prerequisAtteint(p) ? "" : " attente"}" style="stroke:${cat.couleur}"/>`;
+  if (categorieSkillOuverte === null) {
+    const premiereCategorie = categories.find(function(cat) {
+      return skills.some(function(skill) { return skill.categorie === cat.id; });
     });
-  });
+    categorieSkillOuverte = premiereCategorie ? premiereCategorie.id : null;
+  }
 
-  // skills
-  skills.forEach(function(skill) {
-    const p = ciel.pos[skill.id];
-    if (!p) return;
-    const cat = getCategorie(skill.categorie);
-    const etat = etatSkill(skill);
-    const selectionne = skill.id === etoileSelectionnee;
-
-    svg += `<g class="constel-noeud ${etat}${selectionne ? " selectionne" : ""}" onclick="ouvrirEtoile('${skill.id}')">`;
-
-    if (selectionne) {
-      svg += `<circle cx="${p.x}" cy="${p.y}" r="${RAYON + 5}" fill="${cat.couleur}" opacity="0.55" filter="url(#lueur)"/>`;
-      svg += `<circle cx="${p.x}" cy="${p.y}" r="${RAYON + 3}" class="constel-pulse" style="stroke:${cat.couleur}"/>`;
+  const categoriesHtml = categories.map(function(cat) {
+    const nbSkills = skills.filter(function(skill) { return skill.categorie === cat.id; }).length;
+    const ouverte = categorieSkillOuverte === cat.id;
+    let cartes = "";
+    if (ouverte) {
+      const liste = skills.filter(function(skill) { return skill.categorie === cat.id; });
+      liste.sort(function(a, b) {
+        const ordreEtat = { actif: 0, dispo: 1, boutique: 2, verrouille: 3 };
+        return ordreEtat[etatSkill(a)] - ordreEtat[etatSkill(b)] ||
+          a.nom.localeCompare(b.nom, "fr");
+      });
+      cartes = `<div class="skills-grille">${liste.map(function(skill) {
+        return htmlCarteSkill(skill, cat);
+      }).join("")}</div>`;
     }
 
-    if (etat === "verrouille" || etat === "boutique") {
-      svg += `<circle cx="${p.x}" cy="${p.y}" r="${RAYON}" class="constel-rond gris" style="stroke:${cat.couleur}"/>`;
-    } else {
-      svg += `<circle cx="${p.x}" cy="${p.y}" r="${RAYON}" class="constel-rond" style="fill:${cat.couleur}33;stroke:${cat.couleur}"/>`;
-      if (etat === "maitrise") {
-        svg += `<circle cx="${p.x}" cy="${p.y}" r="${RAYON + 1.5}" class="constel-anneau" style="stroke:${cat.couleur}"/>`;
-      }
-      svg += `<text class="constel-pct" x="${p.x}" y="${(p.y + 1.1).toFixed(2)}" style="fill:${selectionne ? "#fff" : "#e9fff8"}">${pourcentageSkill(skill)}%</text>`;
-    }
-    svg += `<circle cx="${p.x}" cy="${p.y}" r="${RAYON + 2}" fill="transparent"/>`; // zone de tap plus large
+    return `
+      <section class="skills-categorie">
+        <button type="button" class="skills-categorie-bouton" data-categorie="${echapper(cat.id)}"
+          aria-expanded="${ouverte}" style="--couleur-skill:${cat.couleur}">
+          <span>${cat.icone} ${echapper(cat.nom)}</span>
+          <span class="skills-categorie-compte">${nbSkills} skills ${ouverte ? "−" : "+"}</span>
+        </button>
+        ${cartes}
+      </section>`;
+  }).join("");
 
-    // Nom et sous-titre sous le cercle
-    const nom = decouperTexte(skill.nom, LARGEUR_NOM, 3);
-    svg += `<text class="constel-nom" x="${p.x}" y="${(p.y + RAYON + 3.8).toFixed(2)}">`;
-    nom.forEach(function(l, i) {
-      svg += `<tspan x="${p.x}" dy="${i === 0 ? 0 : 3.1}">${echapper(l)}</tspan>`;
-    });
-    if (etat === "boutique") {
-      svg += `<tspan class="constel-sous" x="${p.x}" dy="3.3">à acheter</tspan>`;
-    }
-    svg += `</text></g>`;
-  });
-
-  svg += `</svg>`;
   conteneur.innerHTML = `
-    <div class="constel-defilement" tabindex="0" aria-label="Ciel des skills défilant dans toutes les directions">${svg}</div>`;
-  const nouvelleZoneDefilement = conteneur.querySelector(".constel-defilement");
-  if (nouvelleZoneDefilement) {
-    nouvelleZoneDefilement.scrollLeft = defilement.gauche;
-    nouvelleZoneDefilement.scrollTop = defilement.haut;
-  }
+    <header class="skills-entete">
+      <h2>🌱 Skills</h2>
+      <span class="skills-solde">✨ Éclats : ${soldeEclats()}</span>
+    </header>
+    ${categoriesHtml}`;
+  majPopupSkill();
 
-  majPopup();
+  conteneur.onclick = function(event) {
+    const acheter = event.target.closest("[data-acheter-skill]");
+    if (acheter) {
+      acheterSkillUI(acheter.dataset.acheterSkill);
+      return;
+    }
+
+    const categorie = event.target.closest("[data-categorie]");
+    if (categorie) {
+      const idCategorie = categorie.dataset.categorie;
+      const prochaineCategorie = categorieSkillOuverte === idCategorie ? null : idCategorie;
+      const detailSelectionne = skills.find(function(skill) {
+        return skill.id === skillDetailOuvert;
+      });
+      if (prochaineCategorie !== null &&
+          (!detailSelectionne || detailSelectionne.categorie !== prochaineCategorie)) {
+        skillDetailOuvert = null;
+      }
+      categorieSkillOuverte = prochaineCategorie;
+      afficherArbre();
+      return;
+    }
+
+    const carte = event.target.closest(".skill-carte[data-skill-id]");
+    if (carte) {
+      ouvrirDetailSkill(carte.dataset.skillId);
+    }
+  };
 }
 
-// ---------- fenêtre pop-up ----------
-function elementPopup() {
-  let popup = document.getElementById("ordi-popup");
-  if (!popup) {
-    popup = document.createElement("div");
-    popup.id = "ordi-popup";
-    const ordi = document.getElementById("ordinateur");
-    if (ordi) ordi.appendChild(popup);
-  }
-  return popup;
-}
-
-function htmlPopup(skill) {
-  const cat = getCategorie(skill.categorie);
-  const etat = etatSkill(skill);
-  let corps = "";
-
-  if (etat === "encours" || etat === "maitrise") {
-    corps = htmlQuetesSkill(skills.indexOf(skill));
-  } else if (etat === "boutique") {
-    const prix = prixSkill(skill);
-    corps = `
-      <p>🛒 Ce skill s'achète avec des éclats.</p>
-      <p>Prix : <strong>✨ ${prix}</strong> · Tu as : <strong>✨ ${soldeEclats()}</strong></p>
-      <button onclick="acheterSkillUI('${skill.id}')" ${soldeEclats() < prix ? "disabled" : ""}>Acheter — ✨ ${prix}</button>
-      <p class="popup-aide">Les éclats se gagnent en terminant les niveaux des autres skills.</p>`;
+function ouvrirDetailSkill(idSkill) {
+  const skill = getSkill(idSkill);
+  if (!skill) return;
+  categorieSkillOuverte = skill.categorie;
+  if (skillDetailOuvert === idSkill) {
+    skillDetailOuvert = null;
+    positionPopupSkill = null;
   } else {
-    corps = `<p>🔒 Skill verrouillé. Il faut d'abord :</p><ul class="popup-prerequis">`;
-    skill.prerequis.forEach(function(p) {
-      corps += `<li>${prerequisAtteint(p) ? "✅" : "⬜"} ${echapper(libellePrerequis(p))}</li>`;
-    });
-    corps += `</ul>`;
+    skillDetailOuvert = idSkill;
+    positionPopupSkill = null;
   }
-
-  return `
-    <div class="popup-fond" onclick="if (event.target === this) fermerPopupSkill()">
-      <div class="popup-skill" style="border-top-color:${cat.couleur}${positionPopup ? `;left:${positionPopup.left}px;top:${positionPopup.top}px;transform:none` : ""}">
-        <div class="popup-entete" onpointerdown="deplacerPopup(event)">
-          <h3>${cat.icone} ${echapper(skill.nom)}</h3>
-          <button class="popup-fermer" onclick="fermerPopupSkill()" aria-label="Fermer">✖</button>
-        </div>
-        ${corps}
-      </div>
-    </div>`;
-}
-
-// Affiche ou cache la pop-up selon etoileSelectionnee
-function majPopup() {
-  const popup = elementPopup();
-  const skill = etoileSelectionnee ? getSkill(etoileSelectionnee) : null;
-  popup.innerHTML = skill ? htmlPopup(skill) : "";
-}
-
-function ouvrirEtoile(idSkill) {
-  if (etoileSelectionnee !== idSkill) positionPopup = null;
-  etoileSelectionnee = idSkill;
   afficherArbre();
 }
 
-function fermerPopupSkill() {
-  etoileSelectionnee = null;
-  positionPopup = null;
-  afficherArbre();
+function fermerDetailSkill() {
+  skillDetailOuvert = null;
+  positionPopupSkill = null;
+  deplacementPopupSkill = null;
+  const popup = document.getElementById("ordi-popup-skill");
+  if (popup) popup.innerHTML = "";
+  if (document.querySelector("#ordi-arbre:not(.cache)")) afficherArbre();
 }
 
-function deplacerPopup(event) {
-  if (event.button !== 0 || event.target.closest("button")) return;
-  const popup = event.currentTarget.closest(".popup-skill");
-  const fond = popup.parentElement;
-  const boitePopup = popup.getBoundingClientRect();
-  const boiteFond = fond.getBoundingClientRect();
-  positionPopup = {
-    left: boitePopup.left - boiteFond.left,
-    top: boitePopup.top - boiteFond.top
-  };
-  popup.style.left = positionPopup.left + "px";
-  popup.style.top = positionPopup.top + "px";
-  popup.style.transform = "none";
-  deplacementPopup = {
-    pointerId: event.pointerId,
-    debutX: event.clientX,
-    debutY: event.clientY,
-    left: positionPopup.left,
-    top: positionPopup.top,
-    largeurFond: boiteFond.width,
-    hauteurFond: boiteFond.height,
-    largeurPopup: boitePopup.width,
-    hauteurPopup: boitePopup.height
-  };
-  event.preventDefault();
-}
+document.addEventListener("click", function(event) {
+  const popup = document.getElementById("ordi-popup-skill");
+  if (!popup || !popup.contains(event.target)) return;
 
-function suivreDeplacementPopup(event) {
-  if (!deplacementPopup || event.pointerId !== deplacementPopup.pointerId) return;
-  const marge = 8;
-  const maxLeft = Math.max(marge, deplacementPopup.largeurFond - deplacementPopup.largeurPopup - marge);
-  const maxTop = Math.max(marge, deplacementPopup.hauteurFond - deplacementPopup.hauteurPopup - marge);
-  positionPopup = {
-    left: Math.max(marge, Math.min(maxLeft, deplacementPopup.left + event.clientX - deplacementPopup.debutX)),
-    top: Math.max(marge, Math.min(maxTop, deplacementPopup.top + event.clientY - deplacementPopup.debutY))
-  };
-  const popup = document.querySelector(".popup-skill");
-  if (!popup) return;
-  popup.style.left = positionPopup.left + "px";
-  popup.style.top = positionPopup.top + "px";
-}
+  const clicFond = event.target.matches("[data-fermer-popup]");
+  if (clicFond && clicFondApresDeplacement) {
+    clicFondApresDeplacement = false;
+    return;
+  }
+  clicFondApresDeplacement = false;
 
-function terminerDeplacementPopup(event) {
-  if (deplacementPopup && event.pointerId === deplacementPopup.pointerId) deplacementPopup = null;
-}
-
-document.addEventListener("pointermove", suivreDeplacementPopup);
-document.addEventListener("pointerup", terminerDeplacementPopup);
-document.addEventListener("pointercancel", terminerDeplacementPopup);
-
-document.addEventListener("keydown", function(e) {
-  if (e.key === "Escape" && etoileSelectionnee) fermerPopupSkill();
+  if (event.target.closest("[data-acheter-skill]")) {
+    acheterSkillUI(event.target.closest("[data-acheter-skill]").dataset.acheterSkill);
+    return;
+  }
+  if (event.target.closest("[data-fermer-detail]") || clicFond) {
+    fermerDetailSkill();
+  }
 });
+
+document.addEventListener("keydown", function(event) {
+  if (event.key === "Escape" && skillDetailOuvert) fermerDetailSkill();
+});
+
+document.addEventListener("pointermove", suivreDeplacementPopupSkill);
+document.addEventListener("pointerup", terminerDeplacementPopupSkill);
+document.addEventListener("pointercancel", terminerDeplacementPopupSkill);

@@ -92,6 +92,12 @@ function afficherHistorique() {
   }).join("");
 }
 
+window.addEventListener("historique:pret", function() {
+  if (typeof echapper === "function") afficherHistorique();
+});
+window.addEventListener("load", function() {
+  historiquePret.then(afficherHistorique);
+});
 
 function afficherBonus() {
   const c = document.getElementById("liste-bonus");

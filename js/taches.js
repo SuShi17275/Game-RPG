@@ -1,5 +1,5 @@
 let definitionsTaches = [];
-let tachesFaites = JSON.parse(localStorage.getItem("tachesFaites")) || [];
+let tachesFaites = lireStockage("tachesFaites", []);
 
 const conteneur = document.getElementById("liste-taches");
 
@@ -9,10 +9,11 @@ fetch("data/taches.json")
     definitionsTaches = donnees;
     verifierNouveauJour();
     afficherTaches();
+    if (typeof afficherStats === "function" && document.getElementById("ordi-stats")) afficherStats();
   });
 
 function sauvegarderTachesFaites() {
-  localStorage.setItem("tachesFaites", JSON.stringify(tachesFaites));
+  ecrireStockage("tachesFaites", JSON.stringify(tachesFaites));
 }
 
 function afficherTaches() {
@@ -26,7 +27,7 @@ function afficherTaches() {
       </p>
     `;
   });
-  afficherObjets();
+  if (typeof afficherObjets === "function") afficherObjets();
 }
 
 function trouverTache(id) {
@@ -58,11 +59,14 @@ function validerTacheAuto(id) {
 }
 
 function verifierNouveauJour() {
-  const aujourdhui = new Date().toLocaleDateString("fr-CA");
+  const maintenant = new Date();
+  const aujourdhui = maintenant.getFullYear() + "-" +
+    String(maintenant.getMonth() + 1).padStart(2, "0") + "-" +
+    String(maintenant.getDate()).padStart(2, "0");
   if (localStorage.getItem("derniereDate") !== aujourdhui) {
     tachesFaites = [];
     sauvegarderTachesFaites();
-    localStorage.setItem("derniereDate", aujourdhui);
+    ecrireStockage("derniereDate", aujourdhui);
     afficherTaches();
   }
 }

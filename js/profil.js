@@ -3,17 +3,27 @@
 // Les seuils de rang se modifient dans data/config-skills.json, bloc "rangs" (sinon valeurs par défaut ci-dessous).
 
 const RANGS_DEFAUT = [
-  { lettre: "E", xp: 0 },
-  { lettre: "D", xp: 50 },
-  { lettre: "C", xp: 150 },
-  { lettre: "B", xp: 350 },
-  { lettre: "A", xp: 700 },
-  { lettre: "S", xp: 1200 }
+  { lettre: "E", pourcentage: 0 },
+  { lettre: "D", pourcentage: 10 },
+  { lettre: "C", pourcentage: 25 },
+  { lettre: "B", pourcentage: 45 },
+  { lettre: "A", pourcentage: 70 },
+  { lettre: "S", pourcentage: 100 }
 ];
 
 function listeRangs() {
   const r = configSkills && configSkills.rangs;
-  return Array.isArray(r) && r.length >= 2 ? r : RANGS_DEFAUT;
+  const valides = Array.isArray(r) && r.length >= 2 &&
+    r[0] && r[0].pourcentage === 0 &&
+    r[r.length - 1] && r[r.length - 1].pourcentage === 100 &&
+    r.every(function(rang, index) {
+      return rang && typeof rang.lettre === "string" && typeof rang.pourcentage === "number" &&
+        (index === 0 || rang.pourcentage > r[index - 1].pourcentage);
+    });
+  if (r && !valides) {
+    console.warn("Configuration des rangs invalide : utilisation des seuils par défaut en pourcentage.");
+  }
+  return valides ? r : RANGS_DEFAUT;
 }
 
 // ---------- calculs ----------
@@ -31,14 +41,14 @@ function xpCategorie(idCategorie) {
 }
 
 // Transforme l'XP en valeur continue : 0 = début de E, 1 = début de D, ... (dernier rang = valeur max)
-function valeurRang(xp) {
+function valeurRang(pourcentage) {
   const rangs = listeRangs();
   let i = 0;
-  while (i + 1 < rangs.length && xp >= rangs[i + 1].xp) i++;
+  while (i + 1 < rangs.length && pourcentage >= rangs[i + 1].pourcentage) i++;
   if (i === rangs.length - 1) return i;
-  const debut = rangs[i].xp;
-  const fin = rangs[i + 1].xp;
-  return i + (xp - debut) / (fin - debut);
+  const debut = rangs[i].pourcentage;
+  const fin = rangs[i + 1].pourcentage;
+  return i + (pourcentage - debut) / (fin - debut);
 }
 
 function lettreRang(valeur) {
@@ -46,11 +56,11 @@ function lettreRang(valeur) {
   return rangs[Math.min(Math.floor(valeur), rangs.length - 1)].lettre;
 }
 
-// XP qui manque pour le rang suivant (null si déjà au rang max)
-function xpProchainRang(xp) {
+// Pourcentage requis pour le rang suivant (null si déjà au rang max)
+function pourcentageProchainRang(pourcentage) {
   const rangs = listeRangs();
   for (let i = 0; i < rangs.length; i++) {
-    if (xp < rangs[i].xp) return rangs[i].xp;
+    if (pourcentage < rangs[i].pourcentage) return rangs[i].pourcentage;
   }
   return null;
 }
@@ -78,6 +88,7 @@ function afficherProfil() {
         return {
           skill: skill,
           xp: xp,
+          maxXP: quetes.reduce(function(total, quete) { return total + quete.recompense; }, 0),
           faites: faites,
           total: quetes.length,
           pourcentage: quetes.length === 0 ? 0 : Math.round(faites / quetes.length * 100)
@@ -87,8 +98,18 @@ function afficherProfil() {
         return b.xp - a.xp || b.faites - a.faites || a.skill.nom.localeCompare(b.skill.nom);
       });
     const xp = listeSkills.reduce(function(total, detail) { return total + detail.xp; }, 0);
-    const valeur = valeurRang(xp);
-    return { cat: cat, xp: xp, valeur: valeur, lettre: lettreRang(valeur), skills: listeSkills };
+    const maxXP = listeSkills.reduce(function(total, detail) { return total + detail.maxXP; }, 0);
+    const pourcentageXP = maxXP === 0 ? 0 : xp / maxXP * 100;
+    const valeur = valeurRang(pourcentageXP);
+    return {
+      cat: cat,
+      xp: xp,
+      maxXP: maxXP,
+      pourcentageXP: pourcentageXP,
+      valeur: valeur,
+      lettre: lettreRang(valeur),
+      skills: listeSkills
+    };
   });
 
   const moyenne = donnees.reduce(function(t, d) { return t + d.valeur; }, 0) / n;
@@ -150,8 +171,9 @@ function afficherProfil() {
     <div class="profil-liste">`;
 
   donnees.forEach(function(d) {
-    const suivant = xpProchainRang(d.xp);
-    const texte = suivant === null ? d.xp + " XP · rang max !" : d.xp + " / " + suivant + " XP";
+    const suivant = pourcentageProchainRang(d.pourcentageXP);
+    const texte = d.xp + " / " + d.maxXP + " XP · " + Math.round(d.pourcentageXP) + "%" +
+      (suivant === null ? " · rang max !" : " · prochain rang à " + suivant + "%");
     const pctRang = d.valeur >= niveauMax ? 100 : Math.round((d.valeur - Math.floor(d.valeur)) * 100);
     const skillLePlusTravaille = d.skills.find(function(detail) { return detail.xp > 0; });
     let detailsSkills = "";

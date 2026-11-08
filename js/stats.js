@@ -32,7 +32,7 @@ function listeQuetesFaites() {
   skills.forEach(function(skill) {
     toutesLesQuetes(skill).forEach(function(quete) {
       if (!queteFaite(skill, quete)) return;
-      const date = new Date(progression[skill.id][quete.nom]);
+      const date = new Date(progression[skill.id][quete.id]);
       if (isNaN(date.getTime())) return;
       liste.push({ skill: skill, quete: quete, date: date, jour: cleJour(date) });
     });
@@ -65,6 +65,56 @@ function calculerSeries(compte) {
   return { actuelle: actuelle, meilleure: meilleure };
 }
 
+function statistiquesTachesArgent() {
+  const tachesQuotidiennes = definitionsTaches.filter(function(tache) { return !tache.auto; });
+  const nomsTaches = new Set(definitionsTaches.map(function(tache) { return tache.nom; }));
+  function estRevenuTache(operation) {
+    return operation.type === "tache" ||
+      (!operation.type && nomsTaches.has(operation.libelle));
+  }
+
+  const parJour = {};
+  historique.forEach(function(operation) {
+    const date = new Date(operation.date);
+    if (isNaN(date.getTime())) return;
+    const jour = cleJour(date);
+    if (!parJour[jour]) parJour[jour] = { taches: new Set(), nombreTaches: 0, revenusTaches: 0, net: 0 };
+    const donnees = parJour[jour];
+    const montant = Number(operation.montant) || 0;
+    donnees.net += montant;
+    if (estRevenuTache(operation)) {
+      donnees.taches.add(operation.libelle);
+      donnees.nombreTaches += 1;
+      donnees.revenusTaches += montant;
+    }
+  });
+
+  const joursComplets = Object.keys(parJour).filter(function(jour) {
+    return tachesQuotidiennes.length > 0 &&
+      tachesQuotidiennes.every(function(tache) { return parJour[jour].taches.has(tache.nom); });
+  });
+  const joursCompletsParJour = {};
+  joursComplets.forEach(function(jour) { joursCompletsParJour[jour] = 1; });
+
+  return {
+    parJour: parJour,
+    joursComplets: joursComplets,
+    serieJoursComplets: calculerSeries(joursCompletsParJour),
+    nombreTaches: Object.keys(parJour).reduce(function(total, jour) {
+      return total + parJour[jour].nombreTaches;
+    }, 0),
+    revenusTaches: historique.reduce(function(total, operation) {
+      return total + (estRevenuTache(operation) ? Number(operation.montant) || 0 : 0);
+    }, 0),
+    revenusTotaux: historique.reduce(function(total, operation) {
+      return total + Math.max(0, Number(operation.montant) || 0);
+    }, 0),
+    depensesTotales: historique.reduce(function(total, operation) {
+      return total + Math.min(0, Number(operation.montant) || 0);
+    }, 0)
+  };
+}
+
 // Classement des skills par nombre de quêtes faites sur la période
 function classementSkills(liste, periode) {
   const limite = periode > 0 ? cleJour(jourDecale(-(periode - 1))) : null;
@@ -75,6 +125,7 @@ function classementSkills(liste, periode) {
   });
   return Object.keys(compte)
     .map(function(id) { return { skill: getSkill(id), nb: compte[id] }; })
+    .filter(function(e) { return e.skill; })
     .sort(function(a, b) { return b.nb - a.nb || a.skill.nom.localeCompare(b.skill.nom); });
 }
 
@@ -96,6 +147,7 @@ function afficherStats() {
   const compte = quetesParJour(liste);
   const series = calculerSeries(compte);
   const xpTotal = liste.reduce(function(t, e) { return t + e.quete.recompense; }, 0);
+  const economie = statistiquesTachesArgent();
 
   // meilleur jour
   let meilleurJour = null;
@@ -135,6 +187,39 @@ function afficherStats() {
   });
   html += `</div>`;
 
+  html += `
+    <h3>Tâches et économie</h3>
+    ${definitionsTaches.length === 0 ? '<p class="stats-vide">Chargement des tâches…</p>' : `
+      <div class="stats-tuiles">
+        <div class="stats-tuile"><strong>${economie.nombreTaches}</strong><span>tâches validées</span></div>
+        <div class="stats-tuile"><strong>${economie.serieJoursComplets.actuelle} 🔥</strong><span>jours complets d'affilée</span></div>
+        <div class="stats-tuile"><strong>${economie.serieJoursComplets.meilleure}</strong><span>meilleure série complète</span></div>
+        <div class="stats-tuile"><strong>${economie.revenusTaches} 💰</strong><span>gagnés avec les tâches</span></div>
+      </div>`}
+    <p class="stats-economie">Revenus : <strong>${economie.revenusTotaux} 💰</strong> · Dépenses : <strong>${Math.abs(economie.depensesTotales)} 💰</strong></p>
+    <h3>Revenus des tâches par jour</h3>`;
+  if (definitionsTaches.length > 0) {
+    const joursTaches = jours.map(function(date) {
+      const cle = cleJour(date);
+      return { date: date, cle: cle, montant: economie.parJour[cle] ? economie.parJour[cle].revenusTaches : 0 };
+    });
+    const maxRevenuTache = Math.max(1, Math.max.apply(null, joursTaches.map(function(jour) { return jour.montant; })));
+    html += `<div class="stats-barres">`;
+    joursTaches.forEach(function(jour) {
+      const hauteur = jour.montant === 0 ? 2 : Math.max(8, Math.round(jour.montant / maxRevenuTache * 100));
+      const lettre = jour.date.toLocaleDateString("fr-FR", { weekday: "narrow" });
+      html += `
+        <div class="stats-col${jour.cle === aujourdhui ? " aujourdhui" : ""}">
+          <span class="stats-nb">${jour.montant > 0 ? jour.montant : ""}</span>
+          <span class="stats-barre stats-barre-taches${jour.montant === 0 ? " vide" : ""}" style="height:${hauteur}px"></span>
+          <span class="stats-jour">${echapper(lettre)}<br>${jour.date.getDate()}</span>
+        </div>`;
+    });
+    html += `</div>`;
+    const nombreTachesQuotidiennes = definitionsTaches.filter(function(tache) { return !tache.auto; }).length;
+    html += `<p class="stats-economie">Journée complète : toutes les tâches quotidiennes validées (${nombreTachesQuotidiennes}).</p>`;
+  }
+
   // --- classement des skills ---
   const classement = classementSkills(liste, statsPeriode).slice(0, 5);
   const maxSkill = classement.length > 0 ? classement[0].nb : 1;
@@ -173,3 +258,8 @@ function afficherStats() {
 
   conteneur.innerHTML = html;
 }
+
+window.addEventListener("historique:pret", function() {
+  const conteneur = document.getElementById("ordi-stats");
+  if (conteneur && !conteneur.classList.contains("cache")) afficherStats();
+});

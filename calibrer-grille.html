@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calibrer la grille du pet</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 1000px; margin: 0 auto; padding: 12px; color: #222; }
+  h1 { font-size: 1.3rem; margin: 0 0 6px; }
+  .consigne { background: #eef3ff; border-left: 4px solid #3d6df2; padding: 8px 12px; border-radius: 6px; margin: 8px 0; }
+  .barre { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin: 8px 0; }
+  .barre label { display: inline-flex; gap: 6px; align-items: center; }
+  input[type=number] { width: 60px; }
+  button { padding: 5px 10px; }
+  #zone { border: 1px solid #bbb; background: #f4f4f4; }
+  canvas { display: block; width: 100%; height: auto; touch-action: none; cursor: crosshair; }
+  textarea { width: 100%; height: 220px; font-family: monospace; font-size: 12px; box-sizing: border-box; }
+  #etat { font-weight: bold; }
+  .erreur { color: #b00020; }
+</style>
+</head>
+<body>
+<h1>Calibrer la grille de déplacement du pet</h1>
+
+<div class="consigne" id="consigne"></div>
+
+<div class="barre">
+  <label>Image de la chambre : <input type="file" id="fichier" accept="image/*"></label>
+  <label>Colonnes <input type="number" id="colonnes" min="2" max="40" value="12"></label>
+  <label>Lignes <input type="number" id="lignes" min="2" max="40" value="12"></label>
+  <label><input type="checkbox" id="numeros" checked> Numéros</label>
+  <button id="effacer-coins">Refaire les coins</button>
+  <button id="tout-libre">Tout libre</button>
+  <button id="tout-bloquer">Tout bloquer</button>
+</div>
+<p id="etat"></p>
+
+<div id="zone"><canvas id="toile"></canvas></div>
+
+<h3>Résultat (à enregistrer dans <code>data/grille-pet.json</code>)</h3>
+<div class="barre">
+  <button id="copier">Copier</button>
+  <button id="telecharger">Télécharger grille-pet.json</button>
+  <button id="charger">Recharger depuis le texte ci-dessous</button>
+</div>
+<textarea id="sortie" spellcheck="false"></textarea>
+
+<script>
+// ---------- état ----------
+const NOMS_COINS = [
+  "1 : fond à gauche (là où le sol touche le mur du fond, côté gauche)",
+  "2 : fond à droite",
+  "3 : devant à droite (côté de la pièce le plus proche de toi)",
+  "4 : devant à gauche"
+];
+const toile = document.getElementById("toile");
+const ctx = toile.getContext("2d");
+const image = new Image();
+let coins = [];          // [{x, y}] en pixels de l'image
+let bloquees = [];       // bloquees[ligne][colonne] = true / false
+let colonnes = 12, lignes = 12;
+let glisse = null;       // { type: "coin", i } ou { type: "case", valeur }
+
+// ---------- homographie : carré unité -> quadrilatère du sol ----------
+function matrice() {
+  const [p0, p1, p2, p3] = coins;
+  const dx1 = p1.x - p2.x, dx2 = p3.x - p2.x, dx3 = p0.x - p1.x + p2.x - p3.x;
+  const dy1 = p1.y - p2.y, dy2 = p3.y - p2.y, dy3 = p0.y - p1.y + p2.y - p3.y;
+  let g = 0, h = 0;
+  if (Math.abs(dx3) > 1e-9 || Math.abs(dy3) > 1e-9) {
+    const d = dx1 * dy2 - dy1 * dx2;
+    g = (dx3 * dy2 - dy3 * dx2) / d;
+    h = (dx1 * dy3 - dy1 * dx3) / d;
+  }
+  return { a: p1.x - p0.x + g * p1.x, b: p3.x - p0.x + h * p3.x, c: p0.x,
+           d: p1.y - p0.y + g * p1.y, e: p3.y - p0.y + h * p3.y, f: p0.y, g: g, h: h };
+}
+
+function versImage(u, v) {
+  const m = matrice();
+  const w = m.g * u + m.h * v + 1;
+  return { x: (m.a * u + m.b * v + m.c) / w, y: (m.d * u + m.e * v + m.f) / w };
+}
+
+function versGrille(x, y) {
+  const m = matrice();
+  // inverse de [[a b c][d e f][g h 1]] par la matrice adjointe
+  const A = m.e - m.f * m.h, B = m.c * m.h - m.b, C = m.b * m.f - m.c * m.e;
+  const D = m.f * m.g - m.d, E = m.a - m.c * m.g, F = m.c * m.d - m.a * m.f;
+  const G = m.d * m.h - m.e * m.g, H = m.b * m.g - m.a * m.h, I = m.a * m.e - m.b * m.d;
+  const u = A * x + B * y + C, v = D * x + E * y + F, w = G * x + H * y + I;
+  return { u: u / w, v: v / w };
+}
+
+function caseSous(x, y) {
+  const { u, v } = versGrille(x, y);
+  if (u < 0 || u >= 1 || v < 0 || v >= 1) return null;
+  return { col: Math.floor(u * colonnes), lig: Math.floor(v * lignes) };
+}
+
+// ---------- dessin ----------
+function dessiner() {
+  if (!image.complete || !image.naturalWidth) return;
+  const M = marge();
+  toile.width = image.naturalWidth + 2 * M;
+  toile.height = image.naturalHeight + 2 * M;
+  ctx.fillStyle = "#cfd3da";
+  ctx.fillRect(0, 0, toile.width, toile.height);
+  ctx.save();
+  ctx.translate(M, M);
+  ctx.drawImage(image, 0, 0);
+  const ep = image.naturalWidth / 450;   // épaisseur de trait proportionnelle à l'image
+
+  if (coins.length === 4) {
+    // cases bloquées
+    ctx.fillStyle = "rgba(220, 30, 30, 0.45)";
+    for (let l = 0; l < lignes; l++) for (let c = 0; c < colonnes; c++) {
+      if (!bloquees[l][c]) continue;
+      const pts = [[c, l], [c + 1, l], [c + 1, l + 1], [c, l + 1]].map(function(p) { return versImage(p[0] / colonnes, p[1] / lignes); });
+      ctx.beginPath();
+      pts.forEach(function(p, i) { i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y); });
+      ctx.closePath();
+      ctx.fill();
+    }
+    // lignes de la grille
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.lineWidth = ep * 0.6;
+    for (let c = 0; c <= colonnes; c++) trait(versImage(c / colonnes, 0), versImage(c / colonnes, 1));
+    for (let l = 0; l <= lignes; l++) trait(versImage(0, l / lignes), versImage(1, l / lignes));
+    ctx.strokeStyle = "#1a3cff";
+    ctx.lineWidth = ep * 1.4;
+    trait(versImage(0, 0), versImage(1, 0)); trait(versImage(1, 0), versImage(1, 1));
+    trait(versImage(1, 1), versImage(0, 1)); trait(versImage(0, 1), versImage(0, 0));
+
+    if (document.getElementById("numeros").checked) {
+      ctx.font = "bold " + Math.round(ep * 6) + "px sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillStyle = "#1a3cff";
+      for (let c = 0; c < colonnes; c++) { const p = versImage((c + 0.5) / colonnes, -0.025); ctx.fillText(c, p.x, p.y); }
+      for (let l = 0; l < lignes; l++) { const p = versImage(-0.025, (l + 0.5) / lignes); ctx.fillText(l, p.x, p.y); }
+    }
+  }
+
+  // coins
+  ctx.restore();
+  ctx.save();
+  ctx.translate(M, M);
+  coins.forEach(function(p, i) {
+    ctx.fillStyle = "#1a3cff";
+    ctx.beginPath(); ctx.arc(p.x, p.y, ep * 4.5, 0, 7); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.font = "bold " + Math.round(ep * 6) + "px sans-serif";
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(i + 1, p.x, p.y);
+  });
+  ctx.restore();
+}
+
+// marge grise autour de l'image : permet de placer un coin en dehors de l'image
+function marge() { return Math.round(Math.max(image.naturalWidth, image.naturalHeight) * 0.3); }
+
+function trait(a, b) { ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+
+// ---------- messages ----------
+function majTexte() {
+  const consigne = document.getElementById("consigne");
+  const etat = document.getElementById("etat");
+  if (coins.length < 4) {
+    consigne.innerHTML = "<strong>Étape 1 — les 4 coins du sol.</strong> Clique sur l'image (ou dans la marge grise autour, pour un coin qui sort de l'image), dans l'ordre : " + NOMS_COINS.map(function(n) { return "<br>• coin " + n; }).join("") +
+      "<br><small>Si un coin est caché derrière un meuble ou un mur, place-le là où il serait.</small>";
+    etat.textContent = "Clique le coin " + NOMS_COINS[coins.length];
+  } else {
+    consigne.innerHTML = "<strong>Étape 2 — les meubles.</strong> Clique ou glisse sur les cases où le pet ne doit pas aller (elles deviennent rouges). Tu peux aussi déplacer un coin en le faisant glisser, et changer le nombre de colonnes / lignes. Vise des cases à peu près grandes comme le pet.";
+    const nb = bloquees.reduce(function(t, l) { return t + l.filter(Boolean).length; }, 0);
+    etat.textContent = nb + " case(s) bloquée(s) sur " + (colonnes * lignes) + " — " + (colonnes * lignes - nb) + " libres";
+  }
+}
+
+// ---------- sortie JSON ----------
+function exporter() {
+  const sortie = document.getElementById("sortie");
+  if (coins.length < 4) { sortie.value = ""; return; }
+  const l = image.naturalWidth, h = image.naturalHeight;
+  const json = {
+    colonnes: colonnes,
+    lignes: lignes,
+    coins: coins.map(function(p) { return [+(p.x / l).toFixed(4), +(p.y / h).toFixed(4)]; }),
+    bloquees: bloquees.map(function(ligne) { return ligne.map(function(b) { return b ? "#" : "."; }).join(""); })
+  };
+  // coins sur une ligne, grille sur une ligne par rangée : lisible et facile à corriger à la main
+  sortie.value = "{\n  \"colonnes\": " + colonnes + ",\n  \"lignes\": " + lignes + ",\n  \"coins\": " + JSON.stringify(json.coins) +
+    ",\n  \"bloquees\": [\n" + json.bloquees.map(function(s) { return "    \"" + s + "\""; }).join(",\n") + "\n  ]\n}\n";
+  try { localStorage.setItem("calibrageGrillePet", sortie.value); } catch (e) {}
+}
+
+function charger(texte) {
+  const d = JSON.parse(texte);
+  if (!d.coins || d.coins.length !== 4 || !d.bloquees) throw new Error("Il manque coins ou bloquees");
+  colonnes = d.colonnes; lignes = d.lignes;
+  document.getElementById("colonnes").value = colonnes;
+  document.getElementById("lignes").value = lignes;
+  coins = d.coins.map(function(p) { return { x: p[0] * image.naturalWidth, y: p[1] * image.naturalHeight }; });
+  bloquees = d.bloquees.map(function(s) { return s.split("").map(function(c) { return c === "#"; }); });
+  tout();
+}
+
+function tout() { dessiner(); majTexte(); exporter(); }
+
+function nouvelleGrille(garder) {
+  const ancienne = bloquees;
+  bloquees = [];
+  for (let l = 0; l < lignes; l++) {
+    bloquees.push([]);
+    for (let c = 0; c < colonnes; c++) bloquees[l].push(garder && ancienne[l] ? !!ancienne[l][c] : false);
+  }
+}
+
+// ---------- souris / doigt ----------
+function positionImage(e) {
+  const r = toile.getBoundingClientRect();
+  const M = marge();
+  return { x: (e.clientX - r.left) * toile.width / r.width - M, y: (e.clientY - r.top) * toile.height / r.height - M, px: toile.width / r.width };
+}
+
+toile.addEventListener("pointerdown", function(e) {
+  const p = positionImage(e);
+  if (coins.length < 4) {
+    coins.push({ x: p.x, y: p.y });
+    if (coins.length === 4) nouvelleGrille(false);
+    tout();
+    return;
+  }
+  const proche = coins.findIndex(function(c) { return Math.hypot(c.x - p.x, c.y - p.y) < 16 * p.px; });
+  if (proche !== -1) {
+    glisse = { type: "coin", i: proche };
+  } else {
+    const c = caseSous(p.x, p.y);
+    if (!c) return;
+    glisse = { type: "case", valeur: !bloquees[c.lig][c.col] };
+    bloquees[c.lig][c.col] = glisse.valeur;
+  }
+  toile.setPointerCapture(e.pointerId);
+  tout();
+});
+
+toile.addEventListener("pointermove", function(e) {
+  if (!glisse) return;
+  const p = positionImage(e);
+  if (glisse.type === "coin") {
+    coins[glisse.i] = { x: p.x, y: p.y };
+  } else {
+    const c = caseSous(p.x, p.y);
+    if (c) bloquees[c.lig][c.col] = glisse.valeur;
+  }
+  tout();
+});
+
+toile.addEventListener("pointerup", function() { glisse = null; });
+
+// ---------- boutons ----------
+document.getElementById("colonnes").addEventListener("change", function(e) { colonnes = Math.max(2, +e.target.value || 12); nouvelleGrille(false); tout(); });
+document.getElementById("lignes").addEventListener("change", function(e) { lignes = Math.max(2, +e.target.value || 12); nouvelleGrille(false); tout(); });
+document.getElementById("numeros").addEventListener("change", dessiner);
+document.getElementById("effacer-coins").onclick = function() { coins = []; tout(); };
+document.getElementById("tout-libre").onclick = function() { nouvelleGrille(false); tout(); };
+document.getElementById("tout-bloquer").onclick = function() { nouvelleGrille(false); bloquees = bloquees.map(function(l) { return l.map(function() { return true; }); }); tout(); };
+document.getElementById("copier").onclick = function() { navigator.clipboard.writeText(document.getElementById("sortie").value); };
+document.getElementById("telecharger").onclick = function() {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([document.getElementById("sortie").value], { type: "application/json" }));
+  a.download = "grille-pet.json";
+  a.click();
+};
+document.getElementById("charger").onclick = function() {
+  try { charger(document.getElementById("sortie").value); } catch (e) { alert("JSON invalide : " + e.message); }
+};
+document.getElementById("fichier").addEventListener("change", function(e) {
+  if (e.target.files[0]) image.src = URL.createObjectURL(e.target.files[0]);
+});
+
+// ---------- démarrage ----------
+image.onload = function() {
+  let reprise = null;
+  try { reprise = localStorage.getItem("calibrageGrillePet"); } catch (e) {}
+  nouvelleGrille(false);
+  if (reprise) { try { charger(reprise); return; } catch (e) {} }
+  tout();
+};
+image.onerror = function() {
+  document.getElementById("etat").innerHTML = "<span class='erreur'>Image introuvable (images/fond-chambre.png). Choisis ton fichier avec le bouton « Image de la chambre ».</span>";
+};
+image.src = "images/fond-chambre.png";
+majTexte();
+</script>
+</body>
+</html>

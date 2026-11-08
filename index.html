@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <title>Game to Life</title>
-        <link rel="stylesheet" href="css/style.css?v=7">
+        <meta name="theme-color" content="#000000">
+        <link rel="stylesheet" href="css/style.css?v=12">
         <link rel="stylesheet" href="css/profil.css?v=3">
         <link rel="stylesheet" href="css/stats.css?v=2">
-        <link rel="stylesheet" href="css/constellations.css?v=11">
+        <link rel="stylesheet" href="css/constellations.css?v=14">
         <link rel="manifest" href="manifest.json">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="apple-touch-icon" href="images/icone.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
 
     <body>
+        <noscript><p>Game to Life nécessite JavaScript pour fonctionner.</p></noscript>
         <div id="chambre">
             <img src="images/fond-chambre.png" id="fond-chambre" alt="">
             <div id="objets-chambre"></div>
@@ -30,8 +33,6 @@
                         <button class="icone-app" onclick="afficherEcran('banque')"><span class="icone">🏦</span>Banque</button>
                         <button class="icone-app" onclick="afficherEcran('events')"><span class="icone">✉️</span>Mail<span id="badge-mail" class="badge cache">0</span></button>
                         <button class="icone-app" onclick="afficherEcran('bonus')"><span class="icone">⭐</span>Bonus</button>
-                        <!-- provisoire -->
-                        <button class="icone-app" onclick="afficherEcran('pet')"><span class="icone">🐾</span>Pet</button>
                     </div>
                 </div>
 
@@ -72,16 +73,6 @@
                     <div id="liste-bonus"></div>
                 </div>
 
-                <div id="ecran-pet" class="ecran cache">
-                    <h2>Pet</h2>
-                    <p>Faim : <span id="pet-faim"></span></p>
-                    <p>Propreté : <span id="pet-proprete"></span></p>
-                    <p>Amitié : <span id="pet-amitie"></span></p>
-                    <p id="pet-bonus"></p>
-                    <button id="btn-nourrir" data-label="Nourrir" onclick="nourrirPet()">Nourrir</button>
-                    <button id="btn-laver" data-label="Laver" onclick="laverPet()">Laver</button>
-                    <button id="btn-caresser" data-label="Caresser" onclick="caresserPet()">Caresser</button>
-                </div>
             </div>
 
             <img id="cadre-telephone" src="images/cadre_tel.png" alt="">
@@ -101,14 +92,15 @@
                         <button class="icone-app" onclick="afficherEcranOrdi('boutique')"><span class="icone">🛒</span>Boutique</button>
                         <button class="icone-app" onclick="afficherEcranOrdi('stats')"><span class="icone">📈</span>Stats</button>
                         <button class="icone-app" onclick="afficherEcranOrdi('profil')"><span class="icone">🕸️</span>Profil</button>
+                        <button class="icone-app" onclick="afficherEcranOrdi('parametres')"><span class="icone">⚙️</span>Paramètres</button>
                     </div>
                 </div>
 
                 <div id="ordi-arbre" class="ecran-ordi cache"></div>
-                <div id="ordi-skill-detail" class="ecran-ordi cache"></div>
                 <div id="ordi-boutique" class="ecran-ordi cache"></div>
                 <div id="ordi-stats" class="ecran-ordi cache"><h2>Statistiques</h2><p>Bientôt...</p></div>
                 <div id="ordi-profil" class="ecran-ordi cache"><h2>Profil</h2><p>Bientôt...</p></div>
+                <div id="ordi-parametres" class="ecran-ordi cache"></div>
             </div>
 
             <div id="ordi-barre-taches">
@@ -116,17 +108,19 @@
             </div>
         </div>
 
-        <script src="js/argent.js?v=4"></script>
-        <script src="js/taches.js?v=4"></script>
-        <script src="js/chambre.js?v=4"></script>
-        <script src="js/telephone.js?v=5"></script>
-        <script src="js/skills.js?v=4"></script>
-        <script src="js/constellations.js?v=11"></script>
-        <script src="js/profil.js?v=3"></script>
-        <script src="js/stats.js?v=2"></script>
-        <script src="js/pet.js?v=3"></script>
-        <script src="js/mail.js?v=1"></script>
-        <script src="js/ordinateur.js?v=4"></script>
-        <script src="js/main.js?v=4"></script>
+        <script src="js/argent.js?v=7" defer></script>
+        <script src="js/taches.js?v=6" defer></script>
+        <script src="js/chambre.js?v=13" defer></script>
+        <script src="js/pet-chambre.js?v=11" defer></script>
+        <script src="js/telephone.js?v=6" defer></script>
+        <script src="js/skills.js?v=10" defer></script>
+        <script src="js/constellations.js?v=14" defer></script>
+        <script src="js/profil.js?v=4" defer></script>
+        <script src="js/stats.js?v=5" defer></script>
+        <script src="js/parametres.js?v=2" defer></script>
+        <script src="js/pet.js?v=11" defer></script>
+        <script src="js/mail.js?v=5" defer></script>
+        <script src="js/ordinateur.js?v=6" defer></script>
+        <script src="js/main.js?v=5" defer></script>
     </body>
 </html>
